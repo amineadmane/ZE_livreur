@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ze_livreur/components/curved_nav_bar.dart';
+import 'package:ze_livreur/screens/homescreen.dart';
 
 void main() {
   runApp(ze_livreur());
@@ -13,7 +13,7 @@ class ze_livreur extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       routes: {
-        '/': (context) => BottomNavBar(),
+        '/': (context) => HomeScreen(),
       },
     );
   }
