@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   curved_navigation_bar: ^0.3.7
   responsive_flutter: ^0.0.4
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

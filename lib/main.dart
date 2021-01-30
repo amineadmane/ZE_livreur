@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ze_livreur/Inscription.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
-import 'package:ze_livreur/homepage.dart';
+import 'package:ze_livreur/confirmSms.dart';
+import 'package:ze_livreur/confirmedphone.dart';
+import 'package:ze_livreur/login.dart';
 
 void main() {
   runApp(ze_livreur());
@@ -14,7 +17,7 @@ class ze_livreur extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       routes: {
-        '/': (context) => LoginScreen(),
+        '/': (context) => ConfirmedphoneScreen(),
       },
     );
   }
