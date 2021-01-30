@@ -63,7 +63,8 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             children: <Widget>[
               _buildIntroText(),
               _buildreferencement(),
-              _buildpermisconduire()
+              _buildpermisconduire(),
+              _builbuttonbar(context),
             ],
           ),
         ),
@@ -231,6 +232,29 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             offset: _textEditingController.text.length,
             affinity: TextAffinity.upstream));
     }
+  }
+
+  Widget _builbuttonbar(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      width: double.infinity,
+      child: ButtonBar(children:[
+        RaisedButton(
+            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+            color: Color(0xFF480086),
+            child:Text("Retour",style: TextStyle(
+                color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),)),
+        RaisedButton(
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+          color: Color(0xFF480086),
+        child:Text("Suivant", style: TextStyle(
+            color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),),
+        )
+      ],
+          alignment:MainAxisAlignment.center,
+          mainAxisSize:MainAxisSize.max
+      )
+    );
   }
 }
 class AlwaysDisabledFocusNode extends FocusNode {
