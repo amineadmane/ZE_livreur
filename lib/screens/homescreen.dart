@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
+import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 
 class HomeScreen extends StatefulWidget {
+  static String route = "/home";
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -36,10 +39,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.person_pin,
-                        color: background,
-                        size: 45,
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ProfilePage(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.person_pin,
+                          color: background,
+                          size: 45,
+                        ),
                       ),
                       SizedBox(
                         width: screenwidth * 0.3,
@@ -109,7 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 icon: Icon(
                                   Icons.arrow_forward_rounded,
                                 ),
-                                onPressed: null,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          NotificationPage(),
+                                    ),
+                                  );
+                                },
                               )
                             ],
                           ),

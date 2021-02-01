@@ -3,26 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/historyscreen.dart';
+import 'package:ze_livreur/screens/views/linkingscreen.dart';
+import 'package:ze_livreur/screens/views/ratingscreen.dart';
 
 class BottomNavBar extends StatelessWidget {
-  void _changepage(BuildContext context , int value){
-    Provider.of<NavigationProvider>(context , listen: false).changepage(value);
+  void _changepage(BuildContext context, int value) {
+    Provider.of<NavigationProvider>(context, listen: false).changepage(value);
   }
-  GlobalKey _bottomNavigationKey = GlobalKey();
-  Color orange = Color(0xFFF28322);
-  Color background = Color(0xFFF2F2F2);
-  Color violet = Color(0xFF382B8C);
-  var currentTab = [
+
+  final GlobalKey _bottomNavigationKey = GlobalKey();
+  final Color orange = Color(0xFFF28322);
+  final Color background = Color(0xFFF2F2F2);
+  final Color violet = Color(0xFF382B8C);
+  final currentTab = [
     HomeScreen(),
+    LinkingPage(),
     HistoryPage(),
+    FinancesPage(),
+    RatingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       key: _bottomNavigationKey,
-      index: 0,
+      index: 2,
       height: 50.0,
       items: <Widget>[
         Icon(
@@ -41,7 +48,7 @@ class BottomNavBar extends StatelessWidget {
       animationCurve: Curves.easeInOut,
       animationDuration: Duration(milliseconds: 500),
       onTap: (index) {
-        _changepage(context , index);
+        _changepage(context, index);
       },
       letIndexChange: (index) => true,
     );

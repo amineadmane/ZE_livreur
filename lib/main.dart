@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/historyscreen.dart';
-import 'package:ze_livreur/screens/views/login.dart';
-import 'package:ze_livreur/screens/views/confirmedphone.dart';
+import 'package:ze_livreur/screens/views/linkingscreen.dart';
+import 'package:ze_livreur/screens/views/ratingscreen.dart';
+
 void main() {
   runApp(ze_livreur());
 }
@@ -15,10 +17,8 @@ class ze_livreur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider<NavigationProvider>(
-      create:(_) =>  NavigationProvider(),
-        child: Navigation());
+        create: (_) => NavigationProvider(), child: Navigation());
   }
 }
 
@@ -28,10 +28,12 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-
   var currentTab = [
     HomeScreen(),
+    LinkingPage(),
     HistoryPage(),
+    FinancesPage(),
+    RatingsPage(),
   ];
   @override
   Widget build(BuildContext context) {

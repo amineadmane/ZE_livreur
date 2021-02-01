@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+
 class ConfirmedphoneScreen extends StatefulWidget {
   @override
   _ConfirmedphoneScreenState createState() => _ConfirmedphoneScreenState();
@@ -20,7 +20,7 @@ class _ConfirmedphoneScreenState extends State<ConfirmedphoneScreen> {
           fit: BoxFit.cover,
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height* 0.2,
+          top: MediaQuery.of(context).size.height * 0.2,
           left: 10,
           right: 10,
           child: ConfirmedphoneWidget(),
@@ -29,6 +29,7 @@ class _ConfirmedphoneScreenState extends State<ConfirmedphoneScreen> {
     );
   }
 }
+
 class ConfirmedphoneWidget extends StatefulWidget {
   @override
   _ConfirmedphoneWidgetState createState() => _ConfirmedphoneWidgetState();
@@ -41,10 +42,9 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
   String email;
   String password;
   final _formKey = GlobalKey<FormState>();
-  var _userEmailController = TextEditingController(text: "");
-  var _emailFocusNode = FocusNode();
+  //var _userEmailController = TextEditingController(text: "");
+  //var _emailFocusNode = FocusNode();
   bool _autoValidate = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
         height: MediaQuery.of(context).size.height * 0.7,
         decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.75),
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Column(
@@ -71,6 +70,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
       ),
     );
   }
+
   Widget _buildIntroText() {
     return Column(
       children: <Widget>[
@@ -81,23 +81,48 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
               RichText(
                 text: TextSpan(
                   text: 'Telephone',
-                  style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(4),color: Colors.black , fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(4),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                   children: <TextSpan>[
-                    TextSpan(text: ' Confirmé', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(4),color: Color(0xFFDD6C30) , fontWeight: FontWeight.bold),),
+                    TextSpan(
+                      text: ' Confirmé',
+                      style: TextStyle(
+                          fontSize: ResponsiveFlutter.of(context).fontSize(4),
+                          color: Color(0xFFDD6C30),
+                          fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height : MediaQuery.of(context).size.height* 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Center(
-                child: Text("Veuillez continuer votre procedure", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.5),color: Colors.black ),),
+                child: Text(
+                  "Veuillez continuer votre procedure",
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
+                      color: Colors.black),
+                ),
               ),
-              SizedBox(height : MediaQuery.of(context).size.height* 0.01),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Center(
-                child: Text("d'inscription", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.5),color: Colors.black ),),
+                child: Text(
+                  "d'inscription",
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
+                      color: Colors.black),
+                ),
               ),
-              SizedBox(height : MediaQuery.of(context).size.height* 0.02),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Center(
-                child: Text("Referencement", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.black , fontWeight: FontWeight.bold),),
+                child: Text(
+                  "Referencement",
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -105,14 +130,15 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
       ],
     );
   }
-  Widget _buildreferencement()
-  {
+
+  Widget _buildreferencement() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: Column(
         children: [
           CheckboxListTile(
-            title: Text("Avez vous rejoint Ziouane Express sous referencement ?"),
+            title:
+                Text("Avez vous rejoint Ziouane Express sous referencement ?"),
             value: checkedValue,
             onChanged: (newValue) {
               setState(() {
@@ -127,8 +153,12 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
               labelText: checkedValue ? "Code de referencement" : "",
               labelStyle: TextStyle(color: Colors.black),
               alignLabelWithHint: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 5 ),
-              prefixIcon: Icon(Icons.vpn_key,color: Colors.black,size: 30,),
+              contentPadding: EdgeInsets.symmetric(vertical: 5),
+              prefixIcon: Icon(
+                Icons.vpn_key,
+                color: Colors.black,
+                size: 30,
+              ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.black,
@@ -143,6 +173,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
       ),
     );
   }
+
   Widget _buildpermisconduire() {
     return Column(
       children: <Widget>[
@@ -151,7 +182,13 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
           child: Column(
             children: [
               Center(
-                child: Text("Permis de conduire", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.black , fontWeight: FontWeight.bold),),
+                child: Text(
+                  "Permis de conduire",
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -160,7 +197,11 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
                   labelStyle: TextStyle(color: Colors.black),
                   alignLabelWithHint: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 5),
-                  prefixIcon: Icon(Icons.article_sharp,color: Colors.black,size: 30,),
+                  prefixIcon: Icon(
+                    Icons.article_sharp,
+                    color: Colors.black,
+                    size: 30,
+                  ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.black,
@@ -171,7 +212,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
                   ),
                 ),
               ),
-              SizedBox(height : MediaQuery.of(context).size.height* 0.015),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Center(
                 child: TextField(
                   decoration: InputDecoration(
@@ -179,7 +220,11 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
                     labelStyle: TextStyle(color: Colors.black),
                     alignLabelWithHint: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 5),
-                    suffixIcon: Icon(Icons.calendar_today,color: Colors.black,size: 30,),
+                    suffixIcon: Icon(
+                      Icons.calendar_today,
+                      color: Colors.black,
+                      size: 30,
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.black,
@@ -203,6 +248,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
       ],
     );
   }
+
   _selectDate(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
         context: context,
@@ -236,29 +282,42 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
 
   Widget _builbuttonbar(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      width: double.infinity,
-      child: ButtonBar(children:[
-        RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-            color: Color(0xFF480086),
-            child:Text("Retour",style: TextStyle(
-                color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),)),
-        RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-          color: Color(0xFF480086),
-        child:Text("Suivant", style: TextStyle(
-            color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),),
-        )
-      ],
-          alignment:MainAxisAlignment.center,
-          mainAxisSize:MainAxisSize.max
-      )
-    );
+        padding: EdgeInsets.symmetric(horizontal: 15.0),
+        width: double.infinity,
+        child: ButtonBar(
+            children: [
+              RaisedButton(
+                  onPressed: null,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                  color: Color(0xFF480086),
+                  child: Text(
+                    "Retour",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  )),
+              RaisedButton(
+                onPressed: null,
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0)),
+                color: Color(0xFF480086),
+                child: Text(
+                  "Suivant",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+            alignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max));
   }
 }
+
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
-
