@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:provider/provider.dart';
 
 class CommonStyles {
   Color background = Color(0xFFF2F2F2);
@@ -117,5 +116,12 @@ class CommonStyles {
         borderSide: BorderSide(color: violet, width: 2),
       ),
     );
+  }
+
+  static navigationboxes() {
+    Color orange = Color(0xFFF28322);
+    Color grey = Color(0xFF424242);
+    return BoxDecoration(
+        color: orange, border: Border.all(color: grey, width: 2));
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
 
 class NotificationPage extends StatelessWidget {
   Color grey = Color(0xFF424242);
   Color grey2 = Color(0xFF646464);
   Color background = Color(0xFFF2F2F2);
-  Color green = Color(0xFF25E879);
+  Color green = Color(0xFF4ED964);
+  Color red = Color(0xFFFF3A32);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
   @override
@@ -18,6 +20,7 @@ class NotificationPage extends StatelessWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 offretext(context),
                 notiftext(context),
@@ -36,6 +39,7 @@ class NotificationPage extends StatelessWidget {
 
 Widget appbar(context) {
   return AppBar(
+    elevation: 0,
     backgroundColor: NotificationPage().grey,
     shadowColor: null,
     centerTitle: true,
@@ -48,20 +52,22 @@ Widget appbar(context) {
 
 Widget offretext(context) {
   return Container(
+      margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
       child: Text(
-    "offre\nde livraison",
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      color: NotificationPage().background,
-      fontFamily: "Mom cake",
-      fontSize: ResponsiveFlutter.of(context).fontSize(7),
-      fontWeight: FontWeight.bold,
-    ),
-  ));
+        "offre\nde livraison",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: NotificationPage().background,
+          fontFamily: "Mom cake",
+          fontSize: ResponsiveFlutter.of(context).fontSize(7),
+          fontWeight: FontWeight.bold,
+        ),
+      ));
 }
 
 Widget notiftext(context) {
   return Container(
+      margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
       width: ResponsiveFlutter.of(context).wp(80),
       child: Text(
         "Vous avez une nouvelle offre de livraison, ne ratez pas l'opportunité !",
@@ -75,6 +81,7 @@ Widget notiftext(context) {
 
 Widget avatar(context) {
   return Container(
+    margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     child: Column(
       children: [
         CircleAvatar(
@@ -91,7 +98,7 @@ Widget avatar(context) {
           style: TextStyle(
             color: NotificationPage().background,
             fontFamily: "Mom cake",
-            fontSize: ResponsiveFlutter.of(context).fontSize(3),
+            fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -102,6 +109,7 @@ Widget avatar(context) {
 
 Widget cout(context) {
   return Container(
+    margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
     padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
     decoration: BoxDecoration(
@@ -138,6 +146,7 @@ Widget cout(context) {
 
 Widget destination(context) {
   return Container(
+    margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
     padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
     decoration: BoxDecoration(
@@ -254,17 +263,46 @@ Widget destination(context) {
 }
 
 Widget buttons(context) {
-  return Row(
-    children: [
-      FlatButton(
-          onPressed: null,
-          child: Container(
-            decoration: BoxDecoration(color: NotificationPage().background),
-            child: Icon(
-              Icons.close_rounded,
-              color: NotificationPage().background,
-            ),
-          ))
-    ],
+  return Container(
+    margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Container(
+              width: ResponsiveFlutter.of(context).scale(100),
+              height: ResponsiveFlutter.of(context).scale(50),
+              decoration: BoxDecoration(
+                  color: NotificationPage().red,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Icon(
+                Icons.remove_circle_outline_outlined,
+                color: NotificationPage().background,
+                size: ResponsiveFlutter.of(context).fontSize(5.5),
+              ),
+            )),
+        FlatButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => NavigationPage()),
+              );
+            },
+            child: Container(
+              width: ResponsiveFlutter.of(context).scale(100),
+              height: ResponsiveFlutter.of(context).scale(50),
+              decoration: BoxDecoration(
+                  color: NotificationPage().green,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Icon(
+                Icons.check_circle_outline_outlined,
+                color: NotificationPage().background,
+                size: ResponsiveFlutter.of(context).fontSize(5.5),
+              ),
+            ))
+      ],
+    ),
   );
 }
