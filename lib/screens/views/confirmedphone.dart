@@ -236,23 +236,42 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
 
   Widget _builbuttonbar(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.symmetric(horizontal: 15.0 , vertical: 10.0),
       width: double.infinity,
-      child: ButtonBar(children:[
-        RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-            color: Color(0xFF480086),
-            child:Text("Retour",style: TextStyle(
-                color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),)),
-        RaisedButton(
-          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-          color: Color(0xFF480086),
-        child:Text("Suivant", style: TextStyle(
-            color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),),
-        )
-      ],
-          alignment:MainAxisAlignment.center,
-          mainAxisSize:MainAxisSize.max
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width* 0.3,
+            height: MediaQuery.of(context).size.height* 0.065,
+            child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                color: Color(0xFF480086),
+                child: Text(
+                  "Retour",
+                  style: TextStyle(
+                      color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                onPressed : (){
+                }
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width* 0.3,
+            height: MediaQuery.of(context).size.height* 0.065,
+            child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                color: Color(0xFF480086),
+                child: Text(
+                  "Suivant",
+                  style: TextStyle(
+                      color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                onPressed : (){
+                }
+            ),
+          ),
+        ],
       )
     );
   }

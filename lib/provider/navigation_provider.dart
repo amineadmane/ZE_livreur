@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class NavigationProvider with ChangeNotifier {
 
-  int _page = 0;
+  int _page = 2;
   int get getpage {
     return _page;
   }
