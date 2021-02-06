@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 
 class Inscrit extends StatefulWidget {

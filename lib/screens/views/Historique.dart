@@ -4,6 +4,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
 
+import 'Historiquedetails.dart';
+
 class HistoriquePage extends StatefulWidget {
   @override
   _HistoriquePageState createState() => _HistoriquePageState();
@@ -86,140 +88,150 @@ class _HistoriquePageState extends State<HistoriquePage> {
                   SizedBox(
                     height: screenheight * 0.015,
                   ),
-                  Container(
-                    width: screenwidth * 0.9,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(color: violet),
-                        ]),
-                    child: Padding(
-                      padding:
-                      const EdgeInsets.only(bottom: 16, right: 16, left: 16 ,top: 16),
-                      child: Row(
-                        children: [
-                          Center(
-                            child: SizedBox(
-                              child: Container(
-                                width: screenwidth * 0.2,
-                                height: screenheight *  0.1,
-                                decoration: new BoxDecoration(
-                                  color: orangeclair,
-                                  shape: BoxShape.circle,
+                  InkWell(
+                    child: Container(
+                      width: screenwidth * 0.9,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(color: violet),
+                          ]),
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.only(bottom: 16, right: 16, left: 16 ,top: 16),
+                        child: Row(
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                child: Container(
+                                  width: screenwidth * 0.2,
+                                  height: screenheight *  0.1,
+                                  decoration: new BoxDecoration(
+                                    color: orangeclair,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(child: Text("AOU",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.white , fontWeight: FontWeight.bold),),),
                                 ),
-                                child: Center(child: Text("AOU",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.white , fontWeight: FontWeight.bold),),),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Nombres de livraisons : ',
-                                    style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
-                                    children: <TextSpan>[
-                                      TextSpan(text: '14', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
-                                    ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Nombres de livraisons : ',
+                                      style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
+                                      children: <TextSpan>[
+                                        TextSpan(text: '14', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Distance parcourue : ',
-                                    style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
-                                    children: <TextSpan>[
-                                      TextSpan(text: '1250km', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
-                                    ],
+                                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Distance parcourue : ',
+                                      style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
+                                      children: <TextSpan>[
+                                        TextSpan(text: '1250km', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: screenheight * 0.1,
-                            child: Align(
-                              alignment: Alignment.topRight,
-                              child:  Icon(
-                                  Icons.arrow_forward_rounded,
+                                ],
                               ),
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              height: screenheight * 0.1,
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child:  Icon(
+                                    Icons.arrow_forward_rounded,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                    onTap: (){
+                      Navigator.push((context), MaterialPageRoute(builder: (BuildContext context) => HistoriquePagescreen()));
+                    },
                   ),
                   SizedBox(
                     height: screenheight * 0.015,
                   ),
-                  Container(
-                    width: screenwidth * 0.9,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(color: violet),
-                        ]),
-                    child: Padding(
-                      padding:
-                      const EdgeInsets.only(bottom: 16, right: 16, left: 16 ,top: 16),
-                      child: Row(
-                        children: [
-                          Center(
-                            child: SizedBox(
-                              child: Container(
-                                width: screenwidth * 0.2,
-                                height: screenheight *  0.1,
-                                decoration: new BoxDecoration(
-                                  color: orangeclair,
-                                  shape: BoxShape.circle,
+                  InkWell(
+                    child: Container(
+                      width: screenwidth * 0.9,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(color: violet),
+                          ]),
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.only(bottom: 16, right: 16, left: 16 ,top: 16),
+                        child: Row(
+                          children: [
+                            Center(
+                              child: SizedBox(
+                                child: Container(
+                                  width: screenwidth * 0.2,
+                                  height: screenheight *  0.1,
+                                  decoration: new BoxDecoration(
+                                    color: orangeclair,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(child: Text("Juil",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.white , fontWeight: FontWeight.bold),),),
                                 ),
-                                child: Center(child: Text("Juil",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Colors.white , fontWeight: FontWeight.bold),),),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Nombres de livraisons : ',
-                                    style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
-                                    children: <TextSpan>[
-                                      TextSpan(text: '10', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
-                                    ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Nombres de livraisons : ',
+                                      style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
+                                      children: <TextSpan>[
+                                        TextSpan(text: '10', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'Distance parcourue : ',
-                                    style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
-                                    children: <TextSpan>[
-                                      TextSpan(text: '870km', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
-                                    ],
+                                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Distance parcourue : ',
+                                      style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: violet),
+                                      children: <TextSpan>[
+                                        TextSpan(text: '870km', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2.0),color: Colors.black , fontWeight: FontWeight.bold),),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: screenheight * 0.1,
-                            child: Align(
-                              alignment: Alignment.topRight,
-                              child:  Icon(
-                                Icons.arrow_forward_rounded,
+                                ],
                               ),
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              height: screenheight * 0.1,
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child:  Icon(
+                                  Icons.arrow_forward_rounded,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HistoriquePagescreen()));
+                    },
                   ),
                   SizedBox(
                     height: screenheight * 0.015,

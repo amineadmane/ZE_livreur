@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           fit: BoxFit.cover,
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height* 0.2,
+          top: MediaQuery.of(context).size.height * 0.2,
           left: 10,
           right: 10,
           child: RegisterFormWidget(),
@@ -28,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
 class RegisterFormWidget extends StatefulWidget {
   @override
   _RegisterFormWidgetState createState() => _RegisterFormWidgetState();
@@ -39,45 +39,41 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
   final _formKey = GlobalKey<FormState>();
   var _userEmailController = TextEditingController(text: "");
   var _emailFocusNode = FocusNode();
-  bool _autoValidate = false;
-
+  AutovalidateMode _autoValidate = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      autovalidate: _autoValidate,
+      autovalidateMode: _autoValidate,
       child: Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.75),
-                borderRadius: BorderRadius.all(Radius.circular(20))
-            ),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Column(
-                children: <Widget>[
-                  _buildIntroText(),
-
-                  _buildnamefield(),
-                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                  _buildprenomfield(),
-                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                  _buildtelfield(),
-                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                  _buildemailfield(),
-                  SizedBox(height : MediaQuery.of(context).size.height* 0.01),
-                  _buildSignUpButton(context),
-                  _buildconnexion(),
-                ],
-              ),
-            ),
+        height: MediaQuery.of(context).size.height * 0.7,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.75),
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            children: <Widget>[
+              _buildIntroText(),
+              _buildnamefield(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              _buildprenomfield(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              _buildtelfield(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              _buildemailfield(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              _buildSignUpButton(context),
+              _buildconnexion(),
+            ],
           ),
+        ),
+      ),
     );
   }
 
-  Widget _buildnamefield()
-  {
+  Widget _buildnamefield() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: TextFormField(
@@ -87,7 +83,11 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           labelStyle: TextStyle(color: Colors.black),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.symmetric(vertical: 5),
-          prefixIcon: Icon(Icons.person,color: Colors.black,size: 30,),
+          prefixIcon: Icon(
+            Icons.person,
+            color: Colors.black,
+            size: 30,
+          ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -100,8 +100,8 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
       ),
     );
   }
-  Widget _buildprenomfield()
-  {
+
+  Widget _buildprenomfield() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: TextFormField(
@@ -111,7 +111,11 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           labelStyle: TextStyle(color: Colors.black),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.symmetric(vertical: 5),
-          prefixIcon: Icon(Icons.accessibility_new,color: Colors.black,size: 30,),
+          prefixIcon: Icon(
+            Icons.accessibility_new,
+            color: Colors.black,
+            size: 30,
+          ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -124,8 +128,8 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
       ),
     );
   }
-  Widget _buildtelfield()
-  {
+
+  Widget _buildtelfield() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: TextFormField(
@@ -135,7 +139,11 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           labelStyle: TextStyle(color: Colors.black),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.symmetric(vertical: 5),
-          prefixIcon: Icon(Icons.phone,color: Colors.black,size: 30,),
+          prefixIcon: Icon(
+            Icons.phone,
+            color: Colors.black,
+            size: 30,
+          ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -148,8 +156,8 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
       ),
     );
   }
-  Widget _buildemailfield()
-  {
+
+  Widget _buildemailfield() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: TextFormField(
@@ -159,7 +167,11 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           labelStyle: TextStyle(color: Colors.black),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.symmetric(vertical: 5),
-          prefixIcon: Icon(Icons.mail,color: Colors.black,size: 30,),
+          prefixIcon: Icon(
+            Icons.mail,
+            color: Colors.black,
+            size: 30,
+          ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.black,
@@ -180,23 +192,25 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
         padding: EdgeInsets.symmetric(horizontal: 15.0),
         width: double.infinity,
         child: SizedBox(
-          width: MediaQuery.of(context).size.width* 0.3,
-          height: MediaQuery.of(context).size.height* 0.065,
+          width: MediaQuery.of(context).size.width * 0.3,
+          height: MediaQuery.of(context).size.height * 0.065,
           child: RaisedButton(
-              shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0)),
               color: Color(0xFF480086),
               child: Text(
                 "Inscription",
                 style: TextStyle(
-                    color:  Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
               ),
-              onPressed : (){
-              }
-          ),
+              onPressed: () {}),
         ),
       ),
     );
   }
+
   Widget _buildIntroText() {
     return Column(
       children: <Widget>[
@@ -207,34 +221,57 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
               RichText(
                 text: TextSpan(
                   text: 'Devenez ',
-                  style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(4),color: Colors.black , fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(4),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                   children: <TextSpan>[
-                    TextSpan(text: 'Livreur', style : TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(4),color: Color(0xFFDD6C30) , fontWeight: FontWeight.bold),),
+                    TextSpan(
+                      text: 'Livreur',
+                      style: TextStyle(
+                          fontSize: ResponsiveFlutter.of(context).fontSize(4),
+                          color: Color(0xFFDD6C30),
+                          fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
-              Text("en quelques cliques!", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(4),color: Colors.black , fontWeight: FontWeight.bold),),
+              Text(
+                "en quelques cliques!",
+                style: TextStyle(
+                    fontSize: ResponsiveFlutter.of(context).fontSize(4),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ),
       ],
     );
   }
-  Widget _buildconnexion(){
+
+  Widget _buildconnexion() {
     return Column(
       children: <Widget>[
         Center(
-          child: Text("Deja inscrit ? ", style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2),color: Colors.black),
+          child: Text(
+            "Deja inscrit ? ",
+            style: TextStyle(
+                fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                color: Colors.black),
           ),
         ),
-        SizedBox(height : MediaQuery.of(context).size.height* 0.01),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         Center(
-          child: Text(" Connectez vous ! ",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(3),color: Color(0xFFDD6C30) , fontWeight: FontWeight.bold),
+          child: Text(
+            " Connectez vous ! ",
+            style: TextStyle(
+                fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                color: Color(0xFFDD6C30),
+                fontWeight: FontWeight.bold),
           ),
         ),
       ],
     );
   }
 }
-
-
