@@ -21,13 +21,6 @@ class BottomNavBar extends StatelessWidget {
   final Color orange = Color(0xFFF28322);
   final Color background = Color(0xFFF2F2F2);
   final Color violet = Color(0xFF382B8C);
-  final currentTab = [
-    HomeScreen(),
-    LinkingPage(),
-    HistoryPage(),
-    FinancesPage(),
-    RatingsPage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +69,6 @@ class BottomNavBar extends StatelessWidget {
           case 4: {
             _changetitle(context, "Rating");
           }
-          break;
           break;
         }
       },

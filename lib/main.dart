@@ -12,6 +12,7 @@ import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/historyscreen.dart';
 import 'package:ze_livreur/screens/views/infovehicule.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:ze_livreur/screens/views/ratingscreen.dart';
 void main() {
   runApp(ze_livreur());
 }
@@ -41,9 +42,7 @@ class _NavigationState extends State<Navigation> {
     HistoriquePage(),
     HomeScreen(),
     FinancesPage(),
-    Inscrit(),
-    InfoVehiculeScreen(),
-    ConfirmedphoneScreen(),
+    RatingsPage(),
   ];
   @override
   Widget build(BuildContext context) {

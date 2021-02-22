@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/screens/views/Profile/passchangescreen.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
   launchURL() async {
     const url = 'tel:+213771854123';
