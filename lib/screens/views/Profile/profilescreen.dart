@@ -232,6 +232,7 @@ Widget appbar(context) {
   Color violet = Color(0xFF382B8C);
   Color background = Color(0xFFF2F2F2);
   return AppBar(
+    elevation: 0,
     backgroundColor: background,
     shadowColor: null,
     centerTitle: true,

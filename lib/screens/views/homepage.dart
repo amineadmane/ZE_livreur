@@ -63,8 +63,10 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: violet, fontSize: 15),
                           ),
                           IconButton(
+                            padding: EdgeInsets.all(0),
                             icon: Icon(
                               Icons.arrow_forward_rounded,
+                              color: Color(0xFFF28322),
                             ),
                             onPressed: null,
                           )
@@ -150,6 +152,7 @@ class _HomePageState extends State<HomePage> {
                             IconButton(
                               icon: Icon(
                                 Icons.arrow_forward_rounded,
+                                color: violet,
                               ),
                               onPressed: null,
                             )
@@ -237,8 +240,10 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: violet, fontSize: 15),
                             ),
                             IconButton(
+                              color: violet,
                               icon: Icon(
                                 Icons.arrow_forward_rounded,
+                                color: violet,
                               ),
                               onPressed: null,
                             )

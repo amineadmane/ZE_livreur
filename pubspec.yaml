@@ -13,7 +13,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.0
   curved_navigation_bar: ^0.3.7
   flutter_switch: ^0.2.0
@@ -24,6 +23,7 @@ dependencies:
   url_launcher: ^5.7.10
   charts_flutter: ^0.9.0
   flutter_share: ^1.0.5
+  google_maps_flutter: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -53,11 +53,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-fonts:
-  - family: Mom cake
-    fonts:
-      - asset: assets\fonts\MomcakeBold-Bold.otf
-      - asset: assets\fonts\MomcakeThin-Regular.otf
+  fonts:
+    - family: Mom cake
+      fonts:
+        - asset: assets/fonts/MomcakeBold-Bold.otf
+        - asset: assets/fonts/MomcakeThin-Regular.otf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
