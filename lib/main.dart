@@ -9,6 +9,11 @@ import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 import 'package:ze_livreur/screens/views/Parrainage.dart';
 import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/ratingscreen.dart';
+import 'package:ze_livreur/screens/views/infovehicule.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:ze_livreur/screens/views/ratingscreen.dart';
+
+import 'components/curved_nav_bar.dart';
 
 void main() {
   runApp(MultiProvider(

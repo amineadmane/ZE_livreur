@@ -16,12 +16,15 @@ class BottomNavBar extends StatelessWidget {
   final Color orange = Color(0xFFF28322);
   final Color background = Color(0xFFF2F2F2);
   final Color violet = Color(0xFF382B8C);
+  int _index ;
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<NavigationProvider>(context);
+    _index = provider.getpage;
     return CurvedNavigationBar(
       key: _bottomNavigationKey,
-      index: 2,
+      index: _index,
       height: 50.0,
       items: <Widget>[
         Icon(
@@ -38,7 +41,7 @@ class BottomNavBar extends StatelessWidget {
       buttonBackgroundColor: violet,
       backgroundColor: background,
       animationCurve: Curves.easeInOut,
-      animationDuration: Duration(milliseconds: 500),
+      animationDuration: Duration(milliseconds: 2500),
       onTap: (index) {
         _changepage(context, index);
         switch (index) {
@@ -60,19 +63,16 @@ class BottomNavBar extends StatelessWidget {
             }
             break;
 
-          case 3:
-            {
-              _changetitle(context, "Finances");
-            }
-            break;
-          case 4:
-            {
-              _changetitle(context, "Rating");
-            }
-            break;
+          case 3: {
+            _changetitle(context, "Finances");
+          }
+          break;
+          case 4: {
+            _changetitle(context, "Evaluation");
+          }
+          break;
         }
       },
-      letIndexChange: (index) => true,
     );
   }
 }
