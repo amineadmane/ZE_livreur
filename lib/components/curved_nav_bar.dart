@@ -2,11 +2,6 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:ze_livreur/screens/homescreen.dart';
-import 'package:ze_livreur/screens/views/financesscreen.dart';
-import 'package:ze_livreur/screens/views/historyscreen.dart';
-import 'package:ze_livreur/screens/views/linkingscreen.dart';
-import 'package:ze_livreur/screens/views/ratingscreen.dart';
 
 class BottomNavBar extends StatelessWidget {
   void _changepage(BuildContext context, int value) {
@@ -46,30 +41,35 @@ class BottomNavBar extends StatelessWidget {
       animationDuration: Duration(milliseconds: 500),
       onTap: (index) {
         _changepage(context, index);
-        switch(index) {
-          case 0: {
-            _changetitle(context, "Parrainage");
-          }
-          break;
+        switch (index) {
+          case 0:
+            {
+              _changetitle(context, "Parrainage");
+            }
+            break;
 
-          case 1: {
-            _changetitle(context, "Historique");
-          }
-          break;
+          case 1:
+            {
+              _changetitle(context, "Historique");
+            }
+            break;
 
-          case 2: {
-            _changetitle(context, "Acceuil");
-          }
-          break;
+          case 2:
+            {
+              _changetitle(context, "Acceuil");
+            }
+            break;
 
-          case 3: {
-            _changetitle(context, "Finances");
-          }
-          break;
-          case 4: {
-            _changetitle(context, "Rating");
-          }
-          break;
+          case 3:
+            {
+              _changetitle(context, "Finances");
+            }
+            break;
+          case 4:
+            {
+              _changetitle(context, "Rating");
+            }
+            break;
         }
       },
       letIndexChange: (index) => true,

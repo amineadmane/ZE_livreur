@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:ze_livreur/components/common_styles.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
-import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 
 class RatingsPage extends StatefulWidget {

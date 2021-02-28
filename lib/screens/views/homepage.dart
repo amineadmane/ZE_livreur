@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-
-import 'Historiquedetails.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   Color green = Color(0xFF25E879);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
-  bool _status ;
+  bool _status;
 
   void _changestatus(BuildContext context) {
     Provider.of<NavigationProvider>(context, listen: false).changestatus();

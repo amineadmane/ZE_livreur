@@ -17,7 +17,6 @@ class ChangePassPage extends StatelessWidget {
     bool _isvisible = Provider.of<NavigationProvider>(context).getbool;
     var size = MediaQuery.of(context).size;
     var height = size.height;
-    var width = size.width;
     return SafeArea(
       child: Scaffold(
         appBar: appbar(context),

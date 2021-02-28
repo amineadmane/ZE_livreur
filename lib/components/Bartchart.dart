@@ -8,26 +8,26 @@ class SimpleBarChart extends StatelessWidget {
 
   SimpleBarChart(this.seriesList, {this.animate});
 
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
-    double screenwidth = size.width;
-    return Stack(
-      children: <Widget>[
-        AnimatedPositioned(
-          // use top,bottom,left and right property to set the location and Transform.rotate to rotate the widget if needed
-          child : Text("",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2),color: Colors.black , fontWeight: FontWeight.bold),),
-          duration : Duration(seconds:2),
+    return Stack(children: <Widget>[
+      AnimatedPositioned(
+        // use top,bottom,left and right property to set the location and Transform.rotate to rotate the widget if needed
+        child: Text(
+          "",
+          style: TextStyle(
+              fontSize: ResponsiveFlutter.of(context).fontSize(2),
+              color: Colors.black,
+              fontWeight: FontWeight.bold),
         ),
-        new charts.BarChart(
-          seriesList,
-          animate: true,
-          animationDuration: Duration(seconds: 3),
-        ),
-      ]
-    );
+        duration: Duration(seconds: 2),
+      ),
+      new charts.BarChart(
+        seriesList,
+        animate: true,
+        animationDuration: Duration(seconds: 3),
+      ),
+    ]);
   }
 }
 
