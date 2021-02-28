@@ -9,10 +9,11 @@ import 'package:ze_livreur/screens/views/Inscription_login/confirmedphone.dart';
 import 'package:ze_livreur/screens/views/Inscrit.dart';
 import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 import 'package:ze_livreur/screens/views/financesscreen.dart';
-import 'package:ze_livreur/screens/views/historyscreen.dart';
 import 'package:ze_livreur/screens/views/infovehicule.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ze_livreur/screens/views/ratingscreen.dart';
+
+import 'components/curved_nav_bar.dart';
 void main() {
   runApp(ze_livreur());
 }
@@ -49,6 +50,7 @@ class _NavigationState extends State<Navigation> {
     var provider = Provider.of<NavigationProvider>(context);
     return MaterialApp(
       home: Scaffold(
+        bottomNavigationBar: BottomNavBar(),
         body: currentTab[provider.getpage],
       ),
     );

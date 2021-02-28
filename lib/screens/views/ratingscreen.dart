@@ -6,6 +6,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
+import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 
@@ -41,70 +42,10 @@ class _RatingsPageState extends State<RatingsPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: background,
-        bottomNavigationBar: BottomNavBar(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              color: orange,
-              height: screenheight * 0.2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => ProfilePage(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.person_pin,
-                          color: background,
-                          size: 45,
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenwidth * 0.3,
-                      ),
-                      FlutterSwitch(
-                          value: status,
-                          width: 60,
-                          height: 25,
-                          valueFontSize: 12.0,
-                          toggleSize: screenheight * 0.025,
-                          borderRadius: 30.0,
-                          padding: 4.0,
-                          showOnOff: true,
-                          activeText: "ON",
-                          inactiveText: "OFF",
-                          activeColor: green,
-                          inactiveTextColor: violet,
-                          inactiveColor: background,
-                          onToggle: (val) {
-                            setState(() {
-                              status = val;
-                            });
-                          })
-                    ],
-                  ),
-                  Text(
-                    "evaluations",
-                    style: TextStyle(
-                      color: background,
-                      fontSize: 50,
-                      fontFamily: 'Mom cake',
-                    ),
-                  )
-                ],
-              ),
-            ),
+            Header(),
             Expanded(
               child: Container(
                 child: ListView(

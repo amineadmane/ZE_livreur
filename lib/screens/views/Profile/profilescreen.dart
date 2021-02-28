@@ -74,7 +74,7 @@ class ProfilePage extends StatelessWidget {
   Widget namefield(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(5),
+      margin: EdgeInsets.all(10),
       decoration: CommonStyles.profilecontrainerdeco(),
       height: MediaQuery.of(context).size.height * 0.08,
       width: MediaQuery.of(context).size.width * 0.8,

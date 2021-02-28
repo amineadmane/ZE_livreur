@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 
-import 'Historiquedetails.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();

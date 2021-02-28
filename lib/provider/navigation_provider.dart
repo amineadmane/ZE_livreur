@@ -14,7 +14,7 @@ class NavigationProvider with ChangeNotifier {
     return _isvisible;
   }
   bool get getstatus {
-    return _isvisible;
+    return _status;
   }
 
   String get gettitle {
