@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
 import 'package:ze_livreur/screens/views/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
@@ -216,14 +217,20 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
           ),
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        Center(
-          child: Text(
-            " Rejoignez Nous ! ",
-            style: TextStyle(
-                fontSize: ResponsiveFlutter.of(context).fontSize(3),
-                color: Color(0xFFDD6C30),
-                fontWeight: FontWeight.bold),
+        TextButton(
+          child: Center(
+            child: Text(
+              "Rejoignez Nous !",
+              style: TextStyle(
+                  fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                  color: Color(0xFFDD6C30),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => RegisterScreen()));
+          },
         ),
       ],
     );
@@ -359,11 +366,13 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                 };
                 if (_formKey.currentState.validate()) {
                   await Provider.of<Auth>(context, listen: false).login(creds);
-                  if (Provider.of<Auth>(context, listen: false).authenticated) {
+                  print("np");
+                  if (Provider.of<Auth>(context, listen: false).authenticated ==
+                      "loggedin") {
+                    print("yes");
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            currentTab[provider.getpage],
+                        builder: (context) => currentTab[provider.getpage],
                       ),
                     );
                   } else {

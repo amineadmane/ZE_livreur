@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/confirmSms.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -205,7 +207,12 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ConfirmSms()),
+                );
+              }),
         ),
       ),
     );
@@ -262,15 +269,22 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
           ),
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        Center(
-          child: Text(
-            " Connectez vous ! ",
-            style: TextStyle(
-                fontSize: ResponsiveFlutter.of(context).fontSize(3),
-                color: Color(0xFFDD6C30),
-                fontWeight: FontWeight.bold),
-          ),
-        ),
+        TextButton(
+            child: Center(
+              child: Text(
+                " Connectez vous !",
+                style: TextStyle(
+                    fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                    color: Color(0xFFDD6C30),
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => LoginScreen()),
+              );
+            }),
       ],
     );
   }

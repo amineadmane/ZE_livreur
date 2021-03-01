@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -5,11 +6,13 @@ import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
 import 'package:ze_livreur/screens/views/Historique/Historique.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/Inscrit.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
+import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
+import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/screens/views/Parrainage.dart';
 import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/ratingscreen.dart';
-import 'package:ze_livreur/screens/views/infovehicule.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:ze_livreur/screens/views/ratingscreen.dart';
 
@@ -47,10 +50,13 @@ var currentTab = [
 
 class _NavigationState extends State<Navigation> {
   final storage = new FlutterSecureStorage();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     readToken();
+    _registerOnFirebase();
+    getMessage();
     super.initState();
   }
 
@@ -60,19 +66,54 @@ class _NavigationState extends State<Navigation> {
     print(token);
   }
 
+  _registerOnFirebase() {
+    _firebaseMessaging.subscribeToTopic('all');
+    _firebaseMessaging.getToken().then((token) => print(token));
+  }
+
+  void getMessage() {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {},
+        onResume: (Map<String, dynamic> message) async {},
+        onLaunch: (Map<String, dynamic> message) async {});
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     var provider = Provider.of<NavigationProvider>(context);
 
     return MaterialApp(
       home: Scaffold(
         body: Consumer<Auth>(
           builder: (context, auth, child) {
-            if (!auth.authenticated) {
-              return LoginScreen();
-            } else {
-              return currentTab[provider.getpage];
+            switch (auth.authenticated) {
+              case "loggedin":
+                {
+                  return currentTab[provider.getpage];
+                }
+                break;
+              case "loggedout":
+                {
+                  return LoginScreen();
+                }
+                break;
+              case "blocked":
+                {
+                  return Inscrit();
+                }
+                break;
+              case "notified":
+                {
+                  return NotificationPage();
+                }
+                break;
+              case "delivring":
+                {
+                  NavigationPage();
+                }
+                break;
             }
+            return null;
           },
         ),
       ),

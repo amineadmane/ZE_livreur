@@ -6,8 +6,8 @@ import 'package:ze_livreur/provider/dio.dart';
 
 class Auth extends ChangeNotifier {
   final storage = new FlutterSecureStorage();
-  bool _isloggedIn = false;
-  bool get authenticated => _isloggedIn;
+  String _isloggedIn = "loggedout";
+  String get authenticated => _isloggedIn;
   LivreurExt _livreurExt;
   String token;
   LivreurExt get livreurExt => _livreurExt;
@@ -23,6 +23,7 @@ class Auth extends ChangeNotifier {
                 return status < 500;
               }));
       print(response.statusCode);
+
       if (response.statusCode == 200) {
         print(response.data.toString());
         String token = response.data.toString();
@@ -41,8 +42,12 @@ class Auth extends ChangeNotifier {
         Dio.Response response = await dio().get('/LivreurExt',
             options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
         if (response.statusCode == 200) {
-          this._isloggedIn = true;
           this._livreurExt = LivreurExt.fromJson(response.data);
+          if (this._livreurExt.etat == "bloque") {
+            this._isloggedIn = "blocked";
+          } else {
+            this._isloggedIn = "loggedin";
+          }
           this.token = token;
           storeToken(token, _livreurExt.idLivExt.toString());
           print(_livreurExt);
@@ -75,7 +80,7 @@ class Auth extends ChangeNotifier {
 
   Future<void> cleanUp() async {
     this._livreurExt = null;
-    this._isloggedIn = false;
+    this._isloggedIn = "loggedout";
     this.token = null;
     await storage.deleteAll();
   }

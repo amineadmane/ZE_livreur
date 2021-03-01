@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
-
 import 'Historiquedetails.dart';
 
 class HistoriquePage extends StatefulWidget {

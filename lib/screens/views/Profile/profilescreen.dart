@@ -226,12 +226,6 @@ class ProfilePage extends StatelessWidget {
           FlatButton(
               onPressed: () async {
                 await Provider.of<Auth>(context, listen: false).logout();
-                if (!Provider.of<Auth>(context, listen: false).authenticated) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => LoginScreen()),
-                  );
-                }
               },
               child: CommonStyles.rows("Deconnexion", Icons.logout, context)),
         ],
