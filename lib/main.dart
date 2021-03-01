@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/ContainerScreen.dart';
 import 'package:ze_livreur/screens/views/Historique/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscrit.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
@@ -13,10 +14,6 @@ import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/screens/views/Parrainage.dart';
 import 'package:ze_livreur/screens/views/financesscreen.dart';
 import 'package:ze_livreur/screens/views/ratingscreen.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:ze_livreur/screens/views/ratingscreen.dart';
-
-import 'components/curved_nav_bar.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -89,7 +86,7 @@ class _NavigationState extends State<Navigation> {
             switch (auth.authenticated) {
               case "loggedin":
                 {
-                  return currentTab[provider.getpage];
+                  return ContainerScreen();
                 }
                 break;
               case "loggedout":

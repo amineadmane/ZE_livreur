@@ -8,7 +8,6 @@ import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
-import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:intl/intl.dart';
 
@@ -36,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Auth>(context,listen: false).livreurExt;
-    print(provider.idLivExt);
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     double screenwidth = size.width;
@@ -46,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
-              bottomNavigationBar: BottomNavBar(),
               backgroundColor: background,
               body: Column(
                 children: [
@@ -100,14 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                       DateFormat("dd-MM HH:mm").format(DateTime.parse(snapshot.data[0].createdAt)),
+                                snapshot.data[0] == null ? "pas encore" : DateFormat("dd-MM HH:mm").format(DateTime.parse(snapshot.data[0].createdAt)),
                                       style: TextStyle(
                                           color: violet,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      snapshot.data[0].prix.toString(),
+                                        snapshot.data[0] == null ? "0" : snapshot.data[0].prix.toString(),
                                       style: TextStyle(
                                           color: orange,
                                           fontSize: 40,
