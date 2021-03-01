@@ -19,12 +19,12 @@ class SimpleBarChart extends StatelessWidget {
         AnimatedPositioned(
           // use top,bottom,left and right property to set the location and Transform.rotate to rotate the widget if needed
           child : Text("",style: TextStyle(fontSize: ResponsiveFlutter.of(context).fontSize(2),color: Colors.black , fontWeight: FontWeight.bold),),
-          duration : Duration(seconds:2),
+          duration : Duration(seconds:1),
         ),
         new charts.BarChart(
           seriesList,
           animate: true,
-          animationDuration: Duration(seconds: 3),
+          animationDuration: Duration(seconds: 1),
         ),
       ]
     );
@@ -33,7 +33,7 @@ class SimpleBarChart extends StatelessWidget {
 
 /// Sample ordinal data type.
 class OrdinalSales {
-  final String year;
-  final int sales;
-  OrdinalSales(this.year, this.sales);
+  final String month;
+  final double sales;
+  OrdinalSales(this.month, this.sales);
 }

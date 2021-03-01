@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:ze_livreur/Models/Livraison_externe.dart';
+import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
+import 'package:ze_livreur/models/Metric.dart';
+import 'package:ze_livreur/models/ParrainageModal.dart';
 
 class ApiCalls {
   String URL = 'http://192.168.0.191:8000/api';
@@ -39,6 +42,58 @@ class ApiCalls {
     else
     {
       return _livraisonauj;
+    }
+  }
+  Future<Metric> getmetric(int id) async{
+    Metric _metric;
+    var response = await http.get(URL+'/Metric/'+id.toString(),
+        headers: {
+          "Accept" : "application/json"
+        });
+
+    if(response.statusCode == 200)
+    {
+      _metric = Metric.fromJson(jsonDecode(response.body));
+      return _metric;
+    }
+    else
+    {
+      return _metric;
+    }
+  }
+
+  Future<Parrainagemodel> getparrainage(int id) async{
+    Parrainagemodel _parring;
+    var response = await http.get(URL+'/parrainage/'+id.toString(),
+        headers: {
+          "Accept" : "application/json"
+        });
+
+    if(response.statusCode == 200)
+    {
+      _parring = Parrainagemodel.fromJson(jsonDecode(response.body));
+      return _parring;
+    }
+    else
+    {
+      return _parring;
+    }
+  }
+  Future<List<Historique_annuel>> gethistoannuel(int id,int year) async{
+    List<Historique_annuel> _histo_annuel;
+    var response = await http.get(URL+'/historiqueannuel/'+id.toString()+"/"+year.toString(),
+        headers: {
+          "Accept" : "application/json"
+        });
+
+    if(response.statusCode == 200)
+    {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((job) => new Historique_annuel.fromJson(job)).toList();
+    }
+    else
+    {
+      return _histo_annuel;
     }
   }
 }

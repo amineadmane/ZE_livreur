@@ -39,10 +39,10 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
 
   var currentTab = [
-    ParrainageScreen(),
+    Parrainage(),
     HistoriquePage(),
     HomeScreen(),
-    FinancesPage(),
+    Financespage(),
     RatingsPage(),
   ];
   @override
