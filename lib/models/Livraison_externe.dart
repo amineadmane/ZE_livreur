@@ -10,6 +10,8 @@ class Livraison_externe {
   String codePostal;
   String adresse;
   int prix;
+  int note;
+  String commentaire;
   int ditanceParcourous;
   String createdAt;
   String updatedAt;
@@ -27,6 +29,8 @@ class Livraison_externe {
         this.adresse,
         this.prix,
         this.ditanceParcourous,
+        this.note,
+        this.commentaire,
         this.createdAt,
         this.updatedAt});
 
@@ -43,6 +47,8 @@ class Livraison_externe {
     adresse = json['adresse'];
     prix = json['prix'];
     ditanceParcourous = json['ditance_parcourous'];
+    note = json['note'];
+    commentaire = json['commentaire'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -61,6 +67,8 @@ class Livraison_externe {
     data['adresse'] = this.adresse;
     data['prix'] = this.prix;
     data['ditance_parcourous'] = this.ditanceParcourous;
+    data['note'] = this.note;
+    data['commentaire'] = this.commentaire;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

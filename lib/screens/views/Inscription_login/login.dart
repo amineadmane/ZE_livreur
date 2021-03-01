@@ -1,6 +1,19 @@
+import 'dart:io';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import 'package:ze_livreur/provider/auth.dart';
+import 'package:ze_livreur/provider/navigation_provider.dart';
+import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
+import 'package:ze_livreur/screens/views/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+
+import '../Historique/Historique.dart';
+import '../financesscreen.dart';
+import '../ratingscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,21 +25,23 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Image.asset(
-          "assets/images/Delivery.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.17,
-          left: 10,
-          right: 10,
-          child: LoginFormWidget(),
-        )
-      ],
+    return SingleChildScrollView(
+      child: Stack(
+        children: <Widget>[
+          Image.asset(
+            "assets/images/Delivery.png",
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.17,
+            left: 10,
+            right: 10,
+            child: LoginFormWidget(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -40,10 +55,27 @@ class LoginFormWidget extends StatefulWidget {
 
 class _LoginFormWidgetState extends State<LoginFormWidget>
     with SingleTickerProviderStateMixin {
+  String deviceName;
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  Future<void> getDeviceName() async {
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      this.deviceName = androidInfo.model;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      this.deviceName = iosInfo.utsname.machine;
+    }
+  }
+
   AnimationController animationController;
   bool _visiblelogo = false;
   bool _visibleform = false;
   void initState() {
+    getDeviceName();
+
+    _userEmailController.text = "test@test.com";
+    _userPasswordController.text = "password";
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       //asynchronous delay
@@ -69,6 +101,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     });
   }
 
+  @override
+  void dispose() {
+    _userEmailController.dispose();
+    _userPasswordController.dispose();
+    super.dispose();
+  }
+
+  bool tried = false;
+  String textError = "Veuillez verifier";
   String email;
   String password;
   final _formKey = GlobalKey<FormState>();
@@ -84,40 +125,66 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      autovalidate: _autoValidate,
-      child: Column(
-        children: <Widget>[
-          _buildLogo(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          AnimatedOpacity(
-            opacity: _visibleform ? 1.0 : 0.0,
-            duration: Duration(seconds: 2),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.5,
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.75),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                body: Column(
-                  children: <Widget>[
-                    _buildIntroText(),
-                    _buildEmailField(context),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    _buildPasswordField(context),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    _buildSignUpButton(context),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    _buildinscription(),
-                  ],
-                ),
+    final node = FocusScope.of(context);
+    return Container(
+      child: ListView(
+          physics: ClampingScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: Column(
+                children: <Widget>[
+                  _buildLogo(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  AnimatedOpacity(
+                    opacity: _visibleform ? 1.0 : 0.0,
+                    duration: Duration(seconds: 2),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.75),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: Column(
+                          children: <Widget>[
+                            _buildIntroText(),
+                            _buildEmailField(context, node),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02),
+                            _buildPasswordField(context, node),
+                            Center(
+                              child: Visibility(
+                                visible: tried,
+                                child: Text(
+                                  "Adresse mail ou mot de passe erronés",
+                                  style: TextStyle(
+                                      fontSize: ResponsiveFlutter.of(context)
+                                          .fontSize(2),
+                                      color: Colors.red),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02),
+                            _buildSignUpButton(context),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01),
+                            _buildinscription(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+          ]),
     );
   }
 
@@ -143,21 +210,27 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
       children: <Widget>[
         Center(
           child: Text(
-            "pas encore inscrit ? ",
+            "Pas encore inscrit ? ",
             style: TextStyle(
                 fontSize: ResponsiveFlutter.of(context).fontSize(2),
                 color: Colors.black),
           ),
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        Center(
-          child: Text(
-            " Rejoignez nous ! ",
-            style: TextStyle(
-                fontSize: ResponsiveFlutter.of(context).fontSize(3),
-                color: Color(0xFFDD6C30),
-                fontWeight: FontWeight.bold),
+        TextButton(
+          child: Center(
+            child: Text(
+              "Rejoignez Nous !",
+              style: TextStyle(
+                  fontSize: ResponsiveFlutter.of(context).fontSize(3),
+                  color: Color(0xFFDD6C30),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => RegisterScreen()));
+          },
         ),
       ],
     );
@@ -179,25 +252,23 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
   }
 
   String _userNameValidation(String value) {
-    if (value.isEmpty) {
+    if (value.isEmpty || value.length < 8) {
       return "Veuillez entrer un mot de passe valide";
     } else {
       return null;
     }
   }
 
-  Widget _buildEmailField(BuildContext context) {
+  Widget _buildEmailField(BuildContext context, node) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextFormField(
+        onEditingComplete: () => node.nextFocus(),
         controller: _userEmailController,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         onChanged: (value) {
           email = value;
-        },
-        onFieldSubmitted: (_) {
-          FocusScope.of(context).requestFocus(_passwordFocusNode);
         },
         validator: (value) => _emailValidation(value),
         decoration: CommonStyles.textFormFieldStyle("Adresse mail", ""),
@@ -215,15 +286,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     }
   }
 
-  Widget _buildPasswordField(BuildContext context) {
+  Widget _buildPasswordField(BuildContext context, node) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
       child: TextFormField(
         controller: _userPasswordController,
         keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.next,
+        textInputAction: TextInputAction.done,
         onFieldSubmitted: (_) {
-          FocusScope.of(context).requestFocus(_emailFocusNode);
+          node.unfocus;
         },
         onChanged: (value) {
           password = value;
@@ -259,6 +330,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
   }
 
   Widget _buildSignUpButton(BuildContext context) {
+    var currentTab = [
+      ParrainageScreen(),
+      HistoriquePage(),
+      HomeScreen(),
+      Financespage(),
+      RatingsPage(),
+    ];
+    var provider = Provider.of<NavigationProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: Container(
@@ -278,7 +358,30 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: () {}),
+              onPressed: () async {
+                Map creds = {
+                  "e_mail": _userEmailController.text,
+                  "password": _userPasswordController.text,
+                  "device_name": this.deviceName ?? "unknown"
+                };
+                if (_formKey.currentState.validate()) {
+                  await Provider.of<Auth>(context, listen: false).login(creds);
+                  print("np");
+                  if (Provider.of<Auth>(context, listen: false).authenticated ==
+                      "loggedin") {
+                    print("yes");
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => currentTab[provider.getpage],
+                      ),
+                    );
+                  } else {
+                    setState(() {
+                      tried = true;
+                    });
+                  }
+                }
+              }),
         ),
       ),
     );

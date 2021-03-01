@@ -4,7 +4,8 @@ import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
-import 'Historiquedetails.dart';
+
+import 'Historique/Historiquedetails.dart';
 
 class HistoriquePage extends StatefulWidget {
   @override

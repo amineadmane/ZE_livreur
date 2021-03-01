@@ -44,21 +44,24 @@ class BottomNavBar extends StatelessWidget {
       animationDuration: Duration(milliseconds: 2500),
       onTap: (index) {
         _changepage(context, index);
-        switch(index) {
-          case 0: {
-            _changetitle(context, "Parrainage");
-          }
-          break;
+        switch (index) {
+          case 0:
+            {
+              _changetitle(context, "Parrainage");
+            }
+            break;
 
-          case 1: {
-            _changetitle(context, "Historique");
-          }
-          break;
+          case 1:
+            {
+              _changetitle(context, "Historique");
+            }
+            break;
 
-          case 2: {
-            _changetitle(context, "Acceuil");
-          }
-          break;
+          case 2:
+            {
+              _changetitle(context, "Acceuil");
+            }
+            break;
 
           case 3: {
             _changetitle(context, "Finances");

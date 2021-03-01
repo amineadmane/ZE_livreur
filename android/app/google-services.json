@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "676351222684",
+    "project_id": "ziouaneproject",
+    "storage_bucket": "ziouaneproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676351222684:android:4580035b22cbf43b235e59",
+        "android_client_info": {
+          "package_name": "com.example.ze_livreur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676351222684-uo3ebkahujasn32bstj7mh3c6ooa5gkl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ze_livreur",
+            "certificate_hash": "9dd0c34e186653025a821a5d5ef4d4df24fc60f1"
+          }
+        },
+        {
+          "client_id": "676351222684-rnb4asunglua0t83gh3m2b01vsm36tht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP7liOJtATNmGMiTihPlUSrW0qWvZiM44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676351222684-rnb4asunglua0t83gh3m2b01vsm36tht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

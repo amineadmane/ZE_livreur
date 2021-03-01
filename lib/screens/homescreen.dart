@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:ze_livreur/Models/Livraison_externe.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
@@ -29,22 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _livraison = ApiCalls().getDerniereliv(18);
-    _livauj = ApiCalls().getlivauj(15);
   }
 
   @override
   Widget build(BuildContext context) {
-
+    var provider = Provider.of<Auth>(context,listen: false).livreurExt;
+    print(provider.idLivExt);
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     double screenwidth = size.width;
     return SafeArea(
       child: FutureBuilder(
-        future: Future.wait([_livraison, _livauj]),
+        future: Future.wait([ApiCalls().getDerniereliv(provider.idLivExt), ApiCalls().getlivauj(provider.idLivExt)]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
+              bottomNavigationBar: BottomNavBar(),
               backgroundColor: background,
               body: Column(
                 children: [
@@ -190,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                snapshot.data[1].livraisons.toString(),
+                                                snapshot.data[1].livraisons==null ? "0":snapshot.data[1].livraisons.toString(),
                                                 style: TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w500,
@@ -223,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: orange),
                                           ),
                                           Text(
-                                            "parcourus",
+                                            "Distance parcourus",
                                             style: TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.w400,
@@ -283,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: screenheight * 0.07,
                                                     child: RichText(
                                                       text: TextSpan(
-                                                          text: (snapshot.data[1].prix) == null ? "0" : (double.parse(snapshot.data[1].prix)*0.8).toString(),
+                                                          text: (snapshot.data[1].prix) == null ? "0" : (double.parse(snapshot.data[1].prix)*0.8).toStringAsFixed(2),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:
@@ -357,6 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else if (snapshot.hasError) {
+            print(snapshot.error.toString());
             return Text("Erreur");
           }
 
