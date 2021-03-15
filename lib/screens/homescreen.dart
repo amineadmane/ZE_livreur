@@ -23,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
   bool status = false;
-  Future<Livraison_externe> _livraison;
-  Future<Livraison_aujourdhui> _livauj;
 
   @override
   void initState() {
@@ -117,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     RatingBar(
                                       itemSize: 20,
-                                      initialRating: 3,
+                                      initialRating: snapshot.data[0].note.toDouble(),
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       ignoreGestures: true,
@@ -282,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: screenheight * 0.07,
                                                     child: RichText(
                                                       text: TextSpan(
-                                                          text: (snapshot.data[1].prix) == null ? "0" : (double.parse(snapshot.data[1].prix)*0.8).toStringAsFixed(2),
+                                                          text: (snapshot.data[1].prix) == null ? "0" : (double.parse(snapshot.data[1].prix)*0.8).toStringAsFixed(1),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:
@@ -311,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               color: violet),
                                                           children: [
                                                             TextSpan(
-                                                              text: "DA",
+                                                              text: " DA",
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   fontWeight:

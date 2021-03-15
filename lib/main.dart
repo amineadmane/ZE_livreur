@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
+import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
 import 'package:ze_livreur/screens/views/ContainerScreen.dart';
 import 'package:ze_livreur/screens/views/Historique/Historique.dart';
@@ -11,14 +12,13 @@ import 'package:ze_livreur/screens/views/Inscription_login/Inscrit.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
-import 'package:ze_livreur/screens/views/Parrainage.dart';
-import 'package:ze_livreur/screens/views/financesscreen.dart';
-import 'package:ze_livreur/screens/views/ratingscreen.dart';
+import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 
 void main() {
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => Auth())],
-      child: ze_livreur()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => Auth()),
+    ChangeNotifierProvider(create: (context) => RequestProvider())
+  ], child: ze_livreur()));
 }
 
 // ignore: camel_case_types
@@ -37,14 +37,6 @@ class Navigation extends StatefulWidget {
   _NavigationState createState() => _NavigationState();
 }
 
-var currentTab = [
-  ParrainageScreen(),
-  HistoriquePage(),
-  HomeScreen(),
-  Financespage(),
-  RatingsPage(),
-];
-
 class _NavigationState extends State<Navigation> {
   final storage = new FlutterSecureStorage();
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -60,7 +52,7 @@ class _NavigationState extends State<Navigation> {
   Future<void> readToken() async {
     String token = await storage.read(key: "token");
     await Provider.of<Auth>(context, listen: false).tryToken(token);
-    print(token);
+    print("token : $token");
   }
 
   _registerOnFirebase() {
@@ -70,9 +62,38 @@ class _NavigationState extends State<Navigation> {
 
   void getMessage() {
     _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {},
-        onResume: (Map<String, dynamic> message) async {},
-        onLaunch: (Map<String, dynamic> message) async {});
+        onMessage: (Map<String, dynamic> message) async {
+      var provider = Provider.of<RequestProvider>(context, listen: false);
+      var userprovider = Provider.of<Auth>(context, listen: false);
+      print(userprovider.livreurExt.idLivExt);
+      if (userprovider.livreurExt.etat == "online" &&
+          userprovider.authenticated != "notified" &&
+          userprovider.authenticated != "delivring") {
+        print("yes");
+        provider.changenom(message['data']['nom']);
+        provider.changeprenom(message['data']['prenom']);
+        provider.changepickup(message['data']['pickup']);
+        provider.changedropoff(message['data']['dropoff']);
+        provider.changetel(message['data']['tel']);
+        provider.changeprix(double.parse(message['data']['prix']));
+        Provider.of<Auth>(context, listen: false).changeauth("notified");
+      }
+    }, onResume: (Map<String, dynamic> message) async {
+      var userprovider = Provider.of<Auth>(context, listen: false);
+      if (userprovider.livreurExt.etat == "online") {}
+      print("Notified");
+      var provider = Provider.of<RequestProvider>(context, listen: false);
+      print("yes");
+      provider.changenom(message['data']['nom']);
+      provider.changeprenom(message['data']['prenom']);
+      provider.changepickup(message['data']['pickup']);
+      provider.changedropoff(message['data']['dropoff']);
+      provider.changetel(message['data']['tel']);
+      provider.changeprix(double.parse(message['data']['prix']));
+      Provider.of<Auth>(context, listen: false).changeauth("notified");
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print("launche");
+    });
   }
 
   @override
@@ -106,7 +127,7 @@ class _NavigationState extends State<Navigation> {
                 break;
               case "delivring":
                 {
-                  NavigationPage();
+                  return NavigationPage();
                 }
                 break;
             }

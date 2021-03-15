@@ -12,12 +12,21 @@ class Auth extends ChangeNotifier {
   String token;
   LivreurExt get livreurExt => _livreurExt;
 
-  String gettoken()
-  {
+  String get getauth {
+    return authenticated;
+  }
+
+  void changeauth(String auth) {
+    _isloggedIn = auth;
+    notifyListeners();
+  }
+
+  String gettoken() {
     print(this.token);
     print("this is tiken : $token");
     return this.token;
   }
+
   Future<void> login(Map creds) async {
     print(creds);
     try {
@@ -28,7 +37,6 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         print(response.data.toString());
@@ -56,7 +64,7 @@ class Auth extends ChangeNotifier {
           }
           this.token = token;
           storeToken(token, _livreurExt.idLivExt.toString());
-          print(_livreurExt);
+          print("Livreur externe : " + _livreurExt.toString());
           notifyListeners();
         }
       } catch (e) {

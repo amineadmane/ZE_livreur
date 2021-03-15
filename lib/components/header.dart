@@ -71,6 +71,7 @@ class Header extends StatelessWidget {
                     inactiveTextColor: violet,
                     inactiveColor: background,
                     onToggle: (val) async {
+                      print(val.runtimeType);
                       _changestatus(context);
                     })
               ],

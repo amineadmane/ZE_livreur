@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/ParrainageModal.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 // ignore: must_be_immutable
 
@@ -36,18 +38,18 @@ class _ParrainageState extends State<Parrainage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _parrainage = ApiCalls().getparrainage(2);
   }
 
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<Auth>(context,listen: false).livreurExt;
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     double screenwidth = size.width;
     return SafeArea(
       child: FutureBuilder(
-        future: _parrainage,
+        future: ApiCalls().getparrainage(provider.idLivExt),
         builder: (context, snapshot) {
       if(snapshot.hasData) {
         return Scaffold(

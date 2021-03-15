@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:ze_livreur/models/DirectionDetails.dart';
+import 'package:ze_livreur/provider/auth.dart';
+import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
+import 'package:ze_livreur/services/maps.dart';
 
 // ignore: must_be_immutable
 class NotificationPage extends StatelessWidget {
@@ -13,42 +18,45 @@ class NotificationPage extends StatelessWidget {
   Color violet = Color(0xFF382B8C);
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<RequestProvider>(context, listen: false);
     return SafeArea(
-      child: Scaffold(
-        appBar: appbar(context),
-        backgroundColor: grey,
-        body: ListView(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                offretext(context),
-                notiftext(context),
-                avatar(context),
-                cout(context),
-                destination(context),
-                buttons(context)
-              ],
-            )
-          ],
-        ),
-      ),
+      child: FutureBuilder(
+          future: Maps.obtainPlaceDirectionsDetails(
+              context, provider.getpickup, provider.getdropoff),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Scaffold(
+                backgroundColor: grey,
+                body: ListView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        offretext(context),
+                        notiftext(context),
+                        avatar(context, provider.getnom, provider.getprenom),
+                        cout(
+                            context,
+                            (snapshot.data.distanceValue * 0.01)
+                                .toStringAsFixed(0)),
+                        destination(
+                            context, provider.getpickup, provider.getdropoff),
+                        buttons(context)
+                      ],
+                    )
+                  ],
+                ),
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error.toString());
+              return Text("Erreur");
+            }
+            // By default, show a loading spinner.
+            return Center(child: CircularProgressIndicator());
+          }),
     );
   }
-}
-
-Widget appbar(context) {
-  return AppBar(
-    elevation: 0,
-    backgroundColor: NotificationPage().grey,
-    shadowColor: null,
-    centerTitle: true,
-    leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_rounded,
-            color: NotificationPage().background),
-        onPressed: () => Navigator.pop(context)),
-  );
 }
 
 Widget offretext(context) {
@@ -80,7 +88,7 @@ Widget notiftext(context) {
       ));
 }
 
-Widget avatar(context) {
+Widget avatar(context, String nom, String prenom) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     child: Column(
@@ -94,7 +102,7 @@ Widget avatar(context) {
           ),
         ),
         Text(
-          "ziouane omar",
+          nom + " " + prenom,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: NotificationPage().background,
@@ -108,7 +116,7 @@ Widget avatar(context) {
   );
 }
 
-Widget cout(context) {
+Widget cout(context, String prix) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
@@ -131,7 +139,7 @@ Widget cout(context) {
           ),
         ),
         Text(
-          "1350 DA",
+          prix + " DA",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black,
@@ -145,7 +153,7 @@ Widget cout(context) {
   );
 }
 
-Widget destination(context) {
+Widget destination(context, String pickup, String dropoff) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
@@ -198,7 +206,7 @@ Widget destination(context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Kouba",
+                    pickup,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
@@ -236,7 +244,7 @@ Widget destination(context) {
                 endIndent: ResponsiveFlutter.of(context).scale(15),
               )),
               Text(
-                "Hydra",
+                dropoff,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -270,7 +278,9 @@ Widget buttons(context) {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         FlatButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Provider.of<Auth>(context, listen: false).changeauth("loggedin");
+            },
             child: Container(
               width: ResponsiveFlutter.of(context).scale(100),
               height: ResponsiveFlutter.of(context).scale(50),
@@ -285,11 +295,7 @@ Widget buttons(context) {
             )),
         FlatButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => NavigationPage()),
-              );
+              Provider.of<Auth>(context, listen: false).changeauth("delivring");
             },
             child: Container(
               width: ResponsiveFlutter.of(context).scale(100),

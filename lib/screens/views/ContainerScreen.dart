@@ -6,7 +6,6 @@ import 'package:ze_livreur/screens/views/ratingscreen.dart';
 
 import '../homescreen.dart';
 import 'Historique.dart';
-import 'Parrainage.dart';
 import 'Profile/Parrainage.dart';
 import 'financesscreen.dart';
 class ContainerScreen extends StatefulWidget {

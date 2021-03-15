@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:ze_livreur/components/Bartchart.dart';
 import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:charts_flutter/flutter.dart' as charts hide Color , TextStyle;
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Metric.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 
 class Financespage extends StatefulWidget {
@@ -26,18 +28,17 @@ class _FinancespageState extends State<Financespage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _metric = ApiCalls().getmetric(2);
   }
 
   @override
   Widget build(BuildContext context) {
-
+    var provider = Provider.of<Auth>(context,listen: false).livreurExt;
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     double screenwidth = size.width;
     return SafeArea(
       child: FutureBuilder(
-        future: _metric,
+        future: ApiCalls().getmetric(provider.idLivExt),
         builder: (context, snapshot) {
           if(snapshot.hasData){
             return  Scaffold(
@@ -79,15 +80,16 @@ class _FinancespageState extends State<Financespage> {
                               ),
                               SizedBox(height : MediaQuery.of(context).size.height* 0.01),
                               Text(
-                                snapshot.data.cAMensuel.toString(),
+                                snapshot.data.cAMensuel == null ? "0" : snapshot.data.cAMensuel.toString() + "DA",
                                 style: TextStyle(color: violet, fontSize: ResponsiveFlutter.of(context).fontSize(3) , fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height : MediaQuery.of(context).size.height* 0.01),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Text("+",style: TextStyle(color: darkgreen, fontSize: ResponsiveFlutter.of(context).fontSize(2.5) , fontWeight: FontWeight.bold),),
                                   Text(
-                                    "+" + snapshot.data.cAToday.toString(),
+                                     snapshot.data.cAToday == null ? "0" : snapshot.data.cAToday.toString() ,
                                     style: TextStyle(color: darkgreen, fontSize: ResponsiveFlutter.of(context).fontSize(2.5) , fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(width : MediaQuery.of(context).size.height* 0.01),
@@ -121,7 +123,7 @@ class _FinancespageState extends State<Financespage> {
                                 ),
                                 SizedBox(height : MediaQuery.of(context).size.height* 0.01),
                                 Text(
-                                  snapshot.data.benificeMensuel.toString(),
+                                  snapshot.data.benificeMensuel == null ? "0" : snapshot.data.benificeMensuel.toString(),
                                   style: TextStyle(color: violet, fontSize: ResponsiveFlutter.of(context).fontSize(3) , fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height : MediaQuery.of(context).size.height* 0.01),
@@ -129,8 +131,9 @@ class _FinancespageState extends State<Financespage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      Text("+", style: TextStyle(color: darkgreen, fontSize: ResponsiveFlutter.of(context).fontSize(2.5) , fontWeight: FontWeight.bold),),
                                       Text(
-                                        "+" +snapshot.data.benificeToday.toString(),
+                                        snapshot.data.benificeToday == null ? "0" : snapshot.data.benificeToday.toString(),
                                         style: TextStyle(color: darkgreen, fontSize: ResponsiveFlutter.of(context).fontSize(2.5) , fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(width : MediaQuery.of(context).size.height* 0.01),
