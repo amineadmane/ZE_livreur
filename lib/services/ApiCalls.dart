@@ -6,10 +6,12 @@ import 'dart:convert';
 import 'package:ze_livreur/Models/Livraison_externe.dart';
 import 'package:ze_livreur/models/Evaluation_List.dart';
 import 'package:ze_livreur/models/Evaluation_totale.dart';
+import 'package:ze_livreur/models/Histo_mensuelle.dart';
 import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
 import 'package:ze_livreur/models/Metric.dart';
 import 'package:ze_livreur/models/ParrainageModal.dart';
+import 'package:ze_livreur/models/Year.dart';
 import 'package:ze_livreur/provider/dio.dart';
 
 class ApiCalls {
@@ -125,6 +127,7 @@ class ApiCalls {
   Future<List<Evaluation_List>> gethistoevaluation(int id) async {
     await readtoken();
     List<Evaluation_List> _evaluation_list;
+    print(id);
     var response = await http.get(URL + '/histoevaluation/' + id.toString(),
         headers: {
           "Accept": "application/json",
@@ -132,12 +135,42 @@ class ApiCalls {
         });
 
     if (response.statusCode == 200) {
+      print("200");
+      print("body : " + response.body.toString());
       List jsonResponse = json.decode(response.body);
       return jsonResponse
           .map((job) => new Evaluation_List.fromJson(job))
           .toList();
     } else {
       return _evaluation_list;
+    }
+  }
+
+  Future<List<Histo_mensuel>> gethistomensuelle(
+      int id, int month, int year) async {
+    await readtoken();
+    List<Histo_mensuel> _histomensuel;
+    var response = await http.get(
+        URL +
+            '/histolivraisonmensuelle/' +
+            id.toString() +
+            "/" +
+            month.toString() +
+            "/" +
+            year.toString(),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": 'Bearer $_token'
+        });
+
+    if (response.statusCode == 200) {
+      print("mensuel : 200");
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map((job) => new Histo_mensuel.fromJson(job))
+          .toList();
+    } else {
+      return _histomensuel;
     }
   }
 
@@ -154,6 +187,22 @@ class ApiCalls {
       return _eval;
     } else {
       return _eval;
+    }
+  }
+
+  Future<List<Year>> getyears(int id) async {
+    await readtoken();
+    List<Year> years;
+    var response = await http.get(URL + '/livraisonyears/' + id.toString(),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": 'Bearer $_token'
+        });
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((job) => new Year.fromJson(job)).toList();
+    } else {
+      return years;
     }
   }
 }
