@@ -205,4 +205,33 @@ class ApiCalls {
       return years;
     }
   }
+
+  Future<void> AcceptLivraison(Dio.FormData data) async {
+    await readtoken();
+    try {
+      Dio.Response response = await dio().post('/livraison',
+          data: data,
+          options: Dio.Options(headers: {'Authorization': 'Bearer $_token'}));
+      if (response.statusCode == 200) {
+        print("ok");
+      }
+    } on Dio.DioError catch (e) {
+      print("erreur");
+      print(e);
+      if (e.response.statusCode == 302) print(e);
+    }
+  }
+
+  Future<void> AnnulerLivraison(int id) async {
+    await readtoken();
+    var response = await http.get(URL + '/Annulerlivraison/' + id.toString(),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": 'Bearer $_token'
+        });
+
+    if (response.statusCode == 200) {
+      return "Operation reussie";
+    }
+  }
 }

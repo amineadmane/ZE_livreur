@@ -1,10 +1,15 @@
+import 'dart:ffi';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/models/DirectionDetails.dart';
 import 'package:ze_livreur/provider/auth.dart';
+import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
+import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/services/maps.dart';
 
 // ignore: must_be_immutable
@@ -294,7 +299,27 @@ Widget buttons(context) {
               ),
             )),
         FlatButton(
-            onPressed: () {
+            onPressed: () async {
+              var provider =
+                  Provider.of<RequestProvider>(context, listen: false);
+              var provideruser = Provider.of<Auth>(context, listen: false);
+
+              FormData formdata = new FormData.fromMap({
+                'id_client': 27,
+                'id_colis': 1,
+                'id_livreur': provideruser.livreurExt.idLivExt,
+                'nomclient': provider.getnom + " " + provider.getprenom,
+                'telephone': provider.gettel,
+                'wilaya': 16,
+                'commune': 1,
+                'codePostal': "16330",
+                'ditance_parcourous': 410.0,
+                'note': 5,
+                'commentaire': "Commentaire",
+                'adresse': "adresse",
+                'prix': provider.getprix,
+              });
+              await ApiCalls().AcceptLivraison(formdata);
               Provider.of<Auth>(context, listen: false).changeauth("delivring");
             },
             child: Container(

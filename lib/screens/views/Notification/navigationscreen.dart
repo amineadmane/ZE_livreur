@@ -7,8 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/components/common_styles.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:location/location.dart';
+import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/services/maps.dart';
 import 'package:ze_livreur/models/DirectionDetails.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
@@ -286,7 +288,13 @@ bottom(BuildContext context) {
           children: [
             FlatButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () async {
+                  var provider = Provider.of<Auth>(context, listen: false);
+                  await ApiCalls()
+                      .AnnulerLivraison(provider.livreurExt.idLivExt);
+                  Provider.of<Auth>(context, listen: false)
+                      .changeauth("loggedin");
+                },
                 child: Container(
                   width: ResponsiveFlutter.of(context).scale(100),
                   height: ResponsiveFlutter.of(context).scale(50),
@@ -336,7 +344,7 @@ bottom(BuildContext context) {
             Container(
               width: ResponsiveFlutter.of(context).scale(100),
               child: Text(
-                "Commande\nreçue",
+                "Commande reçue",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: NavigationPage().grey,
