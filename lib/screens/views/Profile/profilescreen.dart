@@ -4,12 +4,29 @@ import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/provider/auth.dart';
+import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
+import 'package:ze_livreur/screens/views/Profile/changeNumber.dart';
 import 'package:ze_livreur/screens/views/Profile/passchangescreen.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 
-// ignore: must_be_immutable
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void dispose() {
+    _nomController.dispose();
+    _emailController.dispose();
+    _prenomController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+
   launchURL() async {
     const url = 'tel:+213771854123';
     if (await canLaunch(url)) {
@@ -19,41 +36,61 @@ class ProfilePage extends StatelessWidget {
     }
   }
 
-  static String route = "/profile";
+  @override
+  void initState() {
+    final myProvider = Provider.of<Auth>(context, listen: false).livreurExt;
 
-  String nom;
-  String prenom;
-  String phone;
-  String email;
-  var nomController = TextEditingController(text: "");
-  var prenomController = TextEditingController(text: "");
-  var phoneController = TextEditingController(text: "");
-  var emailController = TextEditingController(text: "");
-  var _emailFocusNode = FocusNode();
-  var _passwordFocusNode = FocusNode();
+    super.initState();
+    _nomController = TextEditingController(text: myProvider.nom);
+    _prenomController = TextEditingController(text: myProvider.prenom);
+    _emailController = TextEditingController(text: myProvider.eMail);
+    _phoneController = TextEditingController(text: myProvider.phoneNumber);
+  }
+
+  bool changed = false;
+
+  TextEditingController _nomController;
+  TextEditingController _prenomController;
+  TextEditingController _phoneController;
+  TextEditingController _emailController;
+  String _nom;
+  String _prenom;
+  String _phone;
+  String _email;
+
+  final _formKey = GlobalKey<FormState>();
+
   Color background = Color(0xFFF2F2F2);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
-
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<Auth>(context, listen: false).livreurExt;
+    _nom = provider.nom;
+    _prenom = provider.prenom;
+    _email = provider.eMail;
+    _phone = provider.phoneNumber;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldkey,
         appBar: appbar(context),
         backgroundColor: background,
         body: ListView(
           shrinkWrap: true,
           children: [
-            Column(
-              children: [
-                avatar(context),
-                namefield(context),
-                prenomfield(context),
-                phonefield(context),
-                emailfield(context),
-                button(context),
-                commandes(context),
-              ],
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  avatar(context),
+                  namefield(context, provider.nom),
+                  prenomfield(context, provider.prenom),
+                  phonefield(context, provider.phoneNumber),
+                  emailfield(context, provider.eMail),
+                  button(context),
+                  commandes(context),
+                ],
+              ),
             )
           ],
         ),
@@ -74,19 +111,23 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget namefield(BuildContext context) {
+  Widget namefield(BuildContext context, String nom) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(10),
       decoration: CommonStyles.profilecontrainerdeco(),
       height: MediaQuery.of(context).size.height * 0.08,
       width: MediaQuery.of(context).size.width * 0.8,
       child: TextFormField(
-        controller: nomController,
+        controller: _nomController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         onChanged: (value) {
-          nom = value;
+          _nom = value;
+          if (_nom != nom)
+            changed = true;
+          else
+            changed = false;
         },
         decoration: CommonStyles.profileFormFieldStyle(
             context,
@@ -100,19 +141,23 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget prenomfield(BuildContext context) {
+  Widget prenomfield(BuildContext context, String prenom) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(5),
       decoration: CommonStyles.profilecontrainerdeco(),
       height: MediaQuery.of(context).size.height * 0.08,
       width: MediaQuery.of(context).size.width * 0.8,
       child: TextFormField(
-        controller: prenomController,
+        controller: _prenomController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         onChanged: (value) {
-          nom = value;
+          _prenom = value;
+          if (_prenom != prenom)
+            changed = true;
+          else
+            changed = false;
         },
         decoration: CommonStyles.profileFormFieldStyle(context, "Prénom", "",
             Icon(Icons.person_outline_rounded, color: violet)),
@@ -120,19 +165,23 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget emailfield(BuildContext context) {
+  Widget emailfield(BuildContext context, String eMail) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(5),
       decoration: CommonStyles.profilecontrainerdeco(),
       height: MediaQuery.of(context).size.height * 0.08,
       width: MediaQuery.of(context).size.width * 0.8,
       child: TextFormField(
-        controller: emailController,
-        keyboardType: TextInputType.name,
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         onChanged: (value) {
-          nom = value;
+          _email = value;
+          if (_email != eMail)
+            changed = true;
+          else
+            changed = false;
         },
         decoration: CommonStyles.profileFormFieldStyle(context, "E-Mail", "",
             Icon(Icons.alternate_email_rounded, color: violet)),
@@ -140,20 +189,25 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget phonefield(BuildContext context) {
+  Widget phonefield(BuildContext context, String phoneNumber) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(5),
       decoration: CommonStyles.profilecontrainerdeco(),
       height: MediaQuery.of(context).size.height * 0.08,
       width: MediaQuery.of(context).size.width * 0.8,
       child: Center(
         child: TextFormField(
-          controller: phoneController,
-          keyboardType: TextInputType.name,
+          controller: _phoneController,
+          keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
+          validator: (value) => _emailValidation(value),
           onChanged: (value) {
-            nom = value;
+            _phone = value;
+            if (_phone != phoneNumber)
+              changed = true;
+            else
+              changed = false;
           },
           decoration: CommonStyles.profileFormFieldStyle(context, "Téléphone",
               "", Icon(Icons.phone_outlined, color: violet)),
@@ -182,7 +236,37 @@ class ProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: FlatButton(
-          onPressed: null,
+          onPressed: () {
+            if (this.changed) {
+              if (_phone !=
+                  Provider.of<Auth>(context, listen: false)
+                      .livreurExt
+                      .phoneNumber) {
+                Provider.of<NavigationProvider>(context, listen: false)
+                    .changeNom(_nomController.text);
+                Provider.of<NavigationProvider>(context, listen: false)
+                    .changePrenom(_prenomController.text);
+                Provider.of<NavigationProvider>(context, listen: false)
+                    .changeEMail(_emailController.text);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>
+                            ChangeNumberScreen(_phoneController.text)));
+              } else {
+                Map<String, dynamic> data = {
+                  "nom": _nomController.text.toString(),
+                  "prenom": _prenomController.text.toString(),
+                  "e_mail": _emailController.text.toString(),
+                  "phone_number": _phoneController.text.toString(),
+                };
+                Provider.of<Auth>(context, listen: false)
+                    .changeLivreurInfo(context, data, _scaffoldkey);
+              }
+            } else {
+              return null;
+            }
+          },
           child: Text(
             "Sauvegarder",
             style: TextStyle(
@@ -226,6 +310,12 @@ class ProfilePage extends StatelessWidget {
           FlatButton(
               onPressed: () async {
                 await Provider.of<Auth>(context, listen: false).logout();
+                if (Provider.of<Auth>(context, listen: false).authenticated ==
+                    "loggedout") {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                }
               },
               child: CommonStyles.rows("Deconnexion", Icons.logout, context)),
         ],

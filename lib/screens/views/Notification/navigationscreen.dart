@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 
+// ignore: must_be_immutable
 class NavigationPage extends StatefulWidget {
   Color grey = Color(0xFF424242);
   Color grey2 = Color(0xFF646464);

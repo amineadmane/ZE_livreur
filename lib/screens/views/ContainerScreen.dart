@@ -6,9 +6,9 @@ import 'package:ze_livreur/screens/views/ratingscreen.dart';
 
 import '../homescreen.dart';
 import 'Historique.dart';
-import 'Parrainage.dart';
 import 'Profile/Parrainage.dart';
 import 'financesscreen.dart';
+
 class ContainerScreen extends StatefulWidget {
   @override
   _ContainerScreenState createState() => _ContainerScreenState();
@@ -23,12 +23,11 @@ var currentTab = [
 ];
 
 class _ContainerScreenState extends State<ContainerScreen> {
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<NavigationProvider>(context);
     return Scaffold(
-        bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(),
       body: currentTab[provider.getpage],
     );
   }

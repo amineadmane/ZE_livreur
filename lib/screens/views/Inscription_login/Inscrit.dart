@@ -158,7 +158,10 @@ class _ConfirminscriptionState extends State<Confirminscription> {
               onPressed: () async {
                 await Provider.of<Auth>(context, listen: false).logout();
                 if (Provider.of<Auth>(context, listen: false).authenticated ==
-                    "loggedout") {}
+                    "loggedout") {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => LoginScreen()));
+                }
               }),
         ),
       ),

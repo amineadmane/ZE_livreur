@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 
-class ChangePassPage extends StatelessWidget {
+class ChangePassPage extends StatefulWidget {
+  @override
+  _ChangePassPageState createState() => _ChangePassPageState();
+}
+
+class _ChangePassPageState extends State<ChangePassPage> {
   var passwordController = TextEditingController(text: "");
   var passwordConfController = TextEditingController(text: "");
   String password;
   Color background = Color(0xFFF2F2F2);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +29,19 @@ class ChangePassPage extends StatelessWidget {
         appBar: appbar(context),
         backgroundColor: background,
         body: ListView(shrinkWrap: true, children: [
-          Column(
-            children: [
-              SizedBox(
-                height: height * 0.1,
-              ),
-              passwordfield(context, _isvisible),
-              passworconfdfield(context, _isvisible),
-              text(context),
-              button(context),
-            ],
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height * 0.1,
+                ),
+                passwordfield(context, _isvisible),
+                passworconfdfield(context, _isvisible),
+                text(context),
+                button(context),
+              ],
+            ),
           )
         ]),
       ),
@@ -42,6 +52,7 @@ class ChangePassPage extends StatelessWidget {
     Color violet = Color(0xFF382B8C);
     Color background = Color(0xFFF2F2F2);
     return AppBar(
+      elevation: 0,
       backgroundColor: background,
       shadowColor: null,
       centerTitle: true,
@@ -72,18 +83,21 @@ class ChangePassPage extends StatelessWidget {
         controller: passwordController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        onChanged: (value) {
-          password = value;
+        validator: (value) {
+          if (value.length < 8 || value.isEmpty) {
+            return "Mot de passe moin de 8 caracteres";
+          }
+          return null;
         },
         decoration: CommonStyles().passFormFieldStyle(
-            context,
-            "Mot de passe",
-            "",
-            Icon(
-              Icons.lock_outline_rounded,
-              color: violet,
-            ),
-            _isvisible),
+          context,
+          "Mot de passe",
+          "",
+          Icon(
+            Icons.lock_outline_rounded,
+            color: violet,
+          ),
+        ),
       ),
     );
   }
@@ -100,18 +114,24 @@ class ChangePassPage extends StatelessWidget {
         controller: passwordConfController,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        onChanged: (value) {
-          password = value;
+        validator: (value) {
+          if (value.length < 8 || value.isEmpty) {
+            return "Mot de passe moin de 8 caracteres";
+          }
+          if (value != passwordController.text) {
+            return "Mots de passe non identique";
+          }
+          return null;
         },
         decoration: CommonStyles().passFormFieldStyle(
-            context,
-            "Confirmer le mot de passe",
-            "",
-            Icon(
-              Icons.lock_outline_rounded,
-              color: violet,
-            ),
-            _isvisible),
+          context,
+          "Confirmer le mot de passe",
+          "",
+          Icon(
+            Icons.lock_outline_rounded,
+            color: violet,
+          ),
+        ),
       ),
     );
   }
@@ -126,7 +146,15 @@ class ChangePassPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: FlatButton(
-          onPressed: null,
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Map password = {"password": passwordController.text};
+              Provider.of<Auth>(context, listen: false)
+                  .changePassword(context, password);
+              passwordConfController.clear();
+              passwordController.clear();
+            }
+          },
           child: Text(
             "Sauvegarder",
             style: TextStyle(
@@ -149,5 +177,12 @@ class ChangePassPage extends StatelessWidget {
             fontSize: ResponsiveFlutter.of(context).fontSize(3)),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    passwordConfController.dispose();
+    passwordController.dispose();
   }
 }

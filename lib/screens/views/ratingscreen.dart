@@ -29,9 +29,6 @@ class _RatingsPageState extends State<RatingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
-    double screenwidth = size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: background,

@@ -10,7 +10,7 @@ class Livraison_externe {
   String codePostal;
   String adresse;
   int prix;
-  int note;
+  double note;
   String commentaire;
   int ditanceParcourous;
   String createdAt;
@@ -18,21 +18,21 @@ class Livraison_externe {
 
   Livraison_externe(
       {this.idLivraisonExterne,
-        this.idClient,
-        this.idColis,
-        this.idLivreur,
-        this.nomclient,
-        this.telephone,
-        this.wilaya,
-        this.commune,
-        this.codePostal,
-        this.adresse,
-        this.prix,
-        this.ditanceParcourous,
-        this.note,
-        this.commentaire,
-        this.createdAt,
-        this.updatedAt});
+      this.idClient,
+      this.idColis,
+      this.idLivreur,
+      this.nomclient,
+      this.telephone,
+      this.wilaya,
+      this.commune,
+      this.codePostal,
+      this.adresse,
+      this.prix,
+      this.ditanceParcourous,
+      this.note,
+      this.commentaire,
+      this.createdAt,
+      this.updatedAt});
 
   Livraison_externe.fromJson(Map<String, dynamic> json) {
     idLivraisonExterne = json['id_livraison_externe'];

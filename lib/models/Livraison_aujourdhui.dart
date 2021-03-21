@@ -5,13 +5,20 @@ class Livraison_aujourdhui {
   double CA_aujourdhui;
   double benifice_aujourdhui;
   String prix;
+  double evaluationMoyenne;
 
-  Livraison_aujourdhui({this.livraisons, this.distanceTotale,this.CA_aujourdhui,this.benifice_aujourdhui});
+  Livraison_aujourdhui(
+      {this.livraisons,
+      this.distanceTotale,
+      this.CA_aujourdhui,
+      this.benifice_aujourdhui,
+      this.evaluationMoyenne});
 
   Livraison_aujourdhui.fromJson(Map<String, dynamic> json) {
     livraisons = json['livraisons'];
     distanceTotale = json['distance_totale'];
     prix = json['prix'];
+    evaluationMoyenne = json['evaluation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +26,7 @@ class Livraison_aujourdhui {
     data['livraisons'] = this.livraisons;
     data['distance_totale'] = this.distanceTotale;
     data['prix'] = this.prix;
+    data['evaluation'] = this.evaluationMoyenne;
     return data;
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/Models/Livraison_externe.dart';
-import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
@@ -28,19 +26,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<Auth>(context,listen: false).livreurExt;
+    var provider = Provider.of<Auth>(context, listen: false).livreurExt;
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     double screenwidth = size.width;
     return SafeArea(
       child: FutureBuilder(
-        future: Future.wait([ApiCalls().getDerniereliv(provider.idLivExt), ApiCalls().getlivauj(provider.idLivExt)]),
+        future: Future.wait([
+          ApiCalls().getDerniereliv(provider.idLivExt),
+          ApiCalls().getlivauj(provider.idLivExt)
+        ]),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -71,11 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Dernière livraison",
-                                      style: TextStyle(color: violet, fontSize: 15),
+                                      style: TextStyle(
+                                          color: violet, fontSize: 15),
                                     ),
                                     IconButton(
                                       icon: Icon(
@@ -94,17 +96,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                snapshot.data[0] == null ? "pas encore" : DateFormat("dd-MM HH:mm").format(DateTime.parse(snapshot.data[0].createdAt)),
+                                      snapshot.data[0] == null
+                                          ? "pas encore"
+                                          : DateFormat("dd-MM HH:mm").format(
+                                              DateTime.parse(
+                                                  snapshot.data[0].createdAt)),
                                       style: TextStyle(
                                           color: violet,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                        snapshot.data[0] == null ? "0" : snapshot.data[0].prix.toString(),
+                                      snapshot.data[0] == null
+                                          ? "0"
+                                          : snapshot.data[0].prix.toString(),
                                       style: TextStyle(
                                           color: orange,
                                           fontSize: 40,
@@ -113,11 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     RatingBar(
                                       itemSize: 20,
-                                      initialRating: 3,
+                                      initialRating:
+                                          snapshot.data[0].note.toDouble(),
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       ignoreGestures: true,
@@ -137,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 'assets/images/heart_border.png')),
                                       ),
                                       itemPadding:
-                                      EdgeInsets.symmetric(horizontal: 4.0),
+                                          EdgeInsets.symmetric(horizontal: 4.0),
                                       onRatingUpdate: (rating) {},
                                     ),
                                     Text(
@@ -166,11 +177,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     bottom: 12, right: 16, left: 16),
                                 child: Column(children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Livraison d'aujourd'hui",
-                                        style: TextStyle(color: violet, fontSize: 15),
+                                        style: TextStyle(
+                                            color: violet, fontSize: 15),
                                       ),
                                       IconButton(
                                         icon: Icon(
@@ -186,24 +199,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width: screenwidth * 0.2,
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                snapshot.data[1].livraisons==null ? "0":snapshot.data[1].livraisons.toString(),
+                                                snapshot.data[1].livraisons ==
+                                                        null
+                                                    ? "0"
+                                                    : snapshot
+                                                        .data[1].livraisons
+                                                        .toString(),
                                                 style: TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w500,
                                                     color: violet),
                                               ),
                                               Text(
-                                                snapshot.data[1].distanceTotale == null ? "0" : snapshot.data[1].distanceTotale.toString(),
+                                                snapshot.data[1]
+                                                            .distanceTotale ==
+                                                        null
+                                                    ? "0"
+                                                    : snapshot
+                                                        .data[1].distanceTotale
+                                                        .toString(),
                                                 style: TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w500,
                                                     color: violet),
                                               ),
                                               Text(
-                                                "3.8",
+                                                snapshot.data[1]
+                                                            .evaluationMoyenne ==
+                                                        null
+                                                    ? "0"
+                                                    : snapshot.data[1]
+                                                        .evaluationMoyenne
+                                                        .toString(),
                                                 style: TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w500,
@@ -212,7 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ],
                                           )),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Livraisons",
@@ -256,11 +287,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     bottom: 10, right: 16, left: 16),
                                 child: Column(children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Finances d'aujourd'hui",
-                                        style: TextStyle(color: violet, fontSize: 15),
+                                        style: TextStyle(
+                                            color: violet, fontSize: 15),
                                       ),
                                       IconButton(
                                         icon: Icon(
@@ -276,17 +309,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                           width: screenwidth * 0.4,
                                           child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
                                                     height: screenheight * 0.07,
                                                     child: RichText(
                                                       text: TextSpan(
-                                                          text: (snapshot.data[1].prix) == null ? "0" : (double.parse(snapshot.data[1].prix)*0.8).toStringAsFixed(2),
+                                                          text: (snapshot
+                                                                      .data[1]
+                                                                      .prix) ==
+                                                                  null
+                                                              ? "0"
+                                                              : (double.parse(snapshot
+                                                                          .data[
+                                                                              1]
+                                                                          .prix) *
+                                                                      0.85)
+                                                                  .toStringAsFixed(
+                                                                      2),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:
-                                                              FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color: violet),
                                                           children: [
                                                             TextSpan(
@@ -294,8 +339,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   fontWeight:
-                                                                  FontWeight.bold,
-                                                                  color: violet),
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      violet),
                                                             ),
                                                           ]),
                                                     )),
@@ -303,11 +350,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: screenheight * 0.07,
                                                     child: RichText(
                                                       text: TextSpan(
-                                                          text: snapshot.data[1].prix==null ? "0" : snapshot.data[1].prix.toString(),
+                                                          text: snapshot.data[1]
+                                                                      .prix ==
+                                                                  null
+                                                              ? "0"
+                                                              : snapshot
+                                                                  .data[1].prix
+                                                                  .toString(),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:
-                                                              FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color: violet),
                                                           children: [
                                                             TextSpan(
@@ -315,14 +369,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   fontWeight:
-                                                                  FontWeight.bold,
-                                                                  color: violet),
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      violet),
                                                             ),
                                                           ]),
                                                     )),
                                               ])),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             height: screenheight * 0.07,
