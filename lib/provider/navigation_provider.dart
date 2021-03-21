@@ -21,8 +21,23 @@ class NavigationProvider with ChangeNotifier {
     return _phonenumber;
   }
 
+  int _month = 0;
+  int _year = 0;
+  String _search = "";
   int get getpage {
     return _page;
+  }
+
+  int get getmonth {
+    return _month;
+  }
+
+  String get getsearch {
+    return _search;
+  }
+
+  int get getyear {
+    return _year;
   }
 
   bool get getbool {
@@ -75,6 +90,10 @@ class NavigationProvider with ChangeNotifier {
     } else {
       _renvoyer = renvoyer;
     }
+  }
+
+  void changesearch(String search) {
+    _search = search;
     notifyListeners();
   }
 
@@ -85,6 +104,15 @@ class NavigationProvider with ChangeNotifier {
 
   void setStatus(bool status) {
     _status = status;
+  }
+
+  void changemonth(int month) {
+    _month = month;
+    notifyListeners();
+  }
+
+  void changeyear(int year) {
+    _year = year;
     notifyListeners();
   }
 }

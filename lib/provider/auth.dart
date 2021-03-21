@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as Dio;
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ import 'package:ze_livreur/models/LivreurExt.dart';
 import 'package:ze_livreur/provider/dio.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscrit.dart';
-import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 
 class Auth extends ChangeNotifier {
   final storage = new FlutterSecureStorage();
@@ -19,6 +17,15 @@ class Auth extends ChangeNotifier {
   String token;
   String get _token => token;
   LivreurExt get livreurExt => _livreurExt;
+
+  String get getauth {
+    return authenticated;
+  }
+
+  void changeauth(String auth) {
+    _isloggedIn = auth;
+    notifyListeners();
+  }
 
   String gettoken() {
     print(this.token);
@@ -36,7 +43,6 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         print(response.data.toString());

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ze_livreur/Models/Livraison_externe.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/components/header.dart';
-import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
@@ -21,8 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
   bool status = false;
-  Future<Livraison_externe> _livraison;
-  Future<Livraison_aujourdhui> _livauj;
 
   @override
   void initState() {
@@ -324,9 +320,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .data[
                                                                               1]
                                                                           .prix) *
-                                                                      0.85)
+                                                                      0.8)
                                                                   .toStringAsFixed(
-                                                                      2),
+                                                                      1),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:
@@ -365,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               color: violet),
                                                           children: [
                                                             TextSpan(
-                                                              text: "DA",
+                                                              text: " DA",
                                                               style: TextStyle(
                                                                   fontSize: 15,
                                                                   fontWeight:

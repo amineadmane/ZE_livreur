@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ze_livreur/components/Bartchart.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:charts_flutter/flutter.dart' as charts hide Color, TextStyle;
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/models/Metric.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 
 class Financespage extends StatefulWidget {
@@ -18,21 +20,20 @@ class _FinancespageState extends State<Financespage> {
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
   bool status = false;
-  Future<Metric> _metric;
 
   @override
   void initState() {
     super.initState();
-    _metric = ApiCalls().getmetric(31);
   }
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<Auth>(context, listen: false).livreurExt;
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
     return SafeArea(
       child: FutureBuilder(
-          future: _metric,
+          future: ApiCalls().getmetric(provider.idLivExt),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Scaffold(
@@ -43,7 +44,7 @@ class _FinancespageState extends State<Financespage> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Center(
                       child: Text(
-                        "Evolution des benefices par mois",
+                        "Evolution des bénéfices par mois",
                         style: TextStyle(
                             fontSize:
                                 ResponsiveFlutter.of(context).fontSize(2.5),
@@ -98,7 +99,10 @@ class _FinancespageState extends State<Financespage> {
                                           MediaQuery.of(context).size.height *
                                               0.01),
                                   Text(
-                                    snapshot.data.cAMensuel.toString(),
+                                    snapshot.data.cAMensuel == null
+                                        ? "0"
+                                        : snapshot.data.cAMensuel.toString() +
+                                            "DA",
                                     style: TextStyle(
                                         color: violet,
                                         fontSize: ResponsiveFlutter.of(context)
@@ -113,7 +117,18 @@ class _FinancespageState extends State<Financespage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "+" + snapshot.data.cAToday.toString(),
+                                        "+",
+                                        style: TextStyle(
+                                            color: darkgreen,
+                                            fontSize:
+                                                ResponsiveFlutter.of(context)
+                                                    .fontSize(2.5),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        snapshot.data.cAToday == null
+                                            ? "0"
+                                            : snapshot.data.cAToday.toString(),
                                         style: TextStyle(
                                             color: darkgreen,
                                             fontSize:
@@ -122,17 +137,18 @@ class _FinancespageState extends State<Financespage> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
-                                          width: MediaQuery.of(context)
+                                          height: MediaQuery.of(context)
                                                   .size
                                                   .height *
                                               0.01),
                                       Text(
-                                        "Auj",
+                                        snapshot.data.cAMensuel.toString(),
                                         style: TextStyle(
                                             color: violet,
                                             fontSize:
                                                 ResponsiveFlutter.of(context)
-                                                    .fontSize(2)),
+                                                    .fontSize(3),
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   )
@@ -158,7 +174,7 @@ class _FinancespageState extends State<Financespage> {
                                           MediaQuery.of(context).size.height *
                                               0.01),
                                   Text(
-                                    "Benefices",
+                                    "Bénéfices",
                                     style: TextStyle(
                                         color: violet,
                                         fontSize: ResponsiveFlutter.of(context)

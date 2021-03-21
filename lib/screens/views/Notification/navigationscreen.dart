@@ -1,9 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/components/common_styles.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
+import 'package:location/location.dart';
+import 'package:ze_livreur/services/ApiCalls.dart';
+import 'package:ze_livreur/services/maps.dart';
+import 'package:ze_livreur/models/DirectionDetails.dart';
+import 'package:ze_livreur/provider/request_provider.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class NavigationPage extends StatefulWidget {
@@ -20,33 +31,193 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  Position currentposition;
+  LatLng _initialcameraposition = LatLng(20.5937, 78.9629);
+  GoogleMapController _controller;
+  Location _location = Location();
+
+  List<LatLng> pLineCoordinates = [];
+  Set<Polyline> polylineSet = {};
+
+  Set<Marker> markersSet = {};
+  Set<Circle> circlesSet = {};
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _onMapCreated(GoogleMapController _cntlr) async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await _location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await _location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await _location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await _location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _controller = _cntlr;
+    _locationData = await _location.getLocation();
+    LatLng latlngposition =
+        LatLng(_locationData.latitude, _locationData.longitude);
+    CameraPosition cameraposition =
+        new CameraPosition(target: latlngposition, zoom: 14);
+    _controller.animateCamera(CameraUpdate.newCameraPosition(cameraposition));
+    await createpolyline(_cntlr);
+  }
+
+  Future<void> createpolyline(GoogleMapController _cntlr) async {
+    var provider = Provider.of<RequestProvider>(context, listen: false);
+
+    DirectionDetails directionDetails = await Maps.obtainPlaceDirectionsDetails(
+        context, provider.getpickup, provider.getdropoff);
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodedPolyLinePointsResult =
+        polylinePoints.decodePolyline(directionDetails.encodedPoints);
+    print(decodedPolyLinePointsResult.first.toString());
+    pLineCoordinates.clear();
+    if (decodedPolyLinePointsResult.isNotEmpty) {
+      decodedPolyLinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+      });
+    }
+    polylineSet.clear();
+    setState(() {
+      Polyline polyline = Polyline(
+          color: Colors.green,
+          polylineId: PolylineId("PolylineID"),
+          jointType: JointType.round,
+          points: pLineCoordinates,
+          width: 5,
+          startCap: Cap.roundCap,
+          endCap: Cap.roundCap,
+          geodesic: true);
+      polylineSet.add(polyline);
+    });
+
+    this.adjustcamera(_cntlr);
+
+    Marker pickUpLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        position: pLineCoordinates.first,
+        markerId: MarkerId("PickUpID"));
+
+    Marker dropOffLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        position: pLineCoordinates.last,
+        markerId: MarkerId("DropOffID"));
+
+    setState(() {
+      markersSet.add(pickUpLocMarker);
+      markersSet.add(dropOffLocMarker);
+    });
+
+    Circle pickUpLocCircle = Circle(
+      fillColor: Colors.blueAccent,
+      center: pLineCoordinates.first,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.blueAccent,
+      circleId: CircleId("PickUpID"),
+    );
+
+    Circle dropoffLocCircle = Circle(
+      fillColor: Colors.deepPurple,
+      center: pLineCoordinates.last,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.deepPurple,
+      circleId: CircleId("DropOffID"),
+    );
+
+    setState(() {
+      circlesSet.add(pickUpLocCircle);
+      circlesSet.add(dropoffLocCircle);
+    });
+
+    return circlesSet;
+  }
+
+  void adjustcamera(GoogleMapController _cntlr) {
+    LatLngBounds latLngBoundst;
+    if (pLineCoordinates.first.latitude > pLineCoordinates.last.latitude &&
+        pLineCoordinates.first.longitude > pLineCoordinates.last.longitude) {
+      latLngBoundst = LatLngBounds(
+          southwest: pLineCoordinates.last, northeast: pLineCoordinates.first);
+    } else if (pLineCoordinates.first.longitude >
+        pLineCoordinates.last.longitude) {
+      latLngBoundst = LatLngBounds(
+          southwest: LatLng(
+              pLineCoordinates.first.latitude, pLineCoordinates.last.longitude),
+          northeast: LatLng(pLineCoordinates.last.latitude,
+              pLineCoordinates.first.longitude));
+    } else if (pLineCoordinates.first.latitude >
+        pLineCoordinates.last.latitude) {
+      latLngBoundst = LatLngBounds(
+          southwest: LatLng(
+              pLineCoordinates.last.latitude, pLineCoordinates.first.longitude),
+          northeast: LatLng(pLineCoordinates.first.latitude,
+              pLineCoordinates.last.longitude));
+    } else {
+      latLngBoundst = LatLngBounds(
+          southwest: pLineCoordinates.first, northeast: pLineCoordinates.last);
+    }
+    _controller = _cntlr;
+    _controller.animateCamera(CameraUpdate.newLatLngBounds(latLngBoundst, 70));
+  }
+
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<RequestProvider>(context, listen: false);
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: NavigationPage().background,
-        body: Container(
-          padding: EdgeInsets.symmetric(
-              vertical: ResponsiveFlutter.of(context).scale(10)),
-          height: ResponsiveFlutter.of(context).hp(100),
-          child: ListView(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    top(context),
-                    diveder(context),
-                    middle(context),
-                    diveder(context),
-                    googlemap(context),
-                    diveder(context),
-                    bottom(context),
-                  ],
-                ),
-              ]),
+        child: Scaffold(
+      backgroundColor: NavigationPage().background,
+      body: Container(
+        padding: EdgeInsets.symmetric(
+            vertical: ResponsiveFlutter.of(context).scale(10)),
+        height: ResponsiveFlutter.of(context).hp(100),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            top(context, provider.getnom, provider.getprenom, provider.gettel),
+            diveder(context),
+            middle(context, provider.getdistance, provider.getduration),
+            diveder(context),
+            googlemap(context),
+            diveder(context),
+            bottom(context),
+          ],
         ),
+      ),
+    ));
+  }
+
+  Widget googlemap(context) {
+    return Container(
+      height: ResponsiveFlutter.of(context).hp(50),
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(target: _initialcameraposition),
+        mapType: MapType.normal,
+        onMapCreated: _onMapCreated,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        zoomControlsEnabled: true,
+        zoomGesturesEnabled: true,
+        polylines: polylineSet,
+        markers: markersSet,
+        circles: circlesSet,
       ),
     );
   }
@@ -61,7 +232,7 @@ Widget diveder(context) {
   );
 }
 
-Widget middle(BuildContext context) {
+Widget middle(BuildContext context, String distance, int duration) {
   return Container(
     child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       Container(
@@ -72,30 +243,13 @@ Widget middle(BuildContext context) {
           children: [
             RichText(
               text: TextSpan(
-                  text: "6 ",
+                  text: convertduration(duration),
                   style: TextStyle(
                       color: NavigationPage().background,
                       fontSize: ResponsiveFlutter.of(context).fontSize(5),
                       fontFamily: "Mom Cake",
                       fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "min",
-                      style: TextStyle(
-                          color: NavigationPage().background,
-                          fontSize: ResponsiveFlutter.of(context).fontSize(4),
-                          fontFamily: "Mom Cake",
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            ),
-            Text(
-              "restantes",
-              style: TextStyle(
-                  color: NavigationPage().background,
-                  fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
-                  fontFamily: "Mom Cake",
-                  fontWeight: FontWeight.bold),
+                  children: []),
             ),
           ],
         ),
@@ -108,30 +262,13 @@ Widget middle(BuildContext context) {
           children: [
             RichText(
               text: TextSpan(
-                  text: "10 ",
+                  text: distance + " ",
                   style: TextStyle(
                       color: NavigationPage().background,
                       fontSize: ResponsiveFlutter.of(context).fontSize(5),
                       fontFamily: "Mom Cake",
                       fontWeight: FontWeight.bold),
-                  children: [
-                    TextSpan(
-                      text: "km",
-                      style: TextStyle(
-                          color: NavigationPage().background,
-                          fontSize: ResponsiveFlutter.of(context).fontSize(4),
-                          fontFamily: "Mom Cake",
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ]),
-            ),
-            Text(
-              "restants",
-              style: TextStyle(
-                  color: NavigationPage().background,
-                  fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
-                  fontFamily: "Mom Cake",
-                  fontWeight: FontWeight.bold),
+                  children: []),
             ),
           ],
         ),
@@ -152,7 +289,13 @@ bottom(BuildContext context) {
           children: [
             FlatButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () async {
+                  var provider = Provider.of<Auth>(context, listen: false);
+                  await ApiCalls()
+                      .AnnulerLivraison(provider.livreurExt.idLivExt);
+                  Provider.of<Auth>(context, listen: false)
+                      .changeauth("loggedin");
+                },
                 child: Container(
                   width: ResponsiveFlutter.of(context).scale(100),
                   height: ResponsiveFlutter.of(context).scale(50),
@@ -202,7 +345,7 @@ bottom(BuildContext context) {
             Container(
               width: ResponsiveFlutter.of(context).scale(100),
               child: Text(
-                "Commande\nreçue",
+                "Commande reçue",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: NavigationPage().grey,
@@ -219,9 +362,9 @@ bottom(BuildContext context) {
   );
 }
 
-Widget top(context) {
+Widget top(context, String nom, String prenom, String tel) {
   void launchURL() async {
-    const url = 'tel:+213771854123';
+    var url = 'tel:' + tel;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -250,7 +393,7 @@ Widget top(context) {
               ),
             ),
             title: Text(
-              "ziouane omar eddine",
+              nom + " " + prenom,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: NavigationPage().background,
@@ -260,7 +403,7 @@ Widget top(context) {
               ),
             ),
             subtitle: Text(
-              "(+213) 557 081 963",
+              tel,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: NavigationPage().background,
@@ -291,14 +434,13 @@ Widget top(context) {
   );
 }
 
-Widget googlemap(context) {
-  return Container(
-    height: ResponsiveFlutter.of(context).hp(50),
-    child: GoogleMap(
-      myLocationButtonEnabled: true,
-      myLocationEnabled: true,
-      initialCameraPosition: CameraPosition(
-          target: LatLng(36.70879640846684, 3.08479366116213), zoom: 15),
-    ),
-  );
+String convertduration(int seconds) {
+  var duration = seconds;
+  var hours = (seconds / 3600).toStringAsFixed(0);
+  duration = duration % 3600;
+  var minutes = (duration / 60).toStringAsFixed(0);
+  String durationtext = hours.toString() + "h" + minutes.toString() + "min";
+  return durationtext;
 }
+
+format(Duration d) => d.toString().split('.').first.padLeft(8, "0");

@@ -6,7 +6,7 @@ import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
-import 'package:ze_livreur/screens/views/Parrainage.dart';
+import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 
@@ -325,7 +325,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
 
   Widget _buildSignUpButton(BuildContext context) {
     var currentTab = [
-      ParrainageScreen(),
+      Parrainage(),
       HistoriquePage(),
       HomeScreen(),
       Financespage(),

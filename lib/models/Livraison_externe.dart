@@ -10,7 +10,7 @@ class Livraison_externe {
   String codePostal;
   String adresse;
   int prix;
-  double note;
+  dynamic note;
   String commentaire;
   int ditanceParcourous;
   String createdAt;

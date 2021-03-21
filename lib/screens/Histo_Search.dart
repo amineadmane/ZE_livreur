@@ -8,19 +8,16 @@ import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:provider/provider.dart';
 
-import '../../Histo_Search.dart';
-
-class HistoriquePagescreen extends StatefulWidget {
+class HistoSearchScreen extends StatefulWidget {
   @override
-  _HistoriquePagescreenState createState() => _HistoriquePagescreenState();
+  _HistoSearchScreenState createState() => _HistoSearchScreenState();
 }
 
-class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
+class _HistoSearchScreenState extends State<HistoSearchScreen> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Auth>(context, listen: false).livreurExt;
     var providernav = Provider.of<NavigationProvider>(context, listen: false);
-    TextEditingController searchcontroller = new TextEditingController();
 
     Size size = MediaQuery.of(context).size;
     double screenheight = size.height;
@@ -49,82 +46,74 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-            future: ApiCalls().gethistomensuelle(
-                provider.idLivExt, providernav.getmonth, providernav.getyear),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Stack(
-                  children: <Widget>[
-                    ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        padding: EdgeInsets.only(
-                            bottom: 16,
-                            right: 16,
-                            left: 16,
-                            top: MediaQuery.of(context).size.height * 0.175),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return box(snapshot.data[index]);
-                        }),
-                    Container(
-                      // Background
-                      child: Center(
-                        child: Text(
-                          getmonth(providernav.getmonth),
-                          style: TextStyle(
-                              fontSize:
-                                  ResponsiveFlutter.of(context).fontSize(3.5),
-                              color: Colors.white),
-                        ),
-                      ),
-                      color: orangeclair,
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                    Container(), // Required some widget in between to float AppBar
-                    Positioned(
-                      // To take AppBar Size only
-                      top: MediaQuery.of(context).size.height * 0.09,
-                      left: MediaQuery.of(context).size.width * 0.1,
-                      right: MediaQuery.of(context).size.width * 0.1,
-                      child: AppBar(
-                        backgroundColor: Colors.white,
-                        leading: IconButton(
-                            icon: Icon(Icons.arrow_back_ios_rounded,
-                                color: orangeclair),
-                            onPressed: () => Navigator.pop(context)),
-                        primary: false,
-                        title: TextField(
-                            controller: searchcontroller,
-                            decoration: InputDecoration(
-                                hintText: "Rechercher",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(color: Colors.grey))),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.search, color: orangeclair),
-                            onPressed: () {
-                              providernav.changesearch(searchcontroller.text);
-                              Navigator.push(
-                                  (context),
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          HistoSearchScreen()));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-              if (snapshot.hasError) {
-                return Text("Erreur");
-              }
-              return Center(child: CircularProgressIndicator());
-            }),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              providernav.getsearch,
+              style: TextStyle(fontSize: 20),
+            ),
+            backgroundColor: orangeclair,
+          ),
+          body: FutureBuilder(
+              future: ApiCalls().gethistomensuelle(
+                  provider.idLivExt, providernav.getmonth, providernav.getyear),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Stack(
+                    children: <Widget>[
+                      ListView.builder(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(
+                              right: 16,
+                              left: 16,
+                              top: MediaQuery.of(context).size.height * 0.03),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            print(
+                                "Search : " + providernav.getsearch.toString());
+                            if (snapshot.data[index].datelivraison
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(
+                                        providernav.getsearch.toLowerCase()) ||
+                                snapshot.data[index].clientname
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(
+                                        providernav.getsearch.toLowerCase()) ||
+                                snapshot.data[index].clientprenom
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(
+                                        providernav.getsearch.toLowerCase()) ||
+                                snapshot.data[index].dropoff
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(
+                                        providernav.getsearch.toLowerCase()) ||
+                                snapshot.data[index].pickup
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(
+                                        providernav.getsearch.toLowerCase())) {
+                              return box(snapshot.data[index]);
+                            } else {
+                              return Container(
+                                height: 0,
+                                width: 0,
+                              );
+                            }
+                          }),
+                    ],
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text("Erreur");
+                }
+                return Center(child: CircularProgressIndicator());
+              }),
+        ),
       ),
     );
   }
