@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/ContainerScreen.dart';
+import 'package:ze_livreur/screens/views/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
 import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-
-import '../Historique/Historique.dart';
 import '../financesscreen.dart';
 import '../ratingscreen.dart';
 
@@ -327,7 +327,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     var currentTab = [
       Parrainage(),
       HistoriquePage(),
-      HomeScreen(),
+      ContainerScreen(),
       Financespage(),
       RatingsPage(),
     ];
@@ -365,7 +365,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                       "loggedin") {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => currentTab[provider.getpage],
+                        builder: (_) => currentTab[provider.getpage],
                       ),
                     );
                   } else {

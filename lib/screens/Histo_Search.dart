@@ -19,30 +19,7 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
     var provider = Provider.of<Auth>(context, listen: false).livreurExt;
     var providernav = Provider.of<NavigationProvider>(context, listen: false);
 
-    Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
-    double screenwidth = size.width;
-
-    Color background = Color(0xFFF2F2F2);
-    Color orange = Color(0xFFF28322);
-    Color violet = Color(0xFF382B8C);
     Color orangeclair = Color(0xFFEEA86B);
-    Color grey2 = Color(0xFF646464);
-
-    String getmonth(int month) {
-      if (month == 1) return "Janvier";
-      if (month == 2) return "Fevrier";
-      if (month == 3) return "Mars";
-      if (month == 4) return "Avril";
-      if (month == 5) return "May";
-      if (month == 6) return "Juin";
-      if (month == 7) return "Juillet";
-      if (month == 8) return "Aout";
-      if (month == 9) return "Septembre";
-      if (month == 10) return "Octobre";
-      if (month == 11) return "Novembre";
-      if (month == 12) return "Decembre";
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -120,7 +97,6 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
 
   Widget box(Histo_mensuel histo) {
     Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
     double screenwidth = size.width;
 
     Color background = Color(0xFFF2F2F2);

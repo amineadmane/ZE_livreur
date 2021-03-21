@@ -58,16 +58,6 @@ class _InfovehiculeWidgetState extends State<InfovehiculeWidget> {
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
 
-  void _changeLivreurExt(BuildContext context, String modeleVehicule,
-      String matriculeVehicule, String marqueVehicule) {
-    Provider.of<InscriptionProvider>(context, listen: false)
-        .changeMatriculeVehicule(matriculeVehicule);
-    Provider.of<InscriptionProvider>(context, listen: false)
-        .changeModeleVehicule(modeleVehicule);
-    Provider.of<InscriptionProvider>(context, listen: false)
-        .changeMarqueVehicule(marqueVehicule);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(

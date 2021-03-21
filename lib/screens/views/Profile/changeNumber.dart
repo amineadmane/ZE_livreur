@@ -10,7 +10,7 @@ import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 
 class ChangeNumberScreen extends StatefulWidget {
   String phoneNumber;
-  ChangeNumberScreen(@required this.phoneNumber);
+  ChangeNumberScreen(this.phoneNumber);
 
   @override
   _ChangeNumberScreenState createState() => _ChangeNumberScreenState();
@@ -284,7 +284,6 @@ class _ChangeNumberScreenState extends State<ChangeNumberScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pinPutController.dispose();
   }

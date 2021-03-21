@@ -1,10 +1,6 @@
-import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/models/DirectionDetails.dart';
 import 'package:ze_livreur/provider/request_provider.dart';

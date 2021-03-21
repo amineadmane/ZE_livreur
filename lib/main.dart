@@ -17,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getToken();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<Auth>(create: (_) => Auth()),
@@ -66,27 +67,33 @@ class _NavigationState extends State<Navigation> {
   }
 
   void getMessage() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage messageRemoted) {
-      RemoteNotification notification = messageRemoted.notification;
-      AndroidNotification android = messageRemoted.notification?.android;
-      Map<String, dynamic> message = messageRemoted.data;
-      var provider = Provider.of<RequestProvider>(context, listen: false);
-      var userprovider = Provider.of<Auth>(context, listen: false);
-      print(userprovider.livreurExt.idLivExt);
-      if (userprovider.livreurExt.etat == "online" &&
-          userprovider.authenticated != "notified" &&
-          userprovider.authenticated != "delivring") {
-        provider.changenom(message['data']['nom']);
-        provider.changeprenom(message['data']['prenom']);
-        provider.changepickup(message['data']['pickup']);
-        provider.changedropoff(message['data']['dropoff']);
-        provider.changetel(message['data']['tel']);
-        provider.changeprix(double.parse(message['data']['prix']));
-        Provider.of<Auth>(context, listen: false).changeauth("notified");
-      }
-    });
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage messageRemoted) {
+        RemoteNotification notification = messageRemoted.notification;
+        AndroidNotification android = messageRemoted.notification?.android;
+        Map<String, dynamic> message = messageRemoted.data;
+        var provider = Provider.of<RequestProvider>(context, listen: false);
+        var userprovider = Provider.of<Auth>(context, listen: false);
+        print(userprovider.livreurExt.idLivExt);
+        if (userprovider.livreurExt.etat == "online" &&
+            userprovider.authenticated != "notified" &&
+            userprovider.authenticated != "delivring") {
+          provider.changenom(message['data']['nom']);
+          provider.changeprenom(message['data']['prenom']);
+          provider.changepickup(message['data']['pickup']);
+          provider.changedropoff(message['data']['dropoff']);
+          provider.changetel(message['data']['tel']);
+          provider.changeprix(double.parse(message['data']['prix']));
+          Provider.of<Auth>(context, listen: false).changeauth("notified");
+        }
+      },
+      onDone: () {
+        print("sdsdsd");
+      },
+    );
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage messageRemoted) {
+      print("hello");
       Map<String, dynamic> message = messageRemoted.data;
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}
