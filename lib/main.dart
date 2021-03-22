@@ -29,8 +29,6 @@ Future<void> main() async {
 
 // ignore: camel_case_types
 class ze_livreur extends StatelessWidget {
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<NavigationProvider>(
@@ -69,21 +67,25 @@ class _NavigationState extends State<Navigation> {
   void getMessage() {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage messageRemoted) {
+        print("rahi temchi");
+        print(messageRemoted.toString());
+
         RemoteNotification notification = messageRemoted.notification;
         AndroidNotification android = messageRemoted.notification?.android;
         Map<String, dynamic> message = messageRemoted.data;
+        print(message.toString());
         var provider = Provider.of<RequestProvider>(context, listen: false);
         var userprovider = Provider.of<Auth>(context, listen: false);
         print(userprovider.livreurExt.idLivExt);
         if (userprovider.livreurExt.etat == "online" &&
             userprovider.authenticated != "notified" &&
             userprovider.authenticated != "delivring") {
-          provider.changenom(message['data']['nom']);
-          provider.changeprenom(message['data']['prenom']);
-          provider.changepickup(message['data']['pickup']);
-          provider.changedropoff(message['data']['dropoff']);
-          provider.changetel(message['data']['tel']);
-          provider.changeprix(double.parse(message['data']['prix']));
+          provider.changenom(message['nom']);
+          provider.changeprenom(message['prenom']);
+          provider.changepickup(message['pickup']);
+          provider.changedropoff(message['dropoff']);
+          provider.changetel(message['tel']);
+          provider.changeprix(double.parse(message['prix']));
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
       },
@@ -98,18 +100,19 @@ class _NavigationState extends State<Navigation> {
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}
       var provider = Provider.of<RequestProvider>(context, listen: false);
-      provider.changenom(message['data']['nom']);
-      provider.changeprenom(message['data']['prenom']);
-      provider.changepickup(message['data']['pickup']);
-      provider.changedropoff(message['data']['dropoff']);
-      provider.changetel(message['data']['tel']);
-      provider.changeprix(double.parse(message['data']['prix']));
+      provider.changenom(message['nom']);
+      provider.changeprenom(message['prenom']);
+      provider.changepickup(message['pickup']);
+      provider.changedropoff(message['dropoff']);
+      provider.changetel(message['tel']);
+      provider.changeprix(double.parse(message['prix']));
       Provider.of<Auth>(context, listen: false).changeauth("notified");
     });
   }
 
   @override
   Widget build(context) {
+    getMessage();
     return MaterialApp(
       home: Scaffold(
         body: Consumer<Auth>(
