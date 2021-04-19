@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:ze_livreur/screens/homescreen.dart';
 import 'package:ze_livreur/screens/views/ContainerScreen.dart';
 import 'package:ze_livreur/screens/views/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';

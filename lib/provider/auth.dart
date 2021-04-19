@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -28,8 +27,6 @@ class Auth extends ChangeNotifier {
   }
 
   String gettoken() {
-    print(this.token);
-    print("this is tiken : $token");
     return this.token;
   }
 

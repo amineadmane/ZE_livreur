@@ -120,6 +120,7 @@ Widget cout(context, String prix) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
+    height: ResponsiveFlutter.of(context).hp(20),
     padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
     decoration: BoxDecoration(
       color: NotificationPage().background,
