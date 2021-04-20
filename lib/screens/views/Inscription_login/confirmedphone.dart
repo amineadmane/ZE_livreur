@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ze_livreur/provider/InscriptionProvider.dart';
+import 'package:ze_livreur/screens/views/Inscription_login/infovehicule.dart';
 
 class ConfirmedphoneScreen extends StatefulWidget {
   @override
@@ -11,21 +14,23 @@ class ConfirmedphoneScreen extends StatefulWidget {
 class _ConfirmedphoneScreenState extends State<ConfirmedphoneScreen> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Image.asset(
-          "assets/images/Delivery.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.2,
-          left: 10,
-          right: 10,
-          child: ConfirmedphoneWidget(),
-        )
-      ],
+    return SingleChildScrollView(
+      child: Stack(
+        children: <Widget>[
+          Image.asset(
+            "assets/images/Delivery.png",
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.2,
+            left: 10,
+            right: 10,
+            child: ConfirmedphoneWidget(),
+          )
+        ],
+      ),
     );
   }
 }
@@ -36,21 +41,40 @@ class ConfirmedphoneWidget extends StatefulWidget {
 }
 
 class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
+  void _changeCodeParrainage(BuildContext context, String _codeParrainage) {
+    Provider.of<InscriptionProvider>(context, listen: false)
+        .changeCodeParrainage(_codeParrainage);
+  }
+
+  void _changeExpireDate(BuildContext context, DateTime expireDate) {
+    Provider.of<InscriptionProvider>(context, listen: false)
+        .changeExpireDate(expireDate);
+  }
+
+  void _changeIdPermis(BuildContext context, String _idPermis) {
+    Provider.of<InscriptionProvider>(context, listen: false)
+        .changeIdPermis(_idPermis);
+  }
+
   DateTime _selectedDate;
   TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _codeController = TextEditingController();
+  TextEditingController _idPermisController = TextEditingController();
+
   bool checkedValue = false;
   String email;
   String password;
   final _formKey = GlobalKey<FormState>();
-  //var _userEmailController = TextEditingController(text: "");
-  //var _emailFocusNode = FocusNode();
-  bool _autoValidate = false;
+
+  Color background = Color(0xFFF2F2F2);
+  Color orange = Color(0xFFF28322);
+  Color violet = Color(0xFF382B8C);
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      autovalidate: _autoValidate,
+      autovalidateMode: AutovalidateMode.disabled,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.7,
         decoration: BoxDecoration(
@@ -58,7 +82,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Column(
+          body: ListView(
             children: <Widget>[
               _buildIntroText(),
               _buildreferencement(),
@@ -147,7 +171,10 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             },
           ),
           TextFormField(
+            controller: _codeController,
+            onChanged: (value) => _codeController,
             keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.characters,
             decoration: InputDecoration(
               enabled: checkedValue,
               labelText: checkedValue ? "Code de referencement" : "",
@@ -183,7 +210,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             children: [
               Center(
                 child: Text(
-                  "Permis de conduire",
+                  "Numéro de Permis de conduire",
                   style: TextStyle(
                       fontSize: ResponsiveFlutter.of(context).fontSize(3),
                       color: Colors.black,
@@ -191,6 +218,14 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
                 ),
               ),
               TextFormField(
+                validator: (value) {
+                  if (value.length == 0) {
+                    return "Veuillez entrez une valeur";
+                  } else {
+                    return null;
+                  }
+                },
+                controller: _idPermisController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: "Numero de permis de conduire",
@@ -214,7 +249,14 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Center(
-                child: TextField(
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.length == 0) {
+                      return "Veuillez entrez une date valide ";
+                    } else {
+                      return null;
+                    }
+                  },
                   decoration: InputDecoration(
                     labelText: "Date d'expiration",
                     labelStyle: TextStyle(color: Colors.black),
@@ -252,6 +294,7 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
   _selectDate(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
         context: context,
+        useRootNavigator: false,
         initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(2040),
@@ -269,7 +312,6 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             child: child,
           );
         });
-
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
       _textEditingController
@@ -277,6 +319,8 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
         ..selection = TextSelection.fromPosition(TextPosition(
             offset: _textEditingController.text.length,
             affinity: TextAffinity.upstream));
+
+      _changeExpireDate(context, newSelectedDate);
     }
   }
 
@@ -287,10 +331,10 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
         child: ButtonBar(
             children: [
               RaisedButton(
-                  onPressed: null,
+                  onPressed: () => Navigator.pop(context),
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(20.0)),
-                  color: Color(0xFF480086),
+                  color: violet,
                   child: Text(
                     "Retour",
                     style: TextStyle(
@@ -299,10 +343,20 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
                         fontWeight: FontWeight.bold),
                   )),
               RaisedButton(
-                onPressed: null,
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _changeCodeParrainage(context, _codeController.text);
+                    _changeIdPermis(context, _idPermisController.text);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InfoVehiculeScreen(),
+                        ));
+                  }
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
-                color: Color(0xFF480086),
+                color: violet,
                 child: Text(
                   "Suivant",
                   style: TextStyle(
@@ -314,6 +368,13 @@ class _ConfirmedphoneWidgetState extends State<ConfirmedphoneWidget> {
             ],
             alignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textEditingController.dispose();
+    _codeController.dispose();
   }
 }
 

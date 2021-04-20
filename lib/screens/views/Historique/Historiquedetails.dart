@@ -22,15 +22,7 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
     var providernav = Provider.of<NavigationProvider>(context, listen: false);
     TextEditingController searchcontroller = new TextEditingController();
 
-    Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
-    double screenwidth = size.width;
-
-    Color background = Color(0xFFF2F2F2);
-    Color orange = Color(0xFFF28322);
-    Color violet = Color(0xFF382B8C);
     Color orangeclair = Color(0xFFEEA86B);
-    Color grey2 = Color(0xFF646464);
 
     String getmonth(int month) {
       if (month == 1) return "Janvier";
@@ -45,6 +37,7 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
       if (month == 10) return "Octobre";
       if (month == 11) return "Novembre";
       if (month == 12) return "Decembre";
+      return null;
     }
 
     return Scaffold(
@@ -131,7 +124,6 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
 
   Widget box(Histo_mensuel histo) {
     Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
     double screenwidth = size.width;
 
     Color background = Color(0xFFF2F2F2);

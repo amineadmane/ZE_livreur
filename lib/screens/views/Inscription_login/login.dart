@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:ze_livreur/screens/homescreen.dart';
+import 'package:ze_livreur/screens/views/ContainerScreen.dart';
+import 'package:ze_livreur/screens/views/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
 import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-
-import '../Historique/Historique.dart';
 import '../financesscreen.dart';
 import '../ratingscreen.dart';
 
@@ -77,7 +75,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     _userEmailController.text = "test@test.com";
     _userPasswordController.text = "password";
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       //asynchronous delay
       if (this.mounted) {
         //checks if widget is still active and not disposed
@@ -88,7 +86,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
         });
       }
     });
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 2), () {
       //asynchronous delay
       if (this.mounted) {
         //checks if widget is still active and not disposed
@@ -109,22 +107,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
   }
 
   bool tried = false;
-  String textError = "Veuillez verifier";
   String email;
   String password;
   final _formKey = GlobalKey<FormState>();
   var _userEmailController = TextEditingController(text: "");
   var _userPasswordController = TextEditingController(text: "");
-  var _emailFocusNode = FocusNode();
-  var _passwordFocusNode = FocusNode();
   bool _isPasswordVisible = true;
-  bool _autoValidate = false;
-
-  var _index = 0;
-  static const _alignment = Alignment.center;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     final node = FocusScope.of(context);
     return Container(
       child: ListView(
@@ -132,8 +123,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
           shrinkWrap: true,
           children: [
             Form(
+              autovalidateMode: AutovalidateMode.disabled,
               key: _formKey,
-              autovalidate: _autoValidate,
               child: Column(
                 children: <Widget>[
                   _buildLogo(),
@@ -148,35 +139,37 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Scaffold(
                         backgroundColor: Colors.transparent,
-                        body: Column(
-                          children: <Widget>[
-                            _buildIntroText(),
-                            _buildEmailField(context, node),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02),
-                            _buildPasswordField(context, node),
-                            Center(
-                              child: Visibility(
-                                visible: tried,
-                                child: Text(
-                                  "Adresse mail ou mot de passe erronés",
-                                  style: TextStyle(
-                                      fontSize: ResponsiveFlutter.of(context)
-                                          .fontSize(2),
-                                      color: Colors.red),
+                        body: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              _buildIntroText(),
+                              _buildEmailField(context, node),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
+                              _buildPasswordField(context, node),
+                              Center(
+                                child: Visibility(
+                                  visible: tried,
+                                  child: Text(
+                                    "Adresse mail ou mot de passe erronés",
+                                    style: TextStyle(
+                                        fontSize: ResponsiveFlutter.of(context)
+                                            .fontSize(2),
+                                        color: Colors.red),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02),
-                            _buildSignUpButton(context),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01),
-                            _buildinscription(),
-                          ],
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
+                              _buildSignUpButton(context),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              _buildinscription(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -228,7 +221,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
+            Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => RegisterScreen()));
           },
         ),
@@ -294,7 +287,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
         onFieldSubmitted: (_) {
-          node.unfocus;
+          node.unfocus();
         },
         onChanged: (value) {
           password = value;
@@ -333,7 +326,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     var currentTab = [
       Parrainage(),
       HistoriquePage(),
-      HomeScreen(),
+      ContainerScreen(),
       Financespage(),
       RatingsPage(),
     ];
@@ -365,14 +358,13 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                   "device_name": this.deviceName ?? "unknown"
                 };
                 if (_formKey.currentState.validate()) {
-                  await Provider.of<Auth>(context, listen: false).login(creds);
-                  print("np");
+                  await Provider.of<Auth>(context, listen: false)
+                      .login(context, creds);
                   if (Provider.of<Auth>(context, listen: false).authenticated ==
                       "loggedin") {
-                    print("yes");
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => currentTab[provider.getpage],
+                        builder: (_) => currentTab[provider.getpage],
                       ),
                     );
                   } else {
@@ -385,12 +377,5 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
         ),
       ),
     );
-  }
-
-  void _clearAllFields() {
-    setState(() {
-      _userEmailController = TextEditingController(text: "");
-      _userPasswordController = TextEditingController(text: "");
-    });
   }
 }

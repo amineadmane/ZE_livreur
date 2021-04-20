@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:ze_livreur/provider/navigation_provider.dart';
 
 class CommonStyles {
   Color background = Color(0xFFF2F2F2);
@@ -85,8 +84,7 @@ class CommonStyles {
     ]);
   }
 
-  passFormFieldStyle(
-      context, String label, String hint, Icon icon, bool _isvisible) {
+  passFormFieldStyle(context, String label, String hint, Icon icon) {
     Color violet = Color(0xFF382B8C);
     return InputDecoration(
       icon: icon,
@@ -95,15 +93,6 @@ class CommonStyles {
       focusColor: violet,
       fillColor: violet,
       hoverColor: violet,
-      suffixIcon: IconButton(
-        icon: Icon(
-          _isvisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-          color: violet,
-        ),
-        onPressed: () {
-          NavigationProvider().changepassstate();
-        },
-      ),
       hintStyle: TextStyle(
         color: violet,
         fontSize: ResponsiveFlutter.of(context).fontSize(3),

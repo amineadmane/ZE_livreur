@@ -32,71 +32,81 @@ class _RatingsPageState extends State<RatingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<Auth>(context,listen: false).livreurExt;
-    Size size = MediaQuery.of(context).size;
-    double screenheight = size.height;
-    double screenwidth = size.width;
+    var provider = Provider.of<Auth>(context, listen: false).livreurExt;
+
     return SafeArea(
       child: FutureBuilder(
-        future: Future.wait([ApiCalls().getevaluationtotale(provider.idLivExt), ApiCalls().gethistoevaluation(provider.idLivExt)]),
-    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-    if (snapshot.hasData) {
-       return Scaffold(
-        backgroundColor: background,
-        body: Column(
-         crossAxisAlignment: CrossAxisAlignment.center,
-         children: [
-          Header(),
-          Expanded(
-            child: Container(
-              child: ListView(
-                shrinkWrap: true,
+        future: Future.wait([
+          ApiCalls().getevaluationtotale(provider.idLivExt),
+          ApiCalls().gethistoevaluation(provider.idLivExt)
+        ]),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              backgroundColor: background,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        vertical: ResponsiveFlutter.of(context).scale(16)),
-                    child: Center(
-                      child: Text(
-                        snapshot.data[0].note.toString(),
-                        style: TextStyle(
-                            color: violet,
-                            fontSize:
-                            ResponsiveFlutter.of(context).fontSize(7),
-                            fontWeight: FontWeight.bold),
+                  Header(),
+                  Expanded(
+                    child: Container(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical:
+                                    ResponsiveFlutter.of(context).scale(16)),
+                            child: Center(
+                              child: Text(
+                                snapshot.data[0].note.toString(),
+                                style: TextStyle(
+                                    color: violet,
+                                    fontSize: ResponsiveFlutter.of(context)
+                                        .fontSize(7),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Center(
+                                child:
+                                    ratingbar(context, snapshot.data[0].note)),
+                          ),
+                          Container(
+                            child: ListView.builder(
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.all(8),
+                                itemCount: snapshot.data[1].length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return box(
+                                      context,
+                                      snapshot.data[1][index].nom +
+                                          " " +
+                                          snapshot.data[1][index].prenom,
+                                      double.tryParse(snapshot
+                                          .data[1][index].note
+                                          .toString()),
+                                      snapshot.data[1][index].commentaire);
+                                }),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                  Container(
-                    child: Center(child: ratingbar(context,snapshot.data[0].note)),
-                  ),
-                  Container(
-                    child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(8),
-                        itemCount: snapshot.data[1].length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return box(
-                              context, snapshot.data[1][index].nom +" " + snapshot.data[1][index].prenom, double.tryParse(snapshot.data[1][index].note.toString()),
-                          snapshot.data[1][index].commentaire);
-                        }),
                   )
                 ],
               ),
-            ),
-          )
-        ],
-      ),
-    );
-    } else if (snapshot.hasError) {
-    print(snapshot.error.toString());
-    return Text("Erreur");
-    }
+            );
+          } else if (snapshot.hasError) {
+            print(snapshot.error.toString());
+            return Text("Erreur");
+          }
 
-    // By default, show a loading spinner.
-    return Center(child: CircularProgressIndicator());
-    },
-    ),
+          // By default, show a loading spinner.
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 
@@ -121,7 +131,8 @@ class _RatingsPageState extends State<RatingsPage> {
     );
   }
 
-  Widget box(BuildContext context, String chauffeur, double note,String commentaire) {
+  Widget box(
+      BuildContext context, String chauffeur, double note, String commentaire) {
     return Container(
         margin: EdgeInsets.symmetric(
             horizontal: ResponsiveFlutter.of(context).scale(8),

@@ -1,30 +1,34 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:ze_livreur/provider/InscriptionProvider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
-import 'package:ze_livreur/screens/homescreen.dart';
 import 'package:ze_livreur/screens/views/ContainerScreen.dart';
-import 'package:ze_livreur/screens/views/Historique/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscrit.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
-import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getToken();
+
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => Auth()),
-    ChangeNotifierProvider(create: (context) => RequestProvider())
+    ChangeNotifierProvider<Auth>(create: (_) => Auth()),
+    ChangeNotifierProvider(create: (context) => RequestProvider()),
+    ChangeNotifierProvider<InscriptionProvider>(
+        create: (_) => InscriptionProvider())
   ], child: ze_livreur()));
 }
 
 // ignore: camel_case_types
 class ze_livreur extends StatelessWidget {
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<NavigationProvider>(
@@ -39,7 +43,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   final storage = new FlutterSecureStorage();
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
@@ -51,7 +55,7 @@ class _NavigationState extends State<Navigation> {
 
   Future<void> readToken() async {
     String token = await storage.read(key: "token");
-    await Provider.of<Auth>(context, listen: false).tryToken(token);
+    await Provider.of<Auth>(context, listen: false).tryToken(context, token);
     print("token : $token");
   }
 
@@ -61,45 +65,54 @@ class _NavigationState extends State<Navigation> {
   }
 
   void getMessage() {
-    _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-      var provider = Provider.of<RequestProvider>(context, listen: false);
-      var userprovider = Provider.of<Auth>(context, listen: false);
-      print(userprovider.livreurExt.idLivExt);
-      if (userprovider.livreurExt.etat == "online" &&
-          userprovider.authenticated != "notified" &&
-          userprovider.authenticated != "delivring") {
-        print("yes");
-        provider.changenom(message['data']['nom']);
-        provider.changeprenom(message['data']['prenom']);
-        provider.changepickup(message['data']['pickup']);
-        provider.changedropoff(message['data']['dropoff']);
-        provider.changetel(message['data']['tel']);
-        provider.changeprix(double.parse(message['data']['prix']));
-        Provider.of<Auth>(context, listen: false).changeauth("notified");
-      }
-    }, onResume: (Map<String, dynamic> message) async {
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage messageRemoted) {
+        print("rahi temchi");
+        print(messageRemoted.toString());
+
+        RemoteNotification notification = messageRemoted.notification;
+        AndroidNotification android = messageRemoted.notification?.android;
+        Map<String, dynamic> message = messageRemoted.data;
+        print(message.toString());
+        var provider = Provider.of<RequestProvider>(context, listen: false);
+        var userprovider = Provider.of<Auth>(context, listen: false);
+        print(userprovider.livreurExt.idLivExt);
+        if (userprovider.livreurExt.etat == "online" &&
+            userprovider.authenticated != "notified" &&
+            userprovider.authenticated != "delivring") {
+          provider.changenom(message['nom']);
+          provider.changeprenom(message['prenom']);
+          provider.changepickup(message['pickup']);
+          provider.changedropoff(message['dropoff']);
+          provider.changetel(message['tel']);
+          provider.changeprix(double.parse(message['prix']));
+          Provider.of<Auth>(context, listen: false).changeauth("notified");
+        }
+      },
+      onDone: () {
+        print("sdsdsd");
+      },
+    );
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage messageRemoted) {
+      print("hello");
+      Map<String, dynamic> message = messageRemoted.data;
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}
-      print("Notified");
       var provider = Provider.of<RequestProvider>(context, listen: false);
-      print("yes");
-      provider.changenom(message['data']['nom']);
-      provider.changeprenom(message['data']['prenom']);
-      provider.changepickup(message['data']['pickup']);
-      provider.changedropoff(message['data']['dropoff']);
-      provider.changetel(message['data']['tel']);
-      provider.changeprix(double.parse(message['data']['prix']));
+      provider.changenom(message['nom']);
+      provider.changeprenom(message['prenom']);
+      provider.changepickup(message['pickup']);
+      provider.changedropoff(message['dropoff']);
+      provider.changetel(message['tel']);
+      provider.changeprix(double.parse(message['prix']));
       Provider.of<Auth>(context, listen: false).changeauth("notified");
-    }, onLaunch: (Map<String, dynamic> message) async {
-      print("launche");
     });
   }
 
   @override
   Widget build(context) {
-    var provider = Provider.of<NavigationProvider>(context);
-
+    getMessage();
     return MaterialApp(
       home: Scaffold(
         body: Consumer<Auth>(

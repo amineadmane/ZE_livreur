@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/components/header.dart';
-import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/models/Year.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
@@ -25,9 +23,6 @@ class _HistoriquePageState extends State<HistoriquePage>
   Color violet = Color(0xFF382B8C);
   Color orangeclair = Color(0xFFEEA86B);
   bool status = false;
-  Future<List<Historique_annuel>> _histo_annuel;
-
-  final int _startingTabCount = 4;
 
   List<Tab> _tabs = List<Tab>();
   List<Widget> _generalWidgets = List<Widget>();
@@ -84,6 +79,7 @@ class _HistoriquePageState extends State<HistoriquePage>
       if (month == 10) return "Oct";
       if (month == 11) return "Nov";
       if (month == 12) return "Dec";
+      return null;
     }
 
     Widget getWidget(int i) {

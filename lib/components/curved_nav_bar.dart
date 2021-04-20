@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 
+// ignore: must_be_immutable
 class BottomNavBar extends StatelessWidget {
   void _changepage(BuildContext context, int value) {
     Provider.of<NavigationProvider>(context, listen: false).changepage(value);
@@ -16,7 +17,7 @@ class BottomNavBar extends StatelessWidget {
   final Color orange = Color(0xFFF28322);
   final Color background = Color(0xFFF2F2F2);
   final Color violet = Color(0xFF382B8C);
-  int _index ;
+  int _index;
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +64,16 @@ class BottomNavBar extends StatelessWidget {
             }
             break;
 
-          case 3: {
-            _changetitle(context, "Finances");
-          }
-          break;
-          case 4: {
-            _changetitle(context, "Evaluation");
-          }
-          break;
+          case 3:
+            {
+              _changetitle(context, "Finances");
+            }
+            break;
+          case 4:
+            {
+              _changetitle(context, "Evaluation");
+            }
+            break;
         }
       },
     );

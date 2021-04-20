@@ -16,6 +16,7 @@ import 'package:ze_livreur/models/DirectionDetails.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class NavigationPage extends StatefulWidget {
   Color grey = Color(0xFF424242);
   Color grey2 = Color(0xFF646464);

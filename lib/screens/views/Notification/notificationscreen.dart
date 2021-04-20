@@ -1,14 +1,9 @@
-import 'dart:ffi';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:ze_livreur/models/DirectionDetails.dart';
 import 'package:ze_livreur/provider/auth.dart';
-import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
-import 'package:ze_livreur/screens/views/Notification/navigationscreen.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/services/maps.dart';
 
@@ -125,6 +120,7 @@ Widget cout(context, String prix) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
+    height: ResponsiveFlutter.of(context).hp(20),
     padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
     decoration: BoxDecoration(
       color: NotificationPage().background,

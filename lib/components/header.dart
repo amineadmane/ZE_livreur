@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 import 'dart:async';
@@ -71,8 +72,14 @@ class Header extends StatelessWidget {
                   inactiveTextColor: violet,
                   inactiveColor: background,
                   onToggle: (val) async {
-                    print(val.runtimeType);
-                    _changestatus(context);
+                    Map dispo;
+                    if (val) {
+                      dispo = {"etat": "online"};
+                    } else {
+                      dispo = {"etat": "offline"};
+                    }
+                    Provider.of<Auth>(context, listen: false)
+                        .changeDispo(context, dispo);
                   })
             ],
           ),

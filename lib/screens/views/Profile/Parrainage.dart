@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:ze_livreur/components/curved_nav_bar.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:ze_livreur/components/header.dart';
-import 'package:ze_livreur/models/ParrainageModal.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 // ignore: must_be_immutable
@@ -33,10 +30,8 @@ class _ParrainageState extends State<Parrainage> {
   Color grey2 = Color(0xFF646464);
   bool status = false;
 
-  Future<Parrainagemodel> _parrainage;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -104,7 +99,7 @@ class _ParrainageState extends State<Parrainage> {
                         height: screenheight * 0.3,
                         width: screenwidth * 0.9,
                         child: Image.asset(
-                          'assets/images/Header.png',
+                          'assets/images/image2.png',
                           fit: BoxFit.fill,
                         ),
                       ),
