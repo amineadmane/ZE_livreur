@@ -7,15 +7,15 @@ import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 // ignore: must_be_immutable
 class Header extends StatelessWidget {
-
   Color background = Color(0xFFF2F2F2);
   Color green = Color(0xFF25E879);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
-  bool _status ;
-  String _title ;
+  bool _status;
+  String _title;
   void _changestatus(BuildContext context) {
     Provider.of<NavigationProvider>(context, listen: false).changestatus();
   }
@@ -30,62 +30,62 @@ class Header extends StatelessWidget {
     double screenwidth = size.width;
     return Container(
       color: orange,
-        height: screenheight * 0.2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ProfilePage(),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.person_pin,
-                    color: background,
-                    size: 45,
-                  ),
+      height: screenheight * 0.2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ProfilePage(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.person_pin,
+                  color: background,
+                  size: 45,
                 ),
-                SizedBox(
-                  width: screenwidth * 0.3,
-                ),
-                FlutterSwitch(
-                    value: _status,
-                    width: 60,
-                    height: 25,
-                    valueFontSize: 12.0,
-                    toggleSize: screenheight * 0.025,
-                    borderRadius: 30.0,
-                    padding: 4.0,
-                    showOnOff: true,
-                    activeText: "ON",
-                    inactiveText: "OFF",
-                    activeColor: green,
-                    inactiveTextColor: violet,
-                    inactiveColor: background,
-                    onToggle: (val) async {
-                      print(val.runtimeType);
-                      _changestatus(context);
-                    })
-              ],
-            ),
-            Text(
-              "$_title",
-              style: TextStyle(
-                color: background,
-                fontSize: 50,
-                fontFamily: 'Mom cake',
               ),
-            )
-          ],
-        ),
-      );
+              SizedBox(
+                width: screenwidth * 0.3,
+              ),
+              FlutterSwitch(
+                  value: _status,
+                  width: 60,
+                  height: 25,
+                  valueFontSize: 12.0,
+                  toggleSize: screenheight * 0.025,
+                  borderRadius: 30.0,
+                  padding: 4.0,
+                  showOnOff: true,
+                  activeText: "ON",
+                  inactiveText: "OFF",
+                  activeColor: green,
+                  inactiveTextColor: violet,
+                  inactiveColor: background,
+                  onToggle: (val) async {
+                    print(val.runtimeType);
+                    _changestatus(context);
+                  })
+            ],
+          ),
+          Text(
+            "$_title",
+            style: TextStyle(
+              color: background,
+              fontSize: 50,
+              fontFamily: 'Mom cake',
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
