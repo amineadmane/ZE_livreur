@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:ze_livreur/globalvariabels.dart';
 import 'package:ze_livreur/provider/InscriptionProvider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
@@ -17,7 +18,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  await FirebaseMessaging.instance.getToken();
+  fcmtoken = await FirebaseMessaging.instance.getToken();
+  print("fcmtoken = " + fcmtoken.toString());
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<Auth>(create: (_) => Auth()),
@@ -61,25 +63,22 @@ class _NavigationState extends State<Navigation> {
 
   _registerOnFirebase() {
     _firebaseMessaging.subscribeToTopic('all');
-    _firebaseMessaging.getToken().then((token) => print(token));
+    _firebaseMessaging.getToken();
   }
 
   void getMessage() {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage messageRemoted) {
         print("rahi temchi");
-        print(messageRemoted.toString());
 
-        RemoteNotification notification = messageRemoted.notification;
-        AndroidNotification android = messageRemoted.notification?.android;
         Map<String, dynamic> message = messageRemoted.data;
         print(message.toString());
         var provider = Provider.of<RequestProvider>(context, listen: false);
         var userprovider = Provider.of<Auth>(context, listen: false);
-        print(userprovider.livreurExt.idLivExt);
-        if (userprovider.livreurExt.etat == "online" &&
-            userprovider.authenticated != "notified" &&
-            userprovider.authenticated != "delivring") {
+        print(userprovider.livreurExt.etat);
+
+        if (true) {
+          print("inside if");
           provider.changenom(message['nom']);
           provider.changeprenom(message['prenom']);
           provider.changepickup(message['pickup']);
@@ -95,7 +94,6 @@ class _NavigationState extends State<Navigation> {
     );
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage messageRemoted) {
-      print("hello");
       Map<String, dynamic> message = messageRemoted.data;
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}

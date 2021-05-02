@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
@@ -55,6 +57,28 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
     with SingleTickerProviderStateMixin {
   String deviceName;
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final databaseRef = FirebaseDatabase.instance.reference();
+
+  void firebaselogin(String email, String password) async {
+    final user = (await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    ))
+        .user;
+    if (user != null) {
+      DatabaseReference userRef =
+          FirebaseDatabase.instance.reference().child('/drivers/${user.uid}');
+      userRef.once().then((DataSnapshot snapshot) {
+        if (snapshot.value != null) {
+          print("exist");
+        } else {
+          print("Null");
+        }
+      });
+    }
+  }
 
   Future<void> getDeviceName() async {
     if (Platform.isAndroid) {
@@ -362,9 +386,11 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                       .login(context, creds);
                   if (Provider.of<Auth>(context, listen: false).authenticated ==
                       "loggedin") {
+                    firebaselogin(_userEmailController.text,
+                        _userPasswordController.text);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => currentTab[provider.getpage],
+                        builder: (_) => ContainerScreen(),
                       ),
                     );
                   } else {

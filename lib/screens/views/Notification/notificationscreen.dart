@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:ze_livreur/provider/auth.dart';
@@ -19,6 +20,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<RequestProvider>(context, listen: false);
+    print(provider.getpickup);
     return SafeArea(
       child: FutureBuilder(
           future: Maps.obtainPlaceDirectionsDetails(
@@ -44,7 +46,7 @@ class NotificationPage extends StatelessWidget {
                             context, provider.getpickup, provider.getdropoff),
                         buttons(context)
                       ],
-                    )
+                    ),
                   ],
                 ),
               );
@@ -155,6 +157,9 @@ Widget cout(context, String prix) {
 }
 
 Widget destination(context, String pickup, String dropoff) {
+  Size size = MediaQuery.of(context).size;
+  double screenheight = size.height;
+  double screenwidth = size.width;
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
@@ -199,25 +204,47 @@ Widget destination(context, String pickup, String dropoff) {
             ],
           ),
         ),
-        Expanded(
+        Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    pickup,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Mom cake",
-                      fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
-                      fontWeight: FontWeight.bold,
+              Container(
+                width: screenwidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        "Kouba",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: "Mom cake",
+                          fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
+                    Text(
+                      "à 5min",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: NotificationPage().grey2,
+                        fontFamily: "Mom cake",
+                        fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "à 5min",
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    pickup,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: NotificationPage().grey2,
@@ -226,16 +253,6 @@ Widget destination(context, String pickup, String dropoff) {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-              Text(
-                "Chemin de Ziouane, Kouba, Alger ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: NotificationPage().grey2,
-                  fontFamily: "Mom cake",
-                  fontSize: ResponsiveFlutter.of(context).fontSize(2),
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               Container(
@@ -245,7 +262,7 @@ Widget destination(context, String pickup, String dropoff) {
                 endIndent: ResponsiveFlutter.of(context).scale(15),
               )),
               Text(
-                dropoff,
+                "Djasr Kasentina",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -255,7 +272,7 @@ Widget destination(context, String pickup, String dropoff) {
                 ),
               ),
               Text(
-                "Chemin de Ziouane, Hydra, Alger ",
+                dropoff,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: NotificationPage().grey2,

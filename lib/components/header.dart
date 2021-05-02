@@ -1,13 +1,14 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/views/Profile/profilescreen.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../globalvariabels.dart';
 
 // ignore: must_be_immutable
 class Header extends StatelessWidget {
@@ -19,6 +20,47 @@ class Header extends StatelessWidget {
   String _title;
   void _changestatus(BuildContext context) {
     Provider.of<NavigationProvider>(context, listen: false).changestatus();
+  }
+
+  void GoOnline(BuildContext context) {
+    var provideridlivext =
+        Provider.of<Auth>(context, listen: false).livreurExt.idLivExt;
+    DatabaseReference tokenRef = FirebaseDatabase.instance
+        .reference()
+        .child('drivers/${provideridlivext}');
+    tokenRef.set({'token': fcmtoken});
+    Geofire.setLocation(provideridlivext.toString(), currentPosition.latitude,
+        currentPosition.longitude);
+  }
+
+  void GoOffline(BuildContext context) {
+    var provideridlivext =
+        Provider.of<Auth>(context, listen: false).livreurExt.idLivExt;
+    Geofire.removeLocation(provideridlivext.toString());
+  }
+
+  var locationoptions = LocationOptions(
+      accuracy: LocationAccuracy.bestForNavigation, distanceFilter: 4);
+
+  void getLocationUpdates(BuildContext context) {
+    var provideridlivext =
+        Provider.of<Auth>(context, listen: false).livreurExt.idLivExt;
+    bool isAvailable =
+        Provider.of<NavigationProvider>(context, listen: false).getstatus;
+    homeTabPositionStream = Geolocator()
+        .getPositionStream(locationoptions)
+        .listen((Position position) {
+      currentPosition = position;
+      if (isAvailable) {
+        Geofire.setLocation(
+            provideridlivext.toString(), position.latitude, position.longitude);
+      }
+    });
+  }
+
+  Future<void> getcurrentlocation() async {
+    currentPosition = await Geolocator().getCurrentPosition();
+    print(currentPosition.toString());
   }
 
   @override
@@ -75,8 +117,14 @@ class Header extends StatelessWidget {
                     Map dispo;
                     if (val) {
                       dispo = {"etat": "online"};
+                      if (currentPosition == null) {
+                        await getcurrentlocation();
+                      }
+                      GoOnline(context);
+                      getLocationUpdates(context);
                     } else {
                       dispo = {"etat": "offline"};
+                      GoOffline(context);
                     }
                     Provider.of<Auth>(context, listen: false)
                         .changeDispo(context, dispo);

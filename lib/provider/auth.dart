@@ -3,6 +3,7 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:ze_livreur/globalvariabels.dart';
 import 'package:ze_livreur/models/LivreurExt.dart';
 import 'package:ze_livreur/provider/dio.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
@@ -40,9 +41,7 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print(response.data.toString());
         String token = response.data.toString();
         this.tryToken(context, token);
       }
@@ -58,10 +57,9 @@ class Auth extends ChangeNotifier {
       try {
         Dio.Response response = await dio().get('/LivreurExt',
             options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
-        print(response.statusCode);
         if (response.statusCode == 200) {
+          print(response.data.toString());
           this._livreurExt = LivreurExt.fromJson(response.data);
-          print("object");
           if (this._livreurExt.etat == "bloque") {
             this._isloggedIn = "blocked";
           } else {
@@ -121,6 +119,7 @@ class Auth extends ChangeNotifier {
                 return status < 500;
               }));
       if (response.statusCode == 200) {
+        print("200");
         if (response.data.toString() == "inscrpition reussite") {
           _isloggedIn = "blocked";
           notifyListeners();

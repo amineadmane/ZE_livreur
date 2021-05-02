@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
@@ -57,6 +59,28 @@ class _InfovehiculeWidgetState extends State<InfovehiculeWidget> {
   Color background = Color(0xFFF2F2F2);
   Color orange = Color(0xFFF28322);
   Color violet = Color(0xFF382B8C);
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final databaseRef = FirebaseDatabase.instance.reference();
+
+  void registerUser(
+      String email, String password, String phone, String fullname) async {
+    final user = (await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ))
+        .user;
+
+    if (user != null) {
+      Map userMap = {
+        'fullname': fullname,
+        'email': email,
+        'phone': phone,
+      };
+
+      databaseRef.child('/drivers').push().set(userMap);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -316,6 +340,8 @@ class _InfovehiculeWidgetState extends State<InfovehiculeWidget> {
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
+                    var provider = Provider.of<InscriptionProvider>(context,
+                        listen: false);
                     Map livreurExt = {
                       'nom': Provider.of<InscriptionProvider>(context,
                               listen: false)
@@ -332,6 +358,9 @@ class _InfovehiculeWidgetState extends State<InfovehiculeWidget> {
                       'id_permis': Provider.of<InscriptionProvider>(context,
                               listen: false)
                           .idPermis,
+                      'password': Provider.of<InscriptionProvider>(context,
+                              listen: false)
+                          .password,
                       'expire_date': Provider.of<InscriptionProvider>(context,
                               listen: false)
                           .expireDate
@@ -349,6 +378,8 @@ class _InfovehiculeWidgetState extends State<InfovehiculeWidget> {
                           .codeParrainage
                     };
                     if (_formKey.currentState.validate()) {
+                      registerUser(provider.eMail, provider.password,
+                          provider.phoneNumber, provider.nom + provider.prenom);
                       Provider.of<Auth>(context, listen: false)
                           .inscription(context, livreurExt, _scaffoldkey);
                     }
