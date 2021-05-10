@@ -29,30 +29,27 @@ class NotificationPage extends StatelessWidget {
             if (snapshot.hasData) {
               return Scaffold(
                 backgroundColor: grey,
-                body: ListView(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        offretext(context),
-                        notiftext(context),
-                        avatar(context, provider.getnom, provider.getprenom),
-                        cout(
-                            context,
-                            (snapshot.data.distanceValue * 0.01)
-                                .toStringAsFixed(0)),
-                        destination(
-                            context, provider.getpickup, provider.getdropoff),
-                        buttons(context)
-                      ],
-                    ),
-                  ],
+                body: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: ResponsiveFlutter.of(context).scale(15)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      offretext(context),
+                      notiftext(context),
+                      avatar(context, provider.getnom, provider.getprenom),
+                      cout(context, (provider.getprix).toStringAsFixed(0)),
+                      destination(
+                          context, provider.getpickup, provider.getdropoff),
+                      buttons(context)
+                    ],
+                  ),
                 ),
               );
             } else if (snapshot.hasError) {
               print(snapshot.error.toString());
-              return Text("Erreur");
+              return Text(snapshot.error.toString());
             }
             // By default, show a loading spinner.
             return Center(child: CircularProgressIndicator());
@@ -63,17 +60,16 @@ class NotificationPage extends StatelessWidget {
 
 Widget offretext(context) {
   return Container(
-      margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
       child: Text(
-        "offre\nde livraison",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: NotificationPage().background,
-          fontFamily: "Mom cake",
-          fontSize: ResponsiveFlutter.of(context).fontSize(7),
-          fontWeight: FontWeight.bold,
-        ),
-      ));
+    "offre\nde livraison",
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      color: NotificationPage().background,
+      fontFamily: "Mom cake",
+      fontSize: ResponsiveFlutter.of(context).fontSize(7),
+      fontWeight: FontWeight.bold,
+    ),
+  ));
 }
 
 Widget notiftext(context) {
@@ -82,6 +78,7 @@ Widget notiftext(context) {
       width: ResponsiveFlutter.of(context).wp(80),
       child: Text(
         "Vous avez une nouvelle offre de livraison, ne ratez pas l'opportunité !",
+        textAlign: TextAlign.center,
         style: TextStyle(
           color: NotificationPage().background,
           fontSize: ResponsiveFlutter.of(context).fontSize(2.3),
@@ -122,7 +119,6 @@ Widget cout(context, String prix) {
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
     width: ResponsiveFlutter.of(context).wp(80),
-    height: ResponsiveFlutter.of(context).hp(20),
     padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
     decoration: BoxDecoration(
       color: NotificationPage().background,
@@ -158,7 +154,6 @@ Widget cout(context, String prix) {
 
 Widget destination(context, String pickup, String dropoff) {
   Size size = MediaQuery.of(context).size;
-  double screenheight = size.height;
   double screenwidth = size.width;
   return Container(
     margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
@@ -205,53 +200,51 @@ Widget destination(context, String pickup, String dropoff) {
           ),
         ),
         Container(
+          width: screenwidth * 0.58,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: screenwidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                        child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text(
-                        "Kouba",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Mom cake",
-                          fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )),
                     Text(
-                      "à 5min",
+                      "Kouba",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: NotificationPage().grey2,
+                        color: Colors.black,
                         fontFamily: "Mom cake",
-                        fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                        fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: Text(
+                          "à 5min",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: NotificationPage().grey2,
+                            fontFamily: "Mom cake",
+                            fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text(
-                    pickup,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: NotificationPage().grey2,
-                      fontFamily: "Mom cake",
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2),
-                      fontWeight: FontWeight.bold,
-                    ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  pickup,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: NotificationPage().grey2,
+                    fontFamily: "Mom cake",
+                    fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -271,14 +264,17 @@ Widget destination(context, String pickup, String dropoff) {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                dropoff,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: NotificationPage().grey2,
-                  fontFamily: "Mom cake",
-                  fontSize: ResponsiveFlutter.of(context).fontSize(2),
-                  fontWeight: FontWeight.bold,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  dropoff,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: NotificationPage().grey2,
+                    fontFamily: "Mom cake",
+                    fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],

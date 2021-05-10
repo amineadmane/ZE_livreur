@@ -3,7 +3,6 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:ze_livreur/globalvariabels.dart';
 import 'package:ze_livreur/models/LivreurExt.dart';
 import 'package:ze_livreur/provider/dio.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';

@@ -18,7 +18,7 @@ class Livraison_aujourdhui {
     livraisons = json['livraisons'];
     distanceTotale = json['distance_totale'];
     prix = json['prix'];
-    evaluationMoyenne = double.parse(json['evaluation'].toString());
+    evaluationMoyenne = double.tryParse(json['evaluation'].toString());
   }
 
   Map<String, dynamic> toJson() {
