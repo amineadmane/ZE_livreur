@@ -18,9 +18,6 @@ class Header extends StatelessWidget {
   Color violet = Color(0xFF382B8C);
   bool _status;
   String _title;
-  void _changestatus(BuildContext context) {
-    Provider.of<NavigationProvider>(context, listen: false).changestatus();
-  }
 
   void GoOnline(BuildContext context) {
     var provideridlivext =

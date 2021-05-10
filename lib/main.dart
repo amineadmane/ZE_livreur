@@ -84,7 +84,8 @@ class _NavigationState extends State<Navigation> {
           provider.changepickup(message['pickup']);
           provider.changedropoff(message['dropoff']);
           provider.changetel(message['tel']);
-          provider.changeprix(double.parse(message['prix']));
+          provider.changeprix(double.tryParse(message['prix']));
+          print(message['prix']);
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
       },

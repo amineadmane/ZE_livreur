@@ -5,15 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
-import 'package:ze_livreur/provider/navigation_provider.dart';
 import 'package:ze_livreur/screens/views/ContainerScreen.dart';
-import 'package:ze_livreur/screens/views/Historique.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
-import 'package:ze_livreur/screens/views/Profile/Parrainage.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
-import '../financesscreen.dart';
-import '../ratingscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -347,15 +342,6 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
   }
 
   Widget _buildSignUpButton(BuildContext context) {
-    var currentTab = [
-      Parrainage(),
-      HistoriquePage(),
-      ContainerScreen(),
-      Financespage(),
-      RatingsPage(),
-    ];
-    var provider = Provider.of<NavigationProvider>(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: Container(
@@ -386,8 +372,6 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                       .login(context, creds);
                   if (Provider.of<Auth>(context, listen: false).authenticated ==
                       "loggedin") {
-                    firebaselogin(_userEmailController.text,
-                        _userPasswordController.text);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (_) => ContainerScreen(),
