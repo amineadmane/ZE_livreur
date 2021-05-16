@@ -9,6 +9,17 @@ class RequestProvider with ChangeNotifier {
   double _prix;
   String _distance;
   int _duration;
+  String _rideid;
+
+  String get getrideid {
+    return _rideid;
+  }
+
+  void changerideid(String rideid) {
+    _rideid = rideid;
+    notifyListeners();
+  }
+
   String get getnom {
     return _nom;
   }

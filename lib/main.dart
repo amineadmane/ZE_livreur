@@ -78,14 +78,13 @@ class _NavigationState extends State<Navigation> {
         print(userprovider.livreurExt.etat);
 
         if (true) {
-          print("inside if");
           provider.changenom(message['nom']);
           provider.changeprenom(message['prenom']);
           provider.changepickup(message['pickup']);
           provider.changedropoff(message['dropoff']);
           provider.changetel(message['tel']);
+          provider.changerideid(message['rideid']);
           provider.changeprix(double.tryParse(message['prix']));
-          print(message['prix']);
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
       },
