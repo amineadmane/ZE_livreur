@@ -13,8 +13,8 @@ class Auth extends ChangeNotifier {
   String _isloggedIn = "loggedout";
   String get authenticated => _isloggedIn;
   LivreurExt _livreurExt;
-  String token;
-  String get _token => token;
+  String _token;
+  String get token => _token;
   LivreurExt get livreurExt => _livreurExt;
 
   String get getauth {
@@ -31,7 +31,6 @@ class Auth extends ChangeNotifier {
   }
 
   Future<void> login(BuildContext context, Map creds) async {
-    print(creds);
     try {
       Dio.Response response = await dio().post('/LivreurExt',
           data: creds,
@@ -40,6 +39,7 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         String token = response.data.toString();
         this.tryToken(context, token);
@@ -53,30 +53,27 @@ class Auth extends ChangeNotifier {
     if (token == null) {
       return;
     } else {
-      try {
-        Dio.Response response = await dio().get('/LivreurExt',
-            options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
-        if (response.statusCode == 200) {
-          print(response.data.toString());
-          this._livreurExt = LivreurExt.fromJson(response.data);
-          if (this._livreurExt.etat == "bloque") {
-            this._isloggedIn = "blocked";
-          } else {
-            this._isloggedIn = "loggedin";
-          }
-          this.token = token;
-          if (_livreurExt.etat == "online") {
-            Provider.of<NavigationProvider>(context, listen: false)
-                .setStatus(true);
-          } else {
-            Provider.of<NavigationProvider>(context, listen: false)
-                .setStatus(false);
-          }
-          storeToken(token, _livreurExt.idLivExt.toString());
-          notifyListeners();
+      Dio.Response response = await dio().get('/LivreurExt',
+          options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data.toString());
+        this._livreurExt = LivreurExt.fromJson(response.data);
+        if (this._livreurExt.etat == "bloque") {
+          this._isloggedIn = "blocked";
+        } else {
+          this._isloggedIn = "loggedin";
         }
-      } catch (e) {
-        print(e);
+        this._token = token;
+        if (_livreurExt.etat == "online") {
+          Provider.of<NavigationProvider>(context, listen: false)
+              .setStatus(true);
+        } else {
+          Provider.of<NavigationProvider>(context, listen: false)
+              .setStatus(false);
+        }
+        storeToken(token, _livreurExt.idLivExt.toString());
+        notifyListeners();
       }
     }
   }
@@ -103,7 +100,7 @@ class Auth extends ChangeNotifier {
   Future<void> cleanUp() async {
     this._livreurExt = null;
     this._isloggedIn = "loggedout";
-    this.token = null;
+    this._token = null;
     await storage.deleteAll();
   }
 

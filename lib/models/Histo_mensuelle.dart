@@ -1,4 +1,4 @@
-class Histo_mensuel {
+class HistoMensuel {
   String clientname;
   String clientprenom;
   String datelivraison;
@@ -7,7 +7,7 @@ class Histo_mensuel {
   int note;
   int prix;
 
-  Histo_mensuel(
+  HistoMensuel(
       {this.clientname,
       this.clientprenom,
       this.datelivraison,
@@ -15,7 +15,7 @@ class Histo_mensuel {
       this.pickup,
       this.note});
 
-  Histo_mensuel.fromJson(Map<String, dynamic> json) {
+  HistoMensuel.fromJson(Map<String, dynamic> json) {
     clientname = json['clientname'];
     clientprenom = json['clientprenom'];
     datelivraison = json['datelivraison'];

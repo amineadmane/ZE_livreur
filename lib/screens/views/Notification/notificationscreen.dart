@@ -333,7 +333,7 @@ class NotificationPage extends StatelessWidget {
                   'adresse': "adresse",
                   'prix': provider.getprix,
                 });
-                await ApiCalls().AcceptLivraison(formdata);
+                await ApiCalls().acceptLivraison(formdata);
                 Provider.of<Auth>(context, listen: false)
                     .changeauth("delivring");
               },

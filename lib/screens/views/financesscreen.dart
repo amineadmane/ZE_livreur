@@ -258,8 +258,8 @@ class _FinancespageState extends State<Financespage> {
     }
 
     var now = new DateTime.now();
-    var current_mon = now.month;
-    print(current_mon);
+    var currentMon = now.month;
+    print(currentMon);
     var currentmonth = DateTime.now().month;
     String getmonth(int month) {
       if (month == 1) return "Jan";

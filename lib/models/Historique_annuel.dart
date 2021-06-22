@@ -1,11 +1,11 @@
-class Historique_annuel {
+class HistoriqueAnnuel {
   int mois;
   int nbLivraisons;
   int distanceTotale;
 
-  Historique_annuel({this.mois, this.nbLivraisons, this.distanceTotale});
+  HistoriqueAnnuel({this.mois, this.nbLivraisons, this.distanceTotale});
 
-  Historique_annuel.fromJson(Map<String, dynamic> json) {
+  HistoriqueAnnuel.fromJson(Map<String, dynamic> json) {
     mois = json['mois'];
     nbLivraisons = json['nb_livraisons'];
     distanceTotale = json['distance_totale'];
