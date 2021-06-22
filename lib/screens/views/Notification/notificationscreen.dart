@@ -356,7 +356,9 @@ class NotificationPage extends StatelessWidget {
 
   void acceptTrip(BuildContext context) {
     var provider = Provider.of<Auth>(context, listen: false);
-    String rideID = "RideId";
+    var requestprovider = Provider.of<RequestProvider>(context, listen: false);
+    String rideID = requestprovider.getrideid;
+    print("RIDE ID = " + rideID);
     rideRef =
         FirebaseDatabase.instance.reference().child('rideRequest/$rideID');
     rideRef.child('status').set('accepted');
