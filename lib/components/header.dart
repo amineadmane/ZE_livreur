@@ -19,18 +19,18 @@ class Header extends StatelessWidget {
   bool _status;
   String _title;
 
-  void GoOnline(BuildContext context) {
+  void goOnline(BuildContext context) {
     var provideridlivext =
         Provider.of<Auth>(context, listen: false).livreurExt.idLivExt;
     DatabaseReference tokenRef = FirebaseDatabase.instance
         .reference()
-        .child('drivers/${provideridlivext}');
+        .child('drivers/$provideridlivext');
     tokenRef.set({'token': fcmtoken});
     Geofire.setLocation(provideridlivext.toString(), currentPosition.latitude,
         currentPosition.longitude);
   }
 
-  void GoOffline(BuildContext context) {
+  void goOffline(BuildContext context) {
     var provideridlivext =
         Provider.of<Auth>(context, listen: false).livreurExt.idLivExt;
     Geofire.removeLocation(provideridlivext.toString());
@@ -117,11 +117,11 @@ class Header extends StatelessWidget {
                       if (currentPosition == null) {
                         await getcurrentlocation();
                       }
-                      GoOnline(context);
+                      goOnline(context);
                       getLocationUpdates(context);
                     } else {
                       dispo = {"etat": "offline"};
-                      GoOffline(context);
+                      goOffline(context);
                     }
                     Provider.of<Auth>(context, listen: false)
                         .changeDispo(context, dispo);

@@ -95,7 +95,7 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
     );
   }
 
-  Widget box(Histo_mensuel histo) {
+  Widget box(HistoMensuel histo) {
     Size size = MediaQuery.of(context).size;
     double screenwidth = size.width;
 

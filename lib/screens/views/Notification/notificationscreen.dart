@@ -39,13 +39,13 @@ class NotificationPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      offretext(context),
+                      buttons(context),
                       notiftext(context),
                       avatar(context, provider.getnom, provider.getprenom),
                       cout(context, (provider.getprix).toStringAsFixed(0)),
                       destination(
                           context, provider.getpickup, provider.getdropoff),
-                      buttons(context)
+                      offretext(context),
                     ],
                   ),
                 ),
@@ -333,7 +333,7 @@ class NotificationPage extends StatelessWidget {
                   'adresse': "adresse",
                   'prix': provider.getprix,
                 });
-                await ApiCalls().AcceptLivraison(formdata);
+                await ApiCalls().acceptLivraison(formdata);
                 Provider.of<Auth>(context, listen: false)
                     .changeauth("delivring");
               },

@@ -1,9 +1,9 @@
-class Evaluation_totale {
+class EvaluationTotale {
   double note;
 
-  Evaluation_totale({this.note});
+  EvaluationTotale({this.note});
 
-  Evaluation_totale.fromJson(Map<String, dynamic> json) {
+  EvaluationTotale.fromJson(Map<String, dynamic> json) {
     note = json['note'];
   }
 

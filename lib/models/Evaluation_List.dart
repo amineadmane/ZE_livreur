@@ -1,14 +1,14 @@
-class Evaluation_List {
+class EvaluationList {
   var note;
   String commentaire;
   String createdAt;
   String nom;
   String prenom;
 
-  Evaluation_List(
+  EvaluationList(
       {this.note, this.commentaire, this.createdAt, this.nom, this.prenom});
 
-  Evaluation_List.fromJson(Map<String, dynamic> json) {
+  EvaluationList.fromJson(Map<String, dynamic> json) {
     note = json['note'];
     commentaire = json['commentaire'];
     createdAt = json['created_at'];

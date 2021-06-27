@@ -1,4 +1,4 @@
-class Livraison_externe {
+class LivraisonExterne {
   int idLivraisonExterne;
   int idClient;
   int idColis;
@@ -16,7 +16,7 @@ class Livraison_externe {
   String createdAt;
   String updatedAt;
 
-  Livraison_externe(
+  LivraisonExterne(
       {this.idLivraisonExterne,
       this.idClient,
       this.idColis,
@@ -34,7 +34,7 @@ class Livraison_externe {
       this.createdAt,
       this.updatedAt});
 
-  Livraison_externe.fromJson(Map<String, dynamic> json) {
+  LivraisonExterne.fromJson(Map<String, dynamic> json) {
     idLivraisonExterne = json['id_livraison_externe'];
     idClient = json['id_client'];
     idColis = json['id_colis'];

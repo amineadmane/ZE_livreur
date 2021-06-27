@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Text(
                                       snapshot.data[0] == null
-                                          ? "pas encore"
+                                          ? "Aucune Livraison"
                                           : DateFormat("dd-MM HH:mm").format(
                                               DateTime.parse(
                                                   snapshot.data[0].createdAt)),
@@ -125,8 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     RatingBar(
                                       itemSize: 20,
-                                      initialRating:
-                                          snapshot.data[0].note.toDouble(),
+                                      initialRating: snapshot.data[0] == null
+                                          ? 0
+                                          : snapshot.data[0].note.toDouble(),
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       ignoreGestures: true,

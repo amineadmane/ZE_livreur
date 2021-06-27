@@ -122,7 +122,7 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
     );
   }
 
-  Widget box(Histo_mensuel histo) {
+  Widget box(HistoMensuel histo) {
     Size size = MediaQuery.of(context).size;
     double screenwidth = size.width;
 

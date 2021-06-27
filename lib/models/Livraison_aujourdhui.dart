@@ -2,16 +2,16 @@
 class Livraison_aujourdhui {
   int livraisons;
   int distanceTotale;
-  double CA_aujourdhui;
-  double benifice_aujourdhui;
+  double cAAujourdhui;
+  double benificeAujourdhui;
   String prix;
   double evaluationMoyenne;
 
   Livraison_aujourdhui(
       {this.livraisons,
       this.distanceTotale,
-      this.CA_aujourdhui,
-      this.benifice_aujourdhui,
+      this.cAAujourdhui,
+      this.benificeAujourdhui,
       this.evaluationMoyenne});
 
   Livraison_aujourdhui.fromJson(Map<String, dynamic> json) {

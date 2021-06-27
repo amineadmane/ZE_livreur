@@ -292,7 +292,7 @@ bottom(BuildContext context) {
                 onPressed: () async {
                   var provider = Provider.of<Auth>(context, listen: false);
                   await ApiCalls()
-                      .AnnulerLivraison(provider.livreurExt.idLivExt);
+                      .annulerLivraison(provider.livreurExt.idLivExt);
                   Provider.of<Auth>(context, listen: false)
                       .changeauth("loggedin");
                 },

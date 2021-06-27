@@ -2,19 +2,19 @@ import 'package:dio/dio.dart' as Dio;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:ze_livreur/Models/Livraison_externe.dart';
 import 'package:ze_livreur/models/Evaluation_List.dart';
 import 'package:ze_livreur/models/Evaluation_totale.dart';
 import 'package:ze_livreur/models/Histo_mensuelle.dart';
 import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
+import 'package:ze_livreur/models/Livraison_externe.dart';
 import 'package:ze_livreur/models/Metric.dart';
 import 'package:ze_livreur/models/ParrainageModal.dart';
 import 'package:ze_livreur/models/Year.dart';
 import 'package:ze_livreur/provider/dio.dart';
 
 class ApiCalls {
-  String URL = 'http://192.168.0.109:8000/api';
+  String uRL = 'http://192.168.0.109:8000/api';
   String _token;
 
   Future<void> readtoken() async {
@@ -22,11 +22,11 @@ class ApiCalls {
   }
 
   final storage = new FlutterSecureStorage();
-  Future<Livraison_externe> getDerniereliv(int id) async {
+  Future<LivraisonExterne> getDerniereliv(int id) async {
     await readtoken();
     print("token : $_token");
-    Livraison_externe _livraisonexterne;
-    var response = await http.get(URL + '/dernierelivraison/' + id.toString(),
+    LivraisonExterne _livraisonexterne;
+    var response = await http.get(uRL + '/dernierelivraison/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -37,7 +37,7 @@ class ApiCalls {
         return _livraisonexterne;
       } else {
         _livraisonexterne =
-            Livraison_externe.fromJson(jsonDecode(response.body));
+            LivraisonExterne.fromJson(jsonDecode(response.body));
         return _livraisonexterne;
       }
     } else {
@@ -48,7 +48,7 @@ class ApiCalls {
   Future<Livraison_aujourdhui> getlivauj(int id) async {
     await readtoken();
     Livraison_aujourdhui _livraisonauj;
-    var response = await http.get(URL + '/livraisonaujourdui/' + id.toString(),
+    var response = await http.get(uRL + '/livraisonaujourdui/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -69,7 +69,7 @@ class ApiCalls {
   Future<Metric> getmetric(int id) async {
     Metric _metric;
     await readtoken();
-    var response = await http.get(URL + '/Metric/' + id.toString(), headers: {
+    var response = await http.get(uRL + '/Metric/' + id.toString(), headers: {
       "Authorization": 'Bearer $_token',
       "Accept": "application/json"
     });
@@ -90,7 +90,7 @@ class ApiCalls {
   Future<Parrainagemodel> getparrainage(int id) async {
     await readtoken();
     Parrainagemodel _parring;
-    var response = await http.get(URL + '/parrainage/' + id.toString(),
+    var response = await http.get(uRL + '/parrainage/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -103,11 +103,11 @@ class ApiCalls {
     }
   }
 
-  Future<List<Historique_annuel>> gethistoannuel(int id, int year) async {
+  Future<List<HistoriqueAnnuel>> gethistoannuel(int id, int year) async {
     await readtoken();
-    List<Historique_annuel> _histo_annuel;
+    List<HistoriqueAnnuel> _histoAnnuel;
     var response = await http.get(
-        URL + '/historiqueannuel/' + id.toString() + "/" + year.toString(),
+        uRL + '/historiqueannuel/' + id.toString() + "/" + year.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -116,18 +116,18 @@ class ApiCalls {
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse
-          .map((job) => new Historique_annuel.fromJson(job))
+          .map((job) => new HistoriqueAnnuel.fromJson(job))
           .toList();
     } else {
-      return _histo_annuel;
+      return _histoAnnuel;
     }
   }
 
-  Future<List<Evaluation_List>> gethistoevaluation(int id) async {
+  Future<List<EvaluationList>> gethistoevaluation(int id) async {
     await readtoken();
-    List<Evaluation_List> _evaluation_list;
+    List<EvaluationList> _evaluationList;
     print(id);
-    var response = await http.get(URL + '/histoevaluation/' + id.toString(),
+    var response = await http.get(uRL + '/histoevaluation/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -138,19 +138,19 @@ class ApiCalls {
       print("body : " + response.body.toString());
       List jsonResponse = json.decode(response.body);
       return jsonResponse
-          .map((job) => new Evaluation_List.fromJson(job))
+          .map((job) => new EvaluationList.fromJson(job))
           .toList();
     } else {
-      return _evaluation_list;
+      return _evaluationList;
     }
   }
 
-  Future<List<Histo_mensuel>> gethistomensuelle(
+  Future<List<HistoMensuel>> gethistomensuelle(
       int id, int month, int year) async {
     await readtoken();
-    List<Histo_mensuel> _histomensuel;
+    List<HistoMensuel> _histomensuel;
     var response = await http.get(
-        URL +
+        uRL +
             '/histolivraisonmensuelle/' +
             id.toString() +
             "/" +
@@ -165,24 +165,22 @@ class ApiCalls {
     if (response.statusCode == 200) {
       print("mensuel : 200");
       List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((job) => new Histo_mensuel.fromJson(job))
-          .toList();
+      return jsonResponse.map((job) => new HistoMensuel.fromJson(job)).toList();
     } else {
       return _histomensuel;
     }
   }
 
-  Future<Evaluation_totale> getevaluationtotale(int id) async {
+  Future<EvaluationTotale> getevaluationtotale(int id) async {
     await readtoken();
-    Evaluation_totale _eval;
-    var response = await http.get(URL + '/Evaluationtotal/' + id.toString(),
+    EvaluationTotale _eval;
+    var response = await http.get(uRL + '/Evaluationtotal/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
         });
     if (response.statusCode == 200) {
-      _eval = Evaluation_totale.fromJson(jsonDecode(response.body));
+      _eval = EvaluationTotale.fromJson(jsonDecode(response.body));
       return _eval;
     } else {
       return _eval;
@@ -192,7 +190,7 @@ class ApiCalls {
   Future<List<Year>> getyears(int id) async {
     await readtoken();
     List<Year> years;
-    var response = await http.get(URL + '/livraisonyears/' + id.toString(),
+    var response = await http.get(uRL + '/livraisonyears/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
@@ -205,7 +203,7 @@ class ApiCalls {
     }
   }
 
-  Future<void> AcceptLivraison(Dio.FormData data) async {
+  Future<void> acceptLivraison(Dio.FormData data) async {
     await readtoken();
     try {
       Dio.Response response = await dio().post('/livraison',
@@ -221,9 +219,9 @@ class ApiCalls {
     }
   }
 
-  Future<void> AnnulerLivraison(int id) async {
+  Future<void> annulerLivraison(int id) async {
     await readtoken();
-    var response = await http.get(URL + '/Annulerlivraison/' + id.toString(),
+    var response = await http.get(uRL + '/Annulerlivraison/' + id.toString(),
         headers: {
           "Accept": "application/json",
           "Authorization": 'Bearer $_token'
