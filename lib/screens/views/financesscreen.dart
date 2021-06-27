@@ -36,174 +36,139 @@ class _FinancespageState extends State<Financespage> {
           future: ApiCalls().getmetric(provider.idLivExt),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Scaffold(
-                backgroundColor: background,
-                body: Column(
-                  children: <Widget>[
-                    Header(),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Center(
-                      child: Text(
-                        "Evolution des bénéfices par mois",
-                        style: TextStyle(
-                            fontSize:
-                                ResponsiveFlutter.of(context).fontSize(2.5),
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                        height: screenheight * 0.4,
-                        child:
-                            SimpleBarChart(_createSampleData(snapshot.data))),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Center(
-                      child: Text(
-                        "statistiques mensuels",
-                        style: TextStyle(
-                            fontSize:
-                                ResponsiveFlutter.of(context).fontSize(2.5),
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(color: violet),
-                                  ]),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Text(
-                                    "Chiffres d'affaires",
-                                    style: TextStyle(
-                                        color: violet,
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(2)),
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Text(
-                                    snapshot.data.cAMensuel == null
-                                        ? "0"
-                                        : snapshot.data.cAMensuel.toString() +
-                                            "DA",
-                                    style: TextStyle(
-                                        color: violet,
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(3),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "+",
-                                        style: TextStyle(
-                                            color: darkgreen,
-                                            fontSize:
-                                                ResponsiveFlutter.of(context)
-                                                    .fontSize(2.5),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        snapshot.data.cAToday == null
-                                            ? "0"
-                                            : snapshot.data.cAToday.toString(),
-                                        style: TextStyle(
-                                            color: darkgreen,
-                                            fontSize:
-                                                ResponsiveFlutter.of(context)
-                                                    .fontSize(2.5),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01),
-                                      Text(
-                                        snapshot.data.cAMensuel.toString(),
-                                        style: TextStyle(
-                                            color: violet,
-                                            fontSize:
-                                                ResponsiveFlutter.of(context)
-                                                    .fontSize(3),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+              if (snapshot.data.idLivExt == null) {
+                return Scaffold(
+                  backgroundColor: background,
+                  body: Column(
+                    children: <Widget>[
+                      Header(),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.3),
+                      Center(
+                        child: Text(
+                          "Aucune livraison faite",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(color: violet),
-                                  ]),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Text(
-                                    "Bénéfices",
-                                    style: TextStyle(
-                                        color: violet,
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(2)),
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Text(
-                                    snapshot.data.benificeMensuel.toString(),
-                                    style: TextStyle(
-                                        color: violet,
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(3),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.01),
-                                  Center(
-                                    child: Row(
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01),
+                      Center(
+                        child: Text(
+                          "Acceptez votre prochaine livraison !",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Scaffold(
+                  backgroundColor: background,
+                  body: Column(
+                    children: <Widget>[
+                      Header(),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Center(
+                        child: Text(
+                          "Evolution des bénéfices par mois",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                          height: screenheight * 0.4,
+                          child:
+                              SimpleBarChart(_createSampleData(snapshot.data))),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Center(
+                        child: Text(
+                          "statistiques mensuels",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(color: violet),
+                                    ]),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Text(
+                                      "Chiffres d'affaires",
+                                      style: TextStyle(
+                                          color: violet,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(2)),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Text(
+                                      snapshot.data.cAMensuel == null
+                                          ? "0"
+                                          : snapshot.data.cAMensuel.toString() +
+                                              "DA",
+                                      style: TextStyle(
+                                          color: violet,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(3),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "+" +
-                                              snapshot.data.benificeToday
+                                          "+",
+                                          style: TextStyle(
+                                              color: darkgreen,
+                                              fontSize:
+                                                  ResponsiveFlutter.of(context)
+                                                      .fontSize(2.5),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          snapshot.data.cAToday == null
+                                              ? "0"
+                                              : snapshot.data.cAToday
                                                   .toString(),
                                           style: TextStyle(
                                               color: darkgreen,
@@ -213,33 +178,141 @@ class _FinancespageState extends State<Financespage> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(
-                                            width: MediaQuery.of(context)
+                                            height: MediaQuery.of(context)
                                                     .size
                                                     .height *
                                                 0.01),
                                         Text(
-                                          "Auj",
+                                          snapshot.data.cAMensuel.toString(),
                                           style: TextStyle(
                                               color: violet,
                                               fontSize:
                                                   ResponsiveFlutter.of(context)
-                                                      .fontSize(2)),
+                                                      .fontSize(3),
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ],
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        )
-                      ],
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(color: violet),
+                                    ]),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Text(
+                                      "Bénéfices",
+                                      style: TextStyle(
+                                          color: violet,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(2)),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Text(
+                                      snapshot.data.benificeMensuel.toString(),
+                                      style: TextStyle(
+                                          color: violet,
+                                          fontSize:
+                                              ResponsiveFlutter.of(context)
+                                                  .fontSize(3),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "+" +
+                                                snapshot.data.benificeToday
+                                                    .toString(),
+                                            style: TextStyle(
+                                                color: darkgreen,
+                                                fontSize: ResponsiveFlutter.of(
+                                                        context)
+                                                    .fontSize(2.5),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01),
+                                          Text(
+                                            "Auj",
+                                            style: TextStyle(
+                                                color: violet,
+                                                fontSize: ResponsiveFlutter.of(
+                                                        context)
+                                                    .fontSize(2)),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              }
+            } else if (snapshot.hasError) {
+              return Scaffold(
+                backgroundColor: background,
+                body: Column(
+                  children: <Widget>[
+                    Header(),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+                    Center(
+                      child: Text(
+                        "Probleme de connexion survenu",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Center(
+                      child: Text(
+                        "Verifiez et Reessayer !",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
                     )
                   ],
                 ),
               );
-            } else if (snapshot.hasError) {
-              return Text("Erreur");
             }
             return Center(child: CircularProgressIndicator());
           }),

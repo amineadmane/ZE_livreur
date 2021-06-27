@@ -217,7 +217,36 @@ class _HistoriquePageState extends State<HistoriquePage>
                 },
               );
             } else if (snapshot.hasError) {
-              return Text("Erreur");
+              return Scaffold(
+                backgroundColor: background,
+                body: Column(
+                  children: <Widget>[
+                    Header(),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+                    Center(
+                      child: Text(
+                        "Probleme de connexion survenu",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Center(
+                      child: Text(
+                        "Verifiez et Reessayer !",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              );
             }
             // By default, show a loading spinner.
             return Center(child: CircularProgressIndicator());
@@ -237,58 +266,124 @@ class _HistoriquePageState extends State<HistoriquePage>
           future: ApiCalls().getyears(provider.idLivExt),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              _tabs = getTabs(snapshot.data);
-              _tabController = getTabController();
+              if (snapshot.data.length == 0) {
+                _tabs = getTabs(snapshot.data);
+                _tabController = getTabController();
+                return Scaffold(
+                  backgroundColor: background,
+                  body: Column(
+                    children: <Widget>[
+                      Header(),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.3),
+                      Center(
+                        child: Text(
+                          "Historique Vide",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01),
+                      Center(
+                        child: Text(
+                          "Acceptez votre prochaine livraison !",
+                          style: TextStyle(
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2.5),
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                _tabs = getTabs(snapshot.data);
+                _tabController = getTabController();
+                return Scaffold(
+                  backgroundColor: background,
+                  body: Column(
+                    children: <Widget>[
+                      Header(),
+                      Flexible(
+                        child: Scaffold(
+                          body: DefaultTabController(
+                            length: 3,
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Material(
+                                    color: background,
+                                    child: TabBar(
+                                        labelColor: orange,
+                                        indicatorColor: orange,
+                                        unselectedLabelColor: Colors.black,
+                                        labelStyle: TextStyle(
+                                            fontSize:
+                                                ResponsiveFlutter.of(context)
+                                                    .fontSize(3),
+                                            fontWeight: FontWeight.bold),
+                                        //For Selected tab
+                                        unselectedLabelStyle: TextStyle(
+                                            fontSize:
+                                                ResponsiveFlutter.of(context)
+                                                    .fontSize(1.57),
+                                            fontWeight: FontWeight.bold),
+                                        tabs: _tabs,
+                                        controller: _tabController),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TabBarView(
+                                    controller: _tabController,
+                                    children: getWidgets(snapshot.data),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            }
+            if (snapshot.hasError) {
               return Scaffold(
                 backgroundColor: background,
                 body: Column(
                   children: <Widget>[
                     Header(),
-                    Flexible(
-                      child: Scaffold(
-                        body: DefaultTabController(
-                          length: 3,
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Material(
-                                  color: background,
-                                  child: TabBar(
-                                      labelColor: orange,
-                                      indicatorColor: orange,
-                                      unselectedLabelColor: Colors.black,
-                                      labelStyle: TextStyle(
-                                          fontSize:
-                                              ResponsiveFlutter.of(context)
-                                                  .fontSize(3),
-                                          fontWeight: FontWeight
-                                              .bold), //For Selected tab
-                                      unselectedLabelStyle: TextStyle(
-                                          fontSize:
-                                              ResponsiveFlutter.of(context)
-                                                  .fontSize(1.57),
-                                          fontWeight: FontWeight.bold),
-                                      tabs: _tabs,
-                                      controller: _tabController),
-                                ),
-                              ),
-                              Expanded(
-                                child: TabBarView(
-                                  controller: _tabController,
-                                  children: getWidgets(snapshot.data),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+                    Center(
+                      child: Text(
+                        "Probleme de connexion survenu",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Center(
+                      child: Text(
+                        "Verifiez et Reessayer !",
+                        style: TextStyle(
+                            fontSize:
+                                ResponsiveFlutter.of(context).fontSize(2.5),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
                   ],
                 ),
               );
-            }
-            if (snapshot.hasError) {
-              return Text("Erreur");
             }
             return Center(child: CircularProgressIndicator());
           }),

@@ -39,13 +39,13 @@ class NotificationPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      offretext(context),
+                      buttons(context),
                       notiftext(context),
                       avatar(context, provider.getnom, provider.getprenom),
                       cout(context, (provider.getprix).toStringAsFixed(0)),
                       destination(
                           context, provider.getpickup, provider.getdropoff),
-                      buttons(context)
+                      offretext(context),
                     ],
                   ),
                 ),
@@ -356,7 +356,9 @@ class NotificationPage extends StatelessWidget {
 
   void acceptTrip(BuildContext context) {
     var provider = Provider.of<Auth>(context, listen: false);
-    String rideID = "RideId";
+    var requestprovider = Provider.of<RequestProvider>(context, listen: false);
+    String rideID = requestprovider.getrideid;
+    print("RIDE ID = " + rideID);
     rideRef =
         FirebaseDatabase.instance.reference().child('rideRequest/$rideID');
     rideRef.child('status').set('accepted');

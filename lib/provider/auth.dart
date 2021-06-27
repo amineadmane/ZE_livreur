@@ -39,7 +39,6 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
-      print(response.statusCode);
       if (response.statusCode == 200) {
         String token = response.data.toString();
         this.tryToken(context, token);
