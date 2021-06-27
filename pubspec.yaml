@@ -39,6 +39,7 @@ dependencies:
   pinput: ^1.0.0
   circular_countdown_timer: ^0.1.0
   firebase_messaging: ^8.0.0-dev.15
+  image_picker:
 dev_dependencies:
   flutter_test:
     sdk: flutter

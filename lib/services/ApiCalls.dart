@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:dio/dio.dart' as Dio;
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:ze_livreur/models/Evaluation_List.dart';
 import 'package:ze_livreur/models/Evaluation_totale.dart';
 import 'package:ze_livreur/models/Histo_mensuelle.dart';
@@ -11,6 +15,7 @@ import 'package:ze_livreur/models/Livraison_externe.dart';
 import 'package:ze_livreur/models/Metric.dart';
 import 'package:ze_livreur/models/ParrainageModal.dart';
 import 'package:ze_livreur/models/Year.dart';
+import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/dio.dart';
 
 class ApiCalls {
@@ -34,7 +39,7 @@ class ApiCalls {
 
     if (response.statusCode == 200) {
       if (response.body.isEmpty) {
-        return _livraisonexterne;
+        return null;
       } else {
         _livraisonexterne =
             LivraisonExterne.fromJson(jsonDecode(response.body));
@@ -229,6 +234,29 @@ class ApiCalls {
 
     if (response.statusCode == 200) {
       return "Operation reussie";
+    }
+  }
+
+  Future uploadImage(BuildContext context, _scaffoldkey, File image, int id,
+      String token) async {
+    final uri = Uri.parse(uRL + '/upload/' + id.toString());
+    print('here the token  $token');
+    var request = http.MultipartRequest('POST', uri)
+      ..headers.addAll(
+          {"Accept": "application/json", "Authorization": 'Bearer $token'});
+
+    var pic = await http.MultipartFile.fromPath("image", image.path);
+    request.files.add(pic);
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      Provider.of<Auth>(context, listen: false)
+          .changePhoto(basename(image.path));
+      print("photo uploaded");
+    } else {
+      print(response.statusCode);
+      _scaffoldkey.currentState.showSnackBar(SnackBar(
+          content: Text("Une erreur s'est produite, réessayer plus tard !")));
     }
   }
 }

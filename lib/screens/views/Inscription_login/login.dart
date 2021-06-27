@@ -370,14 +370,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget>
                 if (_formKey.currentState.validate()) {
                   await Provider.of<Auth>(context, listen: false)
                       .login(context, creds);
-                  if (Provider.of<Auth>(context, listen: false).authenticated ==
+                  if (Provider.of<Auth>(context, listen: false).authenticated !=
                       "loggedin") {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => ContainerScreen(),
-                      ),
-                    );
-                  } else {
                     setState(() {
                       tried = true;
                     });
