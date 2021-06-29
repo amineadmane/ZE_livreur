@@ -12,7 +12,7 @@ class LivraisonExterne {
   int prix;
   dynamic note;
   String commentaire;
-  int ditanceParcourous;
+  double ditanceParcourous;
   String createdAt;
   String updatedAt;
 

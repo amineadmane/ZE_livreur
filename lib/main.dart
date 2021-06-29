@@ -69,22 +69,28 @@ class _NavigationState extends State<Navigation> {
   void getMessage() {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage messageRemoted) {
-        print("rahi temchi");
-
         Map<String, dynamic> message = messageRemoted.data;
-        print(message.toString());
         var provider = Provider.of<RequestProvider>(context, listen: false);
         var userprovider = Provider.of<Auth>(context, listen: false);
-        print(userprovider.livreurExt.etat);
 
-        if (true) {
+        if (userprovider.authenticated != "notified" &&
+            userprovider.authenticated != "delivring") {
+          provider.changeIdClient(int.tryParse(message['id_client']));
+          provider.changePrixPromo(double.tryParse(message['prixavecpromo']));
+          provider.changeValeur(double.tryParse(message['valeur']));
+          provider.changedistance(double.tryParse(message['distance']));
+          provider.changeTelDest(message['teldest']);
+          provider.changePoids(double.tryParse(message['poids']));
+          provider.changeDimensions(message['dimensions']);
+          provider.changeFragilite(message['fragilite']);
           provider.changenom(message['nom']);
-          provider.changeprenom(message['prenom']);
           provider.changepickup(message['pickup']);
           provider.changedropoff(message['dropoff']);
           provider.changetel(message['tel']);
           provider.changerideid(message['rideid']);
           provider.changeprix(double.tryParse(message['prix']));
+          provider.changeduration(double.tryParse(message['duration']));
+
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
       },
@@ -98,13 +104,27 @@ class _NavigationState extends State<Navigation> {
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}
       var provider = Provider.of<RequestProvider>(context, listen: false);
-      provider.changenom(message['nom']);
-      provider.changeprenom(message['prenom']);
-      provider.changepickup(message['pickup']);
-      provider.changedropoff(message['dropoff']);
-      provider.changetel(message['tel']);
-      provider.changeprix(double.parse(message['prix']));
-      Provider.of<Auth>(context, listen: false).changeauth("notified");
+      if (userprovider.authenticated != "notified" &&
+          userprovider.authenticated != "delivring") {
+        provider.changeIdClient(int.tryParse(message['id_client']));
+        provider.changePrixPromo(double.tryParse(message['prixavecpromo']));
+        provider.changeValeur(double.tryParse(message['valeur']));
+        provider.changedistance(double.tryParse(message['distance']));
+        provider.changeTelDest(message['teldest']);
+        provider.changePoids(double.tryParse(message['poids']));
+        provider.changeDimensions(message['dimensions']);
+        provider.changeFragilite(message['fragilite']);
+        provider.changenom(message['nom']);
+        provider.changepickup(message['pickup']);
+        provider.changedropoff(message['dropoff']);
+        provider.changetel(message['tel']);
+        provider.changerideid(message['rideid']);
+        provider.changeprix(double.tryParse(message['prix']));
+
+        provider.changeduration(double.tryParse(message['duration']));
+        print("duration : " + message['duration'].toString());
+        Provider.of<Auth>(context, listen: false).changeauth("notified");
+      }
     });
   }
 

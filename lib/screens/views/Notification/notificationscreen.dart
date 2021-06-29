@@ -8,22 +8,37 @@ import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/services/maps.dart';
+import 'package:custom_timer/custom_timer.dart';
 
 import '../../../globalvariabels.dart';
 
-// ignore: must_be_immutable
-class NotificationPage extends StatelessWidget {
-  Color grey = Color(0xFF424242);
-  Color grey2 = Color(0xFF646464);
-  Color background = Color(0xFFF2F2F2);
-  Color green = Color(0xFF4ED964);
-  Color red = Color(0xFFFF3A32);
-  Color orange = Color(0xFFF28322);
-  Color violet = Color(0xFF382B8C);
+class NotificationPage extends StatefulWidget {
+  @override
+  _NotificationPageState createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  final Color grey = Color(0xFF424242);
+  final Color grey2 = Color(0xFF646464);
+  final Color background = Color(0xFFF2F2F2);
+  final Color green = Color(0xFF4ED964);
+  final Color red = Color(0xFFFF3A32);
+  final Color orange = Color(0xFFF28322);
+  final Color violet = Color(0xFF382B8C);
+
+  final CustomTimerController _controller = new CustomTimerController();
+  var provider;
+  var provideruser;
+
+  void onFinish() {
+    Provider.of<Auth>(this.context, listen: false)
+        .changeAuthenticated("loggedin");
+  }
+
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<RequestProvider>(context, listen: false);
-    print(provider.getpickup);
+    provider = Provider.of<RequestProvider>(context, listen: false);
+    provideruser = Provider.of<Auth>(context, listen: false);
     return SafeArea(
       child: FutureBuilder(
           future: Maps.obtainPlaceDirectionsDetails(
@@ -39,13 +54,17 @@ class NotificationPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      buttons(context),
-                      notiftext(context),
-                      avatar(context, provider.getnom, provider.getprenom),
+                      offretext(),
+                      avatar(context, provider.getnom),
                       cout(context, (provider.getprix).toStringAsFixed(0)),
                       destination(
-                          context, provider.getpickup, provider.getdropoff),
-                      offretext(context),
+                        context,
+                        provider.getpickup,
+                        provider.getdropoff,
+                        provider.getduration.toString(),
+                      ),
+                      countDown(context),
+                      buttons(context),
                     ],
                   ),
                 ),
@@ -60,15 +79,15 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Widget offretext(context) {
+  Widget offretext() {
     return Container(
         child: Text(
       "offre\nde livraison",
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: NotificationPage().background,
+        color: background,
         fontFamily: "Mom cake",
-        fontSize: ResponsiveFlutter.of(context).fontSize(7),
+        fontSize: ResponsiveFlutter.of(this.context).fontSize(7),
         fontWeight: FontWeight.bold,
       ),
     ));
@@ -82,20 +101,20 @@ class NotificationPage extends StatelessWidget {
           "Vous avez une nouvelle offre de livraison, ne ratez pas l'opportunité !",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: NotificationPage().background,
+            color: background,
             fontSize: ResponsiveFlutter.of(context).fontSize(2.3),
             fontWeight: FontWeight.w400,
           ),
         ));
   }
 
-  Widget avatar(context, String nom, String prenom) {
+  Widget avatar(context, String nom) {
     return Container(
       margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: NotificationPage().background,
+            backgroundColor: background,
             radius: ResponsiveFlutter.of(context).scale(50),
             child: Image(
               width: ResponsiveFlutter.of(context).scale(80),
@@ -103,10 +122,10 @@ class NotificationPage extends StatelessWidget {
             ),
           ),
           Text(
-            nom + " " + prenom,
+            nom,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: NotificationPage().background,
+              color: background,
               fontFamily: "Mom cake",
               fontSize: ResponsiveFlutter.of(context).fontSize(3.5),
               fontWeight: FontWeight.bold,
@@ -123,7 +142,7 @@ class NotificationPage extends StatelessWidget {
       width: ResponsiveFlutter.of(context).wp(80),
       padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
       decoration: BoxDecoration(
-        color: NotificationPage().background,
+        color: background,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -133,7 +152,7 @@ class NotificationPage extends StatelessWidget {
             "Cout de livraison",
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: NotificationPage().grey2,
+              color: grey2,
               fontFamily: "Mom cake",
               fontSize: ResponsiveFlutter.of(context).fontSize(2.5),
               fontWeight: FontWeight.bold,
@@ -154,7 +173,7 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Widget destination(context, String pickup, String dropoff) {
+  Widget destination(context, String pickup, String dropoff, String duration) {
     Size size = MediaQuery.of(context).size;
     double screenwidth = size.width;
     return Container(
@@ -162,7 +181,7 @@ class NotificationPage extends StatelessWidget {
       width: ResponsiveFlutter.of(context).wp(80),
       padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
       decoration: BoxDecoration(
-        color: NotificationPage().background,
+        color: background,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -173,9 +192,9 @@ class NotificationPage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: ResponsiveFlutter.of(context).scale(10),
-                  backgroundColor: NotificationPage().orange,
+                  backgroundColor: orange,
                   child: CircleAvatar(
-                    backgroundColor: NotificationPage().background,
+                    backgroundColor: background,
                     radius: ResponsiveFlutter.of(context).scale(7),
                   ),
                 ),
@@ -185,7 +204,7 @@ class NotificationPage extends StatelessWidget {
                   height: ResponsiveFlutter.of(context).hp(5),
                   child: VerticalDivider(
                     thickness: 3,
-                    color: NotificationPage().grey2,
+                    color: grey2,
                     indent: 3,
                     endIndent: 3,
                   ),
@@ -194,7 +213,7 @@ class NotificationPage extends StatelessWidget {
                   radius: ResponsiveFlutter.of(context).scale(10),
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
-                    backgroundColor: NotificationPage().background,
+                    backgroundColor: background,
                     radius: ResponsiveFlutter.of(context).scale(7),
                   ),
                 ),
@@ -223,10 +242,10 @@ class NotificationPage extends StatelessWidget {
                       Expanded(
                         child: SizedBox(
                           child: Text(
-                            "à 5min",
+                            duration + " min",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: NotificationPage().grey2,
+                              color: grey2,
                               fontFamily: "Mom cake",
                               fontSize:
                                   ResponsiveFlutter.of(context).fontSize(2),
@@ -244,7 +263,7 @@ class NotificationPage extends StatelessWidget {
                     pickup,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: NotificationPage().grey2,
+                      color: grey2,
                       fontFamily: "Mom cake",
                       fontSize: ResponsiveFlutter.of(context).fontSize(2),
                       fontWeight: FontWeight.bold,
@@ -254,7 +273,7 @@ class NotificationPage extends StatelessWidget {
                 Container(
                     child: Divider(
                   thickness: 2,
-                  color: NotificationPage().grey2,
+                  color: grey2,
                   endIndent: ResponsiveFlutter.of(context).scale(15),
                 )),
                 Text(
@@ -273,7 +292,7 @@ class NotificationPage extends StatelessWidget {
                     dropoff,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: NotificationPage().grey2,
+                      color: grey2,
                       fontFamily: "Mom cake",
                       fontSize: ResponsiveFlutter.of(context).fontSize(2),
                       fontWeight: FontWeight.bold,
@@ -303,35 +322,32 @@ class NotificationPage extends StatelessWidget {
                 width: ResponsiveFlutter.of(context).scale(100),
                 height: ResponsiveFlutter.of(context).scale(50),
                 decoration: BoxDecoration(
-                    color: NotificationPage().red,
-                    borderRadius: BorderRadius.circular(10)),
+                    color: red, borderRadius: BorderRadius.circular(10)),
                 child: Icon(
                   Icons.remove_circle_outline_outlined,
-                  color: NotificationPage().background,
+                  color: background,
                   size: ResponsiveFlutter.of(context).fontSize(5.5),
                 ),
               )),
           FlatButton(
               onPressed: () async {
-                var provider =
-                    Provider.of<RequestProvider>(context, listen: false);
-                var provideruser = Provider.of<Auth>(context, listen: false);
-
                 acceptTrip(context);
+                print('before accept');
+                print('distance 3 :' + provider.getdistance.toString());
                 FormData formdata = new FormData.fromMap({
-                  'id_client': 27,
-                  'id_colis': 1,
+                  'id_client': provider.idClient,
                   'id_livreur': provideruser.livreurExt.idLivExt,
-                  'nomclient': provider.getnom + " " + provider.getprenom,
+                  'nomclient': provider.getnom,
                   'telephone': provider.gettel,
-                  'wilaya': 16,
-                  'commune': 1,
-                  'codePostal': "16330",
-                  'ditance_parcourous': 410.0,
-                  'note': 0,
-                  'commentaire': "Commentaire",
-                  'adresse': "adresse",
+                  'ditance_parcourous': provider.getdistance,
+                  'adresse': provider.getpickup,
                   'prix': provider.getprix,
+                  'prix_promo': provider.prixPromo,
+                  //colis
+                  "valeur": provider.valeur,
+                  "poids": provider.poids,
+                  "fragilite": provider.fragilite,
+                  "dimensions": provider.dimensions,
                 });
                 await ApiCalls().acceptLivraison(formdata);
                 Provider.of<Auth>(context, listen: false)
@@ -341,11 +357,10 @@ class NotificationPage extends StatelessWidget {
                 width: ResponsiveFlutter.of(context).scale(100),
                 height: ResponsiveFlutter.of(context).scale(50),
                 decoration: BoxDecoration(
-                    color: NotificationPage().green,
-                    borderRadius: BorderRadius.circular(10)),
+                    color: green, borderRadius: BorderRadius.circular(10)),
                 child: Icon(
                   Icons.check_circle_outline_outlined,
-                  color: NotificationPage().background,
+                  color: background,
                   size: ResponsiveFlutter.of(context).fontSize(5.5),
                 ),
               ))
@@ -354,25 +369,45 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
+  Widget countDown(BuildContext context) {
+    return CustomTimer(
+      controller: _controller,
+      from: Duration(seconds: 15),
+      to: Duration(hours: 0),
+      onBuildAction: CustomTimerAction.auto_start,
+      onFinish: onFinish,
+      builder: (CustomTimerRemainingTime remaining) {
+        return Text(
+          "${remaining.minutes}:${remaining.seconds}",
+          style: TextStyle(
+              color: background,
+              fontWeight: FontWeight.bold,
+              fontSize: ResponsiveFlutter.of(context).fontSize(3.5)),
+        );
+      },
+    );
+  }
+
   void acceptTrip(BuildContext context) {
-    var provider = Provider.of<Auth>(context, listen: false);
-    var requestprovider = Provider.of<RequestProvider>(context, listen: false);
-    String rideID = requestprovider.getrideid;
-    print("RIDE ID = " + rideID);
+    String rideID = provider.getrideid;
     rideRef =
         FirebaseDatabase.instance.reference().child('rideRequest/$rideID');
     rideRef.child('status').set('accepted');
-    rideRef
-        .child('driver_name')
-        .set(provider.livreurExt.nom + " " + provider.livreurExt.prenom);
+    rideRef.child('driver_name').set(
+        provideruser.livreurExt.nom + " " + provideruser.livreurExt.prenom);
     rideRef.child('car_details').set(
-        '${provider.livreurExt.couleurVehicule} - ${provider.livreurExt.modeleVehicule}');
-    rideRef.child('driver_phone').set(provider.livreurExt.phoneNumber);
-    rideRef.child('driver_id').set(provider.livreurExt.idLivExt);
+        '${provideruser.livreurExt.couleurVehicule} - ${provideruser.livreurExt.modeleVehicule}');
+    rideRef.child('driver_phone').set(provideruser.livreurExt.phoneNumber);
+    rideRef.child('driver_id').set(provideruser.livreurExt.idLivExt);
 
     DatabaseReference historyRef = FirebaseDatabase.instance
         .reference()
-        .child('drivers/${provider.livreurExt.idLivExt}/history/$rideID');
+        .child('drivers/${provideruser.livreurExt.idLivExt}/history/$rideID');
     historyRef.set(true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

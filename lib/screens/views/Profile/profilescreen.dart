@@ -8,7 +8,6 @@ import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 import 'package:ze_livreur/screens/views/Profile/changeNumber.dart';
 import 'package:ze_livreur/screens/views/Profile/passchangescreen.dart';
 import 'package:ze_livreur/components/common_styles.dart';

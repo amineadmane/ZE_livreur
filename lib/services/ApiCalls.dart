@@ -218,7 +218,6 @@ class ApiCalls {
         print("ok");
       }
     } on Dio.DioError catch (e) {
-      print("erreur");
       print(e);
       if (e.response.statusCode == 302) print(e);
     }

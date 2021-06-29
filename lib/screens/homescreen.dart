@@ -219,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ? "0"
                                                     : snapshot
                                                         .data[1].distanceTotale
+                                                        .round()
                                                         .toString(),
                                                 style: TextStyle(
                                                     fontSize: 25,
@@ -232,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ? "0"
                                                     : snapshot.data[1]
                                                         .evaluationMoyenne
-                                                        .toString(),
+                                                        .toStringAsFixed(1),
                                                 style: TextStyle(
                                                     fontSize: 25,
                                                     fontWeight: FontWeight.w500,
@@ -324,8 +325,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               1]
                                                                           .prix) *
                                                                       0.8)
-                                                                  .toStringAsFixed(
-                                                                      1),
+                                                                  .round()
+                                                                  .toString(),
                                                           style: TextStyle(
                                                               fontSize: 35,
                                                               fontWeight:

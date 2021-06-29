@@ -1,7 +1,7 @@
 // ignore: camel_case_types
 class Livraison_aujourdhui {
   int livraisons;
-  int distanceTotale;
+  double distanceTotale;
   double cAAujourdhui;
   double benificeAujourdhui;
   String prix;

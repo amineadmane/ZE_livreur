@@ -15,6 +15,7 @@ class LivreurExt {
   String codeParrainage;
   String createdAt;
   String updatedAt;
+  String typeVehicule;
   dynamic photo;
 
   LivreurExt(

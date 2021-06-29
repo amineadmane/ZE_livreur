@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:ze_livreur/models/DirectionDetails.dart';
-import 'package:ze_livreur/provider/request_provider.dart';
 import 'package:ze_livreur/services/RequestAssistant.dart';
 
 class Maps {
@@ -34,10 +32,6 @@ class Maps {
         res["routes"][0]["legs"][0]["duration"]["text"];
     directiondetails.durationValue =
         res["routes"][0]["legs"][0]["duration"]["value"];
-    var provider = Provider.of<RequestProvider>(context, listen: false);
-    print("duration value : " + directiondetails.durationValue.toString());
-    provider.changedistance(directiondetails.distanceText);
-    provider.changeduration(directiondetails.durationValue);
 
     return directiondetails;
   }

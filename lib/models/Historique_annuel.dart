@@ -1,7 +1,7 @@
 class HistoriqueAnnuel {
   int mois;
   int nbLivraisons;
-  int distanceTotale;
+  double distanceTotale;
 
   HistoriqueAnnuel({this.mois, this.nbLivraisons, this.distanceTotale});
 

@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
@@ -186,54 +187,24 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  histo.pickup,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: screenwidth * 0.02,
-                ),
-                CircleAvatar(
-                  radius: ResponsiveFlutter.of(context).scale(10),
-                  backgroundColor: orange,
-                  child: CircleAvatar(
-                    backgroundColor: background,
-                    radius: ResponsiveFlutter.of(context).scale(7),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(2)),
-                    width: ResponsiveFlutter.of(context).wp(25),
-                    child: Divider(
-                      thickness: 3,
-                      color: grey2,
-                      indent: 3,
-                      endIndent: 3,
+                AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    RotateAnimatedText(
+                      histo.pickup,
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ),
-                CircleAvatar(
-                  radius: ResponsiveFlutter.of(context).scale(10),
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    backgroundColor: background,
-                    radius: ResponsiveFlutter.of(context).scale(7),
-                  ),
-                ),
-                SizedBox(
-                  width: screenwidth * 0.02,
-                ),
-                Text(
-                  histo.dropoff,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
-                      fontWeight: FontWeight.bold),
+                    RotateAnimatedText(
+                      "hi",
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ],
             ),

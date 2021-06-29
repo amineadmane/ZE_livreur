@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ze_livreur/provider/auth.dart';
-import 'package:ze_livreur/screens/views/ContainerScreen.dart';
 import 'package:ze_livreur/screens/views/Inscription_login/Inscription.dart';
 import '../../../components/common_styles.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
