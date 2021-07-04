@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -69,10 +70,11 @@ class _NavigationState extends State<Navigation> {
   void getMessage() {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage messageRemoted) {
-        print("rahi temchi");
-
+        assetsAudioPlayer.open(
+          Audio('sounds/alert.mp3'),
+        );
+        assetsAudioPlayer.play();
         Map<String, dynamic> message = messageRemoted.data;
-        print(message.toString());
         var provider = Provider.of<RequestProvider>(context, listen: false);
         var userprovider = Provider.of<Auth>(context, listen: false);
         print(userprovider.livreurExt.etat);
@@ -96,7 +98,6 @@ class _NavigationState extends State<Navigation> {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage messageRemoted) {
       Map<String, dynamic> message = messageRemoted.data;
       var userprovider = Provider.of<Auth>(context, listen: false);
-      if (userprovider.livreurExt.etat == "online") {}
       var provider = Provider.of<RequestProvider>(context, listen: false);
       provider.changenom(message['nom']);
       provider.changeprenom(message['prenom']);
