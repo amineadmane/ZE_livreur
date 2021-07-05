@@ -17,7 +17,18 @@ class RequestProvider with ChangeNotifier {
   String _dimensions;
   String _fragilite;
   String _rideid;
+  String _localityPickUp;
+  String _localityDropOff;
+  String _wilayaDest;
+  String _wilayaExp;
+  int _interWilaya;
+  int _seconds;
 
+  int get interWilaya => _interWilaya;
+  String get wilayaDest => _wilayaDest;
+  String get wilayaExp => _wilayaExp;
+  String get localityPickUp => _localityPickUp;
+  String get localityDropOff => _localityDropOff;
   String get fragilite => _fragilite;
   String get dimensions => _dimensions;
   double get poids => _poids;
@@ -26,6 +37,7 @@ class RequestProvider with ChangeNotifier {
   double get valeur => _valeur;
   double get prixPromo => _prixPromo;
   int get idClient => _idClient;
+  int get seconds => _seconds;
 
   String get getrideid {
     return _rideid;
@@ -136,6 +148,36 @@ class RequestProvider with ChangeNotifier {
 
   void changeDimensions(String dimensions) {
     _dimensions = dimensions;
+    notifyListeners();
+  }
+
+  void changeLocalityPickUp(String localityPickUp) {
+    _localityPickUp = localityPickUp;
+    notifyListeners();
+  }
+
+  void changeLocalityDropOff(String localityDropOff) {
+    _localityDropOff = localityDropOff;
+    notifyListeners();
+  }
+
+  void changeInterWilaya(int interWilaya) {
+    _interWilaya = interWilaya;
+    notifyListeners();
+  }
+
+  void changeWilayaDest(String wilayaDest) {
+    _wilayaDest = wilayaDest;
+    notifyListeners();
+  }
+
+  void changeWilayaExp(String wilayaExp) {
+    _wilayaExp = wilayaExp;
+    notifyListeners();
+  }
+
+  void changeSeconds(int seconds) {
+    _seconds = seconds;
     notifyListeners();
   }
 }

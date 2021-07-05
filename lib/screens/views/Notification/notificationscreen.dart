@@ -61,9 +61,9 @@ class _NotificationPageState extends State<NotificationPage> {
                         context,
                         provider.getpickup,
                         provider.getdropoff,
-                        provider.getduration.toString(),
+                        provider.getduration.toStringAsFixed(0),
                       ),
-                      countDown(context),
+                      countDown(context, provider.seconds),
                       buttons(context),
                     ],
                   ),
@@ -230,7 +230,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Kouba",
+                        provider.localityPickUp,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black,
@@ -277,7 +277,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   endIndent: ResponsiveFlutter.of(context).scale(15),
                 )),
                 Text(
-                  "Djasr Kasentina",
+                  provider.localityDropOff,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -341,6 +341,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   'telephone': provider.gettel,
                   'ditance_parcourous': provider.getdistance,
                   'adresse': provider.getpickup,
+                  'adresse_drop_off': provider.getdropoff,
                   'prix': provider.getprix,
                   'prix_promo': provider.prixPromo,
                   //colis
@@ -369,10 +370,10 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  Widget countDown(BuildContext context) {
+  Widget countDown(BuildContext context, int seconds) {
     return CustomTimer(
       controller: _controller,
-      from: Duration(seconds: 15),
+      from: Duration(seconds: seconds),
       to: Duration(hours: 0),
       onBuildAction: CustomTimerAction.auto_start,
       onFinish: onFinish,

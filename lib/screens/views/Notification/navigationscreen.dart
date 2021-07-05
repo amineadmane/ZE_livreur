@@ -192,8 +192,8 @@ class _NavigationPageState extends State<NavigationPage> {
           children: [
             top(context, provider.getnom, provider.gettel),
             diveder(context),
-            middle(
-                context, provider.getdistance.toString(), provider.getduration),
+            middle(context, provider.getdistance.toStringAsFixed(0),
+                provider.getduration),
             diveder(context),
             googlemap(context),
             diveder(context),
@@ -262,7 +262,7 @@ Widget middle(BuildContext context, String distance, double duration) {
           children: [
             RichText(
               text: TextSpan(
-                  text: distance + " ",
+                  text: distance + " KM",
                   style: TextStyle(
                       color: NavigationPage().background,
                       fontSize: ResponsiveFlutter.of(context).fontSize(5),
@@ -436,9 +436,9 @@ Widget top(context, String nom, String tel) {
 
 String convertduration(double seconds) {
   var duration = seconds;
-  var hours = (seconds / 3600).toStringAsFixed(0);
-  duration = duration % 3600;
-  var minutes = (duration / 60).toStringAsFixed(0);
+  var hours = (seconds / 60).toStringAsFixed(0);
+  duration = duration % 60;
+  var minutes = duration.toStringAsFixed(0);
   String durationtext = hours.toString() + "h" + minutes.toString() + "min";
   return durationtext;
 }

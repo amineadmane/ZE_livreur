@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +68,14 @@ class _NavigationState extends State<Navigation> {
     _firebaseMessaging.getToken();
   }
 
+  void onFinish() {
+    if (Provider.of<Auth>(context).authenticated == "notified")
+      Provider.of<Auth>(this.context, listen: false)
+          .changeAuthenticated("loggedin");
+  }
+
   void getMessage() {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage messageRemoted) {
         Map<String, dynamic> message = messageRemoted.data;
@@ -90,6 +99,15 @@ class _NavigationState extends State<Navigation> {
           provider.changerideid(message['rideid']);
           provider.changeprix(double.tryParse(message['prix']));
           provider.changeduration(double.tryParse(message['duration']));
+          provider.changeLocalityDropOff(message['localitydest']);
+          provider.changeLocalityPickUp(message['localityexp']);
+          provider.changeWilayaExp(message['wilayaexp']);
+          provider.changeWilayaDest(message['wilayadest']);
+          provider.changeInterWilaya(int.tryParse(message['interwilaya']));
+          print("locality dest : " + message['localitydest']);
+          print("locality exp : " + message['localityexp']);
+          Provider.of<RequestProvider>(context, listen: false)
+              .changeSeconds(15);
 
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
@@ -104,6 +122,7 @@ class _NavigationState extends State<Navigation> {
       var userprovider = Provider.of<Auth>(context, listen: false);
       if (userprovider.livreurExt.etat == "online") {}
       var provider = Provider.of<RequestProvider>(context, listen: false);
+
       if (userprovider.authenticated != "notified" &&
           userprovider.authenticated != "delivring") {
         provider.changeIdClient(int.tryParse(message['id_client']));
@@ -120,12 +139,35 @@ class _NavigationState extends State<Navigation> {
         provider.changetel(message['tel']);
         provider.changerideid(message['rideid']);
         provider.changeprix(double.tryParse(message['prix']));
-
+        provider.changeLocalityDropOff(message['localitydest']);
+        provider.changeLocalityPickUp(message['localityexp']);
         provider.changeduration(double.tryParse(message['duration']));
-        print("duration : " + message['duration'].toString());
-        Provider.of<Auth>(context, listen: false).changeauth("notified");
+
+        Provider.of<RequestProvider>(context, listen: false)
+            .changeSeconds(_NavigationState().start);
+
+        if (start != 0)
+          Provider.of<Auth>(context, listen: false).changeauth("notified");
       }
     });
+  }
+
+  Timer timer;
+  int start;
+  void startTimer() {
+    start = 15;
+    const oneSec = const Duration(seconds: 1);
+    timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (start == 0) {
+          timer.cancel();
+        } else {
+          start--;
+          print("remaining : $start");
+        }
+      },
+    );
   }
 
   @override
@@ -168,4 +210,10 @@ class _NavigationState extends State<Navigation> {
       ),
     );
   }
+}
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message");
+  _NavigationState().startTimer();
 }
