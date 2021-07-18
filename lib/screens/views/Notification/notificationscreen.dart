@@ -344,6 +344,8 @@ class _NotificationPageState extends State<NotificationPage> {
                   'adresse_drop_off': provider.getdropoff,
                   'prix': provider.getprix,
                   'prix_promo': provider.prixPromo,
+                  'locality_pick': provider.localityPickUp,
+                  'locality_drop': provider.localityDropOff,
                   //colis
                   "valeur": provider.valeur,
                   "poids": provider.poids,
