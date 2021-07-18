@@ -12,7 +12,7 @@ class LivraisonExterne {
   int prix;
   dynamic note;
   String commentaire;
-  int ditanceParcourous;
+  double ditanceParcourous;
   String createdAt;
   String updatedAt;
 
@@ -46,7 +46,7 @@ class LivraisonExterne {
     codePostal = json['codePostal'];
     adresse = json['adresse'];
     prix = json['prix'];
-    ditanceParcourous = json['ditance_parcourous'];
+    ditanceParcourous = json['ditance_parcourous'].toDouble();
     note = json['note'];
     commentaire = json['commentaire'];
     createdAt = json['created_at'];

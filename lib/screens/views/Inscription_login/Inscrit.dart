@@ -148,7 +148,7 @@ class _ConfirminscriptionState extends State<Confirminscription> {
                   borderRadius: new BorderRadius.circular(20.0)),
               color: Color(0xFF480086),
               child: Text(
-                "Deconnexion",
+                "Déconnexion",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,

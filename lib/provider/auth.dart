@@ -39,6 +39,7 @@ class Auth extends ChangeNotifier {
               validateStatus: (status) {
                 return status < 500;
               }));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         String token = response.data.toString();
         this.tryToken(context, token);
@@ -55,7 +56,6 @@ class Auth extends ChangeNotifier {
       Dio.Response response = await dio().get('/LivreurExt',
           options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
       if (response.statusCode == 200) {
-        print(response.data.toString());
         this._livreurExt = LivreurExt.fromJson(response.data);
         if (this._livreurExt.etat == "bloque") {
           this._isloggedIn = "blocked";
@@ -269,6 +269,11 @@ class Auth extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  changePhoto(String photoName) {
+    _livreurExt.photo = photoName;
+    notifyListeners();
   }
 
   changeAuthenticated(String authenticated) {

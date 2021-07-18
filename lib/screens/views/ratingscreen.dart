@@ -169,7 +169,7 @@ class _RatingsPageState extends State<RatingsPage> {
           subtitle: Container(
             margin: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              commentaire,
+              commentaire == null ? "" : commentaire,
               style: TextStyle(
                 color: violet,
                 fontSize: ResponsiveFlutter.of(context).fontSize(2),

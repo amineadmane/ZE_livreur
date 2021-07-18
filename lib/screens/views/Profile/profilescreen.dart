@@ -1,14 +1,17 @@
+import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
-import 'package:ze_livreur/screens/views/Inscription_login/login.dart';
 import 'package:ze_livreur/screens/views/Profile/changeNumber.dart';
 import 'package:ze_livreur/screens/views/Profile/passchangescreen.dart';
 import 'package:ze_livreur/components/common_styles.dart';
+import 'package:ze_livreur/services/ApiCalls.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -16,6 +19,46 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File _image;
+  final picker = ImagePicker();
+  String photoName;
+
+  Future getImage(int id, String token) async {
+    final pickedFile =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    if (pickedFile != null) {
+      if (((File(pickedFile.path).lengthSync() / pow(1024, 2))) > 2) {
+        _scaffoldkey.currentState.showSnackBar(
+            SnackBar(content: Text("Fichier choisi trop volumineux")));
+      } else {
+        _image = File(pickedFile.path);
+        await ApiCalls().uploadImage(context, _scaffoldkey, _image, id, token);
+        await Future.delayed(const Duration(seconds: 2), () {});
+        setState(() {
+          photoName = _image.path?.split("/")?.last;
+        });
+      }
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  ImageProvider _buildImage() {
+    if (photoName != null) {
+      return NetworkImage("http://192.168.0.109:8000/images/$photoName");
+    } else {
+      if (_image == null) {
+        return AssetImage(
+          'assets/images/angela.jpg',
+        );
+      } else {
+        return FileImage(
+          _image,
+        );
+      }
+    }
+  }
+
   @override
   void dispose() {
     _nomController.dispose();
@@ -38,13 +81,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    final myProvider = Provider.of<Auth>(context, listen: false).livreurExt;
+    final myProvider =
+        Provider.of<Auth>(this.context, listen: false).livreurExt;
 
     super.initState();
     _nomController = TextEditingController(text: myProvider.nom);
     _prenomController = TextEditingController(text: myProvider.prenom);
     _emailController = TextEditingController(text: myProvider.eMail);
     _phoneController = TextEditingController(text: myProvider.phoneNumber);
+    photoName = myProvider.photo;
   }
 
   bool changed = false;
@@ -82,7 +127,8 @@ class _ProfilePageState extends State<ProfilePage> {
               key: _formKey,
               child: Column(
                 children: [
-                  avatar(context),
+                  avatar(context, provider.idLivExt,
+                      Provider.of<Auth>(context, listen: false).token),
                   namefield(context, provider.nom),
                   prenomfield(context, provider.prenom),
                   phonefield(context, provider.phoneNumber),
@@ -98,17 +144,18 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget avatar(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
-      child: CircleAvatar(
-          backgroundColor: Color(0xFF382B8C),
-          radius: ResponsiveFlutter.of(context).scale(45),
+  Widget avatar(BuildContext context, int id, String token) {
+    return InkWell(
+        onTap: () => getImage(id, token),
+        child: Container(
+          margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
           child: CircleAvatar(
-            radius: ResponsiveFlutter.of(context).scale(43),
-            backgroundImage: AssetImage("assets/images/angela.jpg"),
-          )),
-    );
+              backgroundColor: Color(0xFF382B8C),
+              radius: ResponsiveFlutter.of(context).scale(45),
+              child: CircleAvatar(
+                  radius: ResponsiveFlutter.of(context).scale(43),
+                  backgroundImage: _buildImage())),
+        ));
   }
 
   Widget namefield(BuildContext context, String nom) {
@@ -310,12 +357,7 @@ class _ProfilePageState extends State<ProfilePage> {
           FlatButton(
               onPressed: () async {
                 await Provider.of<Auth>(context, listen: false).logout();
-                if (Provider.of<Auth>(context, listen: false).authenticated ==
-                    "loggedout") {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                }
+                Navigator.pop(context);
               },
               child: CommonStyles.rows("Deconnexion", Icons.logout, context)),
         ],

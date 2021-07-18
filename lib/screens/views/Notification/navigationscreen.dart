@@ -8,7 +8,6 @@ import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ze_livreur/components/common_styles.dart';
 import 'package:ze_livreur/provider/auth.dart';
-import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:location/location.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/services/maps.dart';
@@ -79,9 +78,20 @@ class _NavigationPageState extends State<NavigationPage> {
 
   Future<void> createpolyline(GoogleMapController _cntlr) async {
     var provider = Provider.of<RequestProvider>(context, listen: false);
+    DirectionDetails directionDetails;
 
-    DirectionDetails directionDetails = await Maps.obtainPlaceDirectionsDetails(
-        context, provider.getpickup, provider.getdropoff);
+    if (provider.interWilaya == 1) {
+      directionDetails = await Maps.obtainPlaceDirectionsDetails(
+          context, provider.getpickup, provider.getdropoff);
+    } else {
+      directionDetails = await Maps.obtainPlaceDirectionsDetails(
+          context, provider.getpickup, provider.wilayaExp);
+      provider.changeduration(
+          double.tryParse(directionDetails.durationValue.toString()) / 60);
+      provider.changedistance(
+          double.tryParse(directionDetails.distanceValue.toString()) / 1000);
+    }
+
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolyLinePointsResult =
         polylinePoints.decodePolyline(directionDetails.encodedPoints);
@@ -191,9 +201,10 @@ class _NavigationPageState extends State<NavigationPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            top(context, provider.getnom, provider.getprenom, provider.gettel),
+            top(context, provider.getnom, provider.gettel),
             diveder(context),
-            middle(context, provider.getdistance, provider.getduration),
+            middle(context, provider.getdistance.toStringAsFixed(0),
+                provider.getduration),
             diveder(context),
             googlemap(context),
             diveder(context),
@@ -232,7 +243,7 @@ Widget diveder(context) {
   );
 }
 
-Widget middle(BuildContext context, String distance, int duration) {
+Widget middle(BuildContext context, String distance, double duration) {
   return Container(
     child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       Container(
@@ -262,7 +273,7 @@ Widget middle(BuildContext context, String distance, int duration) {
           children: [
             RichText(
               text: TextSpan(
-                  text: distance + " ",
+                  text: distance + " KM",
                   style: TextStyle(
                       color: NavigationPage().background,
                       fontSize: ResponsiveFlutter.of(context).fontSize(5),
@@ -300,11 +311,11 @@ bottom(BuildContext context) {
                   width: ResponsiveFlutter.of(context).scale(100),
                   height: ResponsiveFlutter.of(context).scale(50),
                   decoration: BoxDecoration(
-                      color: NotificationPage().red,
+                      color: NavigationPage().red,
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.remove_circle_outline_outlined,
-                    color: NotificationPage().background,
+                    color: NavigationPage().background,
                     size: ResponsiveFlutter.of(context).fontSize(5.5),
                   ),
                 )),
@@ -315,11 +326,11 @@ bottom(BuildContext context) {
                   width: ResponsiveFlutter.of(context).scale(100),
                   height: ResponsiveFlutter.of(context).scale(50),
                   decoration: BoxDecoration(
-                      color: NotificationPage().green,
+                      color: NavigationPage().green,
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(
                     Icons.location_on_outlined,
-                    color: NotificationPage().background,
+                    color: NavigationPage().background,
                     size: ResponsiveFlutter.of(context).fontSize(5.5),
                   ),
                 )),
@@ -362,7 +373,7 @@ bottom(BuildContext context) {
   );
 }
 
-Widget top(context, String nom, String prenom, String tel) {
+Widget top(context, String nom, String tel) {
   void launchURL() async {
     var url = 'tel:' + tel;
     if (await canLaunch(url)) {
@@ -393,7 +404,7 @@ Widget top(context, String nom, String prenom, String tel) {
               ),
             ),
             title: Text(
-              nom + " " + prenom,
+              nom,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: NavigationPage().background,
@@ -425,7 +436,7 @@ Widget top(context, String nom, String prenom, String tel) {
           decoration: CommonStyles.navigationboxes(),
           child: Icon(
             Icons.phone_in_talk_outlined,
-            color: NotificationPage().background,
+            color: NavigationPage().background,
             size: ResponsiveFlutter.of(context).scale(61),
           ),
         ),
@@ -434,11 +445,11 @@ Widget top(context, String nom, String prenom, String tel) {
   );
 }
 
-String convertduration(int seconds) {
+String convertduration(double seconds) {
   var duration = seconds;
-  var hours = (seconds / 3600).toStringAsFixed(0);
-  duration = duration % 3600;
-  var minutes = (duration / 60).toStringAsFixed(0);
+  var hours = (seconds / 60).toStringAsFixed(0);
+  duration = duration % 60;
+  var minutes = duration.toStringAsFixed(0);
   String durationtext = hours.toString() + "h" + minutes.toString() + "min";
   return durationtext;
 }

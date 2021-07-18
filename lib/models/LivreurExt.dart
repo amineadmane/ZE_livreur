@@ -15,6 +15,8 @@ class LivreurExt {
   String codeParrainage;
   String createdAt;
   String updatedAt;
+  String typeVehicule;
+  dynamic photo;
 
   LivreurExt(
       {this.idLivExt,
@@ -32,7 +34,8 @@ class LivreurExt {
       this.points,
       this.codeParrainage,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.photo});
 
   LivreurExt.fromJson(Map<String, dynamic> json) {
     idLivExt = json['id_liv_ext'];
@@ -51,6 +54,7 @@ class LivreurExt {
     codeParrainage = json['code_parrainage'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +75,7 @@ class LivreurExt {
     data['code_parrainage'] = this.codeParrainage;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['photo'] = (this.photo);
     return data;
   }
 }
