@@ -33,12 +33,6 @@ class _HistoriquePageState extends State<HistoriquePage>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
   List<Tab> getTabs(List<Year> list) {
     _tabs.clear();
     int i = 0;
@@ -176,6 +170,7 @@ class _HistoriquePageState extends State<HistoriquePage>
                                         TextSpan(
                                           text: snapshot
                                               .data[index].distanceTotale
+                                              .round()
                                               .toString(),
                                           style: TextStyle(
                                               fontSize:
