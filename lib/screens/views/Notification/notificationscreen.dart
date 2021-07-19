@@ -46,7 +46,6 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     provider = Provider.of<RequestProvider>(context, listen: false);
     provideruser = Provider.of<Auth>(context, listen: false);
-    print("Provider . interwilaya = " + provider.interWilaya.toString());
     if (provider.interWilaya == 1) {
       return SafeArea(
         child: FutureBuilder(
@@ -105,7 +104,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         buttons(context),
                         avatar(context, provider.getnom),
                         cout(context, (provider.getprix).toStringAsFixed(0)),
-                        destination(
+                        destinationsanslocal(
                           context,
                           provider.getpickup,
                           adressbureau,
@@ -335,6 +334,121 @@ class _NotificationPageState extends State<NotificationPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    dropoff,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: grey2,
+                      fontFamily: "Mom cake",
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget destinationsanslocal(
+      context, String pickup, String dropoff, String duration) {
+    Size size = MediaQuery.of(context).size;
+    double screenwidth = size.width;
+    return Container(
+      margin: EdgeInsets.only(top: ResponsiveFlutter.of(context).scale(10)),
+      width: ResponsiveFlutter.of(context).wp(80),
+      padding: EdgeInsets.all(ResponsiveFlutter.of(context).scale(10)),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: ResponsiveFlutter.of(context).wp(15),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: ResponsiveFlutter.of(context).scale(10),
+                  backgroundColor: orange,
+                  child: CircleAvatar(
+                    backgroundColor: background,
+                    radius: ResponsiveFlutter.of(context).scale(7),
+                  ),
+                ),
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(2)),
+                  height: ResponsiveFlutter.of(context).hp(5),
+                  child: VerticalDivider(
+                    thickness: 3,
+                    color: grey2,
+                    indent: 3,
+                    endIndent: 3,
+                  ),
+                ),
+                CircleAvatar(
+                  radius: ResponsiveFlutter.of(context).scale(10),
+                  backgroundColor: Colors.black,
+                  child: CircleAvatar(
+                    backgroundColor: background,
+                    radius: ResponsiveFlutter.of(context).scale(7),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: screenwidth * 0.58,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          child: Text(
+                            duration + " min",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: grey2,
+                              fontFamily: "Mom cake",
+                              fontSize:
+                                  ResponsiveFlutter.of(context).fontSize(2),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    pickup,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: grey2,
+                      fontFamily: "Mom cake",
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                    child: Divider(
+                  thickness: 2,
+                  color: grey2,
+                  endIndent: ResponsiveFlutter.of(context).scale(15),
+                )),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Text(

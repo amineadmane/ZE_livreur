@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/components/header.dart';
 import 'package:ze_livreur/provider/auth.dart';
+import 'package:ze_livreur/screens/views/Historique/Detailscourse.dart';
 import 'package:ze_livreur/screens/views/Notification/notificationscreen.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:intl/intl.dart';
@@ -86,7 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                NotificationPage(),
+                                                Detailsencours(snapshot
+                                                    .data[0].idLivraisonExterne
+                                                    .toString()),
                                           ),
                                         );
                                       },

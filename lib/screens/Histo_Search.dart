@@ -4,6 +4,7 @@ import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/models/Histo_mensuelle.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
+import 'package:ze_livreur/screens/views/Historique/Detailscourse.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,10 @@ class HistoSearchScreen extends StatefulWidget {
 }
 
 class _HistoSearchScreenState extends State<HistoSearchScreen> {
+  Color background = Color(0xFFF2F2F2);
+  Color green = Color(0xFF25E879);
+  Color orange = Color(0xFFF28322);
+  Color violet = Color(0xFF382B8C);
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Auth>(context, listen: false).livreurExt;
@@ -24,13 +29,8 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
     return Scaffold(
       body: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              providernav.getsearch,
-              style: TextStyle(fontSize: 20),
-            ),
-            backgroundColor: orangeclair,
-          ),
+          appBar: appbar(context, providernav.getsearch),
+          backgroundColor: background,
           body: FutureBuilder(
               future: ApiCalls().gethistomensuelle(
                   provider.idLivExt, providernav.getmonth, providernav.getyear),
@@ -47,8 +47,6 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
                               top: MediaQuery.of(context).size.height * 0.03),
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            print(
-                                "Search : " + providernav.getsearch.toString());
                             if (snapshot.data[index].datelivraison
                                     .toString()
                                     .toLowerCase()
@@ -74,7 +72,19 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
                                     .toLowerCase()
                                     .contains(
                                         providernav.getsearch.toLowerCase())) {
-                              return box(snapshot.data[index]);
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Detailsencours(snapshot
+                                                .data[index].idlivext
+                                                .toString()),
+                                      ),
+                                    );
+                                  },
+                                  child: box(snapshot.data[index]));
                             } else {
                               return Container(
                                 height: 0,
@@ -252,6 +262,29 @@ class _HistoSearchScreenState extends State<HistoSearchScreen> {
               ],
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget appbar(context, String search) {
+    Color violet = Color(0xFF382B8C);
+    Color background = Color(0xFFF2F2F2);
+    return AppBar(
+      elevation: 0,
+      backgroundColor: background,
+      shadowColor: null,
+      centerTitle: true,
+      leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_rounded, color: orange),
+          onPressed: () => Navigator.pop(context)),
+      title: Text(
+        search,
+        style: TextStyle(
+          fontFamily: "Mom cake",
+          fontSize: ResponsiveFlutter.of(context).fontSize(4),
+          fontWeight: FontWeight.bold,
+          color: orange,
         ),
       ),
     );
