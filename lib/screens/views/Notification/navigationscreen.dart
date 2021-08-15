@@ -78,9 +78,20 @@ class _NavigationPageState extends State<NavigationPage> {
 
   Future<void> createpolyline(GoogleMapController _cntlr) async {
     var provider = Provider.of<RequestProvider>(context, listen: false);
+    DirectionDetails directionDetails;
 
-    DirectionDetails directionDetails = await Maps.obtainPlaceDirectionsDetails(
-        context, provider.getpickup, provider.getdropoff);
+    if (provider.interWilaya == 1) {
+      directionDetails = await Maps.obtainPlaceDirectionsDetails(
+          context, provider.getpickup, provider.getdropoff);
+    } else {
+      directionDetails = await Maps.obtainPlaceDirectionsDetails(
+          context, provider.getpickup, provider.wilayaExp);
+      provider.changeduration(
+          double.tryParse(directionDetails.durationValue.toString()) / 60);
+      provider.changedistance(
+          double.tryParse(directionDetails.distanceValue.toString()) / 1000);
+    }
+
     PolylinePoints polylinePoints = PolylinePoints();
     List<PointLatLng> decodedPolyLinePointsResult =
         polylinePoints.decodePolyline(directionDetails.encodedPoints);

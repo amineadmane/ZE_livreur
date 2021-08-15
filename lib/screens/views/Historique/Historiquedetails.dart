@@ -4,6 +4,7 @@ import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ze_livreur/models/Histo_mensuelle.dart';
 import 'package:ze_livreur/provider/navigation_provider.dart';
+import 'package:ze_livreur/screens/views/Historique/Detailscourse.dart';
 import 'package:ze_livreur/services/ApiCalls.dart';
 import 'package:ze_livreur/provider/auth.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +17,12 @@ class HistoriquePagescreen extends StatefulWidget {
 }
 
 class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
+  TextEditingController searchcontroller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Auth>(context, listen: false).livreurExt;
     var providernav = Provider.of<NavigationProvider>(context, listen: false);
-    TextEditingController searchcontroller = new TextEditingController();
 
     Color orangeclair = Color(0xFFEEA86B);
 
@@ -59,7 +61,19 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
                         shrinkWrap: true,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return box(snapshot.data[index]);
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Detailsencours(snapshot
+                                            .data[index].idlivext
+                                            .toString()),
+                                  ),
+                                );
+                              },
+                              child: box(snapshot.data[index]));
                         }),
                     Container(
                       // Background

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -104,10 +105,13 @@ class _NavigationState extends State<Navigation> {
           provider.changeWilayaExp(message['wilayaexp']);
           provider.changeWilayaDest(message['wilayadest']);
           provider.changeInterWilaya(int.tryParse(message['interwilaya']));
-          print("inter wilya : " + message['interwilaya']);
+          adressbureau = message['adressbureau'];
+          print("Adresse du bureau = " + adressbureau.toString());
+          print("Interwilaya = " + provider.interWilaya.toString());
+          print("Wilaya expediteur = : " + provider.wilayaExp.toString());
+          print("Wilaya destinataire = : " + provider.wilayaDest.toString());
           Provider.of<RequestProvider>(context, listen: false)
               .changeSeconds(15);
-
           Provider.of<Auth>(context, listen: false).changeauth("notified");
         }
       },

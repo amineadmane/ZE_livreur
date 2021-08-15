@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:ze_livreur/models/Evaluation_List.dart';
 import 'package:ze_livreur/models/Evaluation_totale.dart';
 import 'package:ze_livreur/models/Histo_mensuelle.dart';
+import 'package:ze_livreur/models/HistoriqueDetail.dart';
 import 'package:ze_livreur/models/Historique_annuel.dart';
 import 'package:ze_livreur/models/Livraison_aujourdhui.dart';
 import 'package:ze_livreur/models/Livraison_externe.dart';
@@ -43,6 +44,29 @@ class ApiCalls {
       } else {
         _livraisonexterne =
             LivraisonExterne.fromJson(jsonDecode(response.body));
+        return _livraisonexterne;
+      }
+    } else {
+      return _livraisonexterne;
+    }
+  }
+
+  Future<HistoriqueDetail> getlivext(String id) async {
+    await readtoken();
+    print("token : $_token");
+    HistoriqueDetail _livraisonexterne;
+    var response = await http.get(uRL + '/LivraisonDetails/' + id.toString(),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": 'Bearer $_token'
+        });
+
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty) {
+        return null;
+      } else {
+        _livraisonexterne =
+            HistoriqueDetail.fromJson(jsonDecode(response.body));
         return _livraisonexterne;
       }
     } else {
