@@ -104,8 +104,7 @@ class _NavigationState extends State<Navigation> {
           provider.changeWilayaExp(message['wilayaexp']);
           provider.changeWilayaDest(message['wilayadest']);
           provider.changeInterWilaya(int.tryParse(message['interwilaya']));
-          print("locality dest : " + message['localitydest']);
-          print("locality exp : " + message['localityexp']);
+          print("inter wilya : " + message['interwilaya']);
           Provider.of<RequestProvider>(context, listen: false)
               .changeSeconds(15);
 

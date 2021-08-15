@@ -12,36 +12,42 @@ class Metric {
   double benificeMois3;
   double benificeMois4;
   double benificeMois5;
+  String createdAt;
+  String updatedAt;
 
   Metric(
       {this.idMetric,
-        this.idLivExt,
-        this.cATotale,
-        this.benificeTotale,
-        this.cAToday,
-        this.benificeToday,
-        this.cAMensuel,
-        this.benificeMensuel,
-        this.benificeMois1,
-        this.benificeMois2,
-        this.benificeMois3,
-        this.benificeMois4,
-        this.benificeMois5});
+      this.idLivExt,
+      this.cATotale,
+      this.benificeTotale,
+      this.cAToday,
+      this.benificeToday,
+      this.cAMensuel,
+      this.benificeMensuel,
+      this.benificeMois1,
+      this.benificeMois2,
+      this.benificeMois3,
+      this.benificeMois4,
+      this.benificeMois5,
+      this.createdAt,
+      this.updatedAt});
 
   Metric.fromJson(Map<String, dynamic> json) {
     idMetric = json['id_metric'];
     idLivExt = json['id_liv_ext'];
-    cATotale = double.parse(json['CA_totale'].toString());
-    benificeTotale = double.parse(json['benifice_totale'].toString());
-    cAToday = double.parse(json['CA_today'].toString());
-    benificeToday = double.parse(json['benifice_today'].toString());
-    cAMensuel = double.parse(json['CA_mensuel'].toString());
-    benificeMensuel = double.parse(json['benifice_mensuel'].toString());
-    benificeMois1 = double.parse(json['benifice_mois_1'].toString());
-    benificeMois2 = double.parse(json['benifice_mois_2'].toString());
-    benificeMois3 = double.parse(json['benifice_mois_3'].toString());
-    benificeMois4 = double.parse(json['benifice_mois_4'].toString());
-    benificeMois5 = double.parse(json['benifice_mois_5'].toString());
+    cATotale = double.tryParse(json['CA_totale'].toString());
+    benificeTotale = double.tryParse(json['benifice_totale'].toString());
+    cAToday = double.tryParse(json['CA_today'].toString());
+    benificeToday = double.tryParse(json['benifice_today'].toString());
+    cAMensuel = double.tryParse(json['CA_mensuel'].toString());
+    benificeMensuel = double.tryParse(json['benifice_mensuel'].toString());
+    benificeMois1 = double.tryParse(json['benifice_mois_1'].toString());
+    benificeMois2 = double.tryParse(json['benifice_mois_2'].toString());
+    benificeMois3 = double.tryParse(json['benifice_mois_3'].toString());
+    benificeMois4 = double.tryParse(json['benifice_mois_4'].toString());
+    benificeMois5 = double.tryParse(json['benifice_mois_5'].toString());
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +65,8 @@ class Metric {
     data['benifice_mois_3'] = this.benificeMois3;
     data['benifice_mois_4'] = this.benificeMois4;
     data['benifice_mois_5'] = this.benificeMois5;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

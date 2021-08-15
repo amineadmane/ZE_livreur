@@ -49,7 +49,7 @@ class LivreurExt {
     matriculeVehicule = json['matricule_vehicule'];
     modeleVehicule = json['modele_vehicule'];
     couleurVehicule = json['couleur_vehicule'];
-    note = json['note'];
+    note = json['note'].toDouble();
     points = json['points'];
     codeParrainage = json['code_parrainage'];
     createdAt = json['created_at'];

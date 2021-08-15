@@ -36,7 +36,7 @@ class _FinancespageState extends State<Financespage> {
           future: ApiCalls().getmetric(provider.idLivExt),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (snapshot.data.idLivExt == null) {
+              if (snapshot.data == null) {
                 return Scaffold(
                   backgroundColor: background,
                   body: Column(

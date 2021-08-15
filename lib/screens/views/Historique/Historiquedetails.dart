@@ -184,17 +184,21 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  histo.pickup,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: screenwidth * 0.02,
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
+                  width: ResponsiveFlutter.of(context).wp(30),
+                  child: Center(
+                    child: Text(
+                      histo.pickup,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 CircleAvatar(
                   radius: ResponsiveFlutter.of(context).scale(10),
@@ -225,15 +229,18 @@ class _HistoriquePagescreenState extends State<HistoriquePagescreen> {
                     radius: ResponsiveFlutter.of(context).scale(7),
                   ),
                 ),
-                SizedBox(
-                  width: screenwidth * 0.02,
-                ),
-                Text(
-                  histo.dropoff,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
-                      fontWeight: FontWeight.bold),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
+                  width: ResponsiveFlutter.of(context).wp(30),
+                  child: Center(
+                    child: Text(
+                      histo.dropoff,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: ResponsiveFlutter.of(context).fontSize(2.2),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ],
             ),

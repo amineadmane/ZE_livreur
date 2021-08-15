@@ -19,7 +19,7 @@ import 'package:ze_livreur/provider/auth.dart';
 import 'package:ze_livreur/provider/dio.dart';
 
 class ApiCalls {
-  String uRL = 'http://192.168.0.109:8000/api';
+  String uRL = 'http://192.168.1.41:8000/api';
   String _token;
 
   Future<void> readtoken() async {
@@ -72,7 +72,7 @@ class ApiCalls {
   }
 
   Future<Metric> getmetric(int id) async {
-    Metric _metric;
+    Metric metric;
     await readtoken();
     var response = await http.get(uRL + '/Metric/' + id.toString(), headers: {
       "Authorization": 'Bearer $_token',
@@ -80,15 +80,65 @@ class ApiCalls {
     });
 
     if (response.statusCode == 200) {
-      if (response.body.isEmpty) {
-        _metric = new Metric();
-        return _metric;
-      } else {
-        _metric = Metric.fromJson(jsonDecode(response.body));
-        return _metric;
+      metric = Metric.fromJson(jsonDecode(response.body));
+      if (DateTime.tryParse(metric.updatedAt).month != DateTime.now().month) {
+        print("here1");
+
+        Map data = {
+          'benifice_mois_5': metric.benificeMois4,
+          'benifice_mois_4': metric.benificeMois3,
+          'benifice_mois_3': metric.benificeMois2,
+          'benifice_mois_2': metric.benificeMois1,
+          'benifice_mois_1': metric.benificeMensuel,
+          'benifice_mensuel': "0.00",
+          'CA_mensuel': "0.00",
+          'benifice_today': "0.00",
+          'CA_today': "0.00",
+        };
+        metric.benificeMois5 = metric.benificeMois4;
+        metric.benificeMois4 = metric.benificeMois3;
+        metric.benificeMois3 = metric.benificeMois2;
+        metric.benificeMois2 = metric.benificeMois1;
+        metric.benificeMois1 = metric.benificeMensuel;
+        metric.benificeMensuel = 0.00;
+        metric.cAMensuel = 0.00;
+        metric.benificeToday = 0.00;
+        metric.cAToday = 0.00;
+
+        Dio.Response response = await dio().post('/Metric/' + id.toString(),
+            data: jsonEncode(data),
+            options: Dio.Options(
+              headers: {
+                'Authorization': 'Bearer $_token',
+              },
+              contentType: "application/json",
+            ));
+        print("status code : " + response.statusCode.toString());
+        print("status code : " + response.data.toString());
+      } else if (DateTime.tryParse(metric.updatedAt).day !=
+          DateTime.now().day) {
+        print("here2");
+
+        Map data = {
+          'benifice_today': "0.00",
+          'CA_today': "0.00",
+        };
+        metric.benificeToday = 0.00;
+        metric.cAToday = 0.00;
+        Dio.Response response = await dio().post('/Metric/' + id.toString(),
+            data: jsonEncode(data),
+            options: Dio.Options(
+              headers: {
+                'Authorization': 'Bearer $_token',
+              },
+              contentType: "application/json",
+            ));
+        print("status code : " + response.statusCode.toString());
+        print("status code : " + response.data.toString());
       }
+      return metric;
     } else {
-      return _metric;
+      return metric;
     }
   }
 
@@ -256,6 +306,22 @@ class ApiCalls {
       print(response.statusCode);
       _scaffoldkey.currentState.showSnackBar(SnackBar(
           content: Text("Une erreur s'est produite, réessayer plus tard !")));
+    }
+  }
+
+  Future<void> terminerLivraison(int id, data) async {
+    await readtoken();
+    try {
+      Dio.Response response = await dio().post(
+          '/livraison/terminer/' + id.toString(),
+          data: data,
+          options: Dio.Options(headers: {'Authorization': 'Bearer $_token'}));
+      if (response.statusCode == 200) {
+        print("ok");
+      }
+    } on Dio.DioError catch (e) {
+      print(e);
+      if (e.response.statusCode == 302) print(e);
     }
   }
 }

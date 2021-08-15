@@ -57,12 +57,15 @@ class Auth extends ChangeNotifier {
           options: Dio.Options(headers: {'Authorization': 'Bearer $token'}));
       if (response.statusCode == 200) {
         this._livreurExt = LivreurExt.fromJson(response.data);
+        this._token = token;
+        await storeToken(token, _livreurExt.idLivExt.toString());
+
         if (this._livreurExt.etat == "bloque") {
           this._isloggedIn = "blocked";
         } else {
           this._isloggedIn = "loggedin";
         }
-        this._token = token;
+
         if (_livreurExt.etat == "online") {
           Provider.of<NavigationProvider>(context, listen: false)
               .setStatus(true);
@@ -70,7 +73,7 @@ class Auth extends ChangeNotifier {
           Provider.of<NavigationProvider>(context, listen: false)
               .setStatus(false);
         }
-        storeToken(token, _livreurExt.idLivExt.toString());
+
         notifyListeners();
       }
     }
